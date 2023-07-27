@@ -9,6 +9,7 @@ router.get('/', function (req, res, next) {
     code: 200,
     message: '你好，express'
   }
+	
   res.status(200).send(data)
 });
 
