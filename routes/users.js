@@ -68,8 +68,8 @@ router.post('/email', async (req, res, next) => {
     }
     var code_fill_str = ["000000", "00000", "0000", "000", "00", "0", ""];
     var code = '' + parseInt(Math.random() * 1000000);
-    code = code_fill_str[code.length] + code;
-    randomCode = Number(code)
+    randomCode = code_fill_str[code.length] + code;
+    // randomCode = Number(code)
     codeTimestamp = Date.now(); // 记录验证码生成的时间戳
     Email.sendMail(email, randomCode, (state) => {
       if (state) {
@@ -89,8 +89,7 @@ router.post('/veifycode', async (req, res, next) => {
     return res.status(400).send({ code: 400, message: '请输入验证码！' });
   }
   // 比较用户输入的验证码与之前保存的随机验证码
-  if (parseInt(code) === randomCode) {
-    console.log(1);
+  if (code === randomCode) {
     const nowTimestamp = Date.now(); // 获取当前时间戳
     const timeDifference = nowTimestamp - codeTimestamp; // 计算当前时间与验证码生成时间的差值
     // 设置验证码有效期为 5 分钟，即 300000 毫秒
