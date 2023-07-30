@@ -5,6 +5,7 @@ const multer = require("multer")
 const qiniu = require('qiniu')
 let accessKey = 'MFEjgT54HYsC1eHtUbnQ4QxvfkTW_dd_M8ucpRAu';
 let secretKey = '0MRyacfATDghILQcro_wPH4G6GTcof44JXB-W2mH';
+
 let mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 let options = {
     scope: 'jiaozuoyela', 
@@ -21,13 +22,13 @@ const upload = multer();
 
 router.post('/file', upload.single('file'), function (req, res, next) {
   if (req.file) {
-      console.log('上传的文件信息：', req.file);
       const { originalname, buffer } = req.file;
       const key = Date.now().toString() + '_' + originalname; // 生成七牛云存储的文件名
       const formUploader = new qiniu.form_up.FormUploader(config);
       const putExtra = new qiniu.form_up.PutExtra();
       // 文件上传
       formUploader.put(uploadToken, key, buffer, putExtra, function (respErr, respBody, respInfo) {
+        console.log(respErr, respBody, respInfo);
           if (respErr) {
               console.error('上传失败', respErr);
               res.status(500).json({
@@ -37,6 +38,7 @@ router.post('/file', upload.single('file'), function (req, res, next) {
           } else {
               if (respInfo.statusCode == 200) {
                   console.log('上传成功', respBody);
+                  // 上传数据库
                   res.json({
                       code: 200,
                       message: '上传成功',

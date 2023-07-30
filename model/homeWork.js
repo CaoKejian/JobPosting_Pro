@@ -5,11 +5,9 @@ const WorkType = {
   classId: Number,
   subject: String,
   time: Number,
-  title: String,
-  content: String,
-  file: String||[]
+  branch: String,
+  file: {}
 }
-
 
 const HomeWorkModel = mongoose.model("homeWorl",new mongoose.Schema(WorkType))
 
