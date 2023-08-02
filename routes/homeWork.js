@@ -31,7 +31,7 @@ router.get('/', async function (req, res) {
 })
 router.get('/mywork', async function (req, res) {
   const { stuId } = req.query
-  const data = await HomeWorkModel.find({ stuId })
+  const data = await HomeWorkModel.find({ stuId }).limit(5)
   res.send(data)
 })
 router.get('/otherwork', async function (req, res) {
