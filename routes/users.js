@@ -128,7 +128,9 @@ router.get('/verify/jwt', async (req, res, next) => {
     if (isExpired) {
       return res.status(401).json({ message: 'JWT令牌已过期' });
     }
-    res.status(200).json({ message: 'JWT token is valid.' });
+    const newToken = jwt.sign({ stuId:stuid }, uuid, { expiresIn: '2h' });
+    res.setHeader('Authorization', `Bearer ${newToken}`);
+    res.status(200).json({ message: 'JWT token is valid.'});
   } catch (err) {
     return res.status(401).json({ message: '无效的JWT令牌' });
   }

@@ -9,6 +9,6 @@ const WorkType = {
   file: {}
 }
 
-const HomeWorkModel = mongoose.model("homeWorl",new mongoose.Schema(WorkType))
+const HomeWorkModel = mongoose.model("homeWork",new mongoose.Schema(WorkType))
 
 module.exports = HomeWorkModel
