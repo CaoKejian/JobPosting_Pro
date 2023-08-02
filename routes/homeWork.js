@@ -35,8 +35,17 @@ router.get('/mywork', async function (req, res) {
   res.send(data)
 })
 router.get('/otherwork', async function (req, res) {
-  const { _id } = req.body
-
+  try {
+    const { id } = req.query
+    const data = await HomeWorkModel.findOne({ _id:id })
+    if(data){
+      res.json(data)
+    }else{
+      res.status(402).json({message:'未找到相关信息！'})
+    }
+  } catch (error) {
+    res.status(500).json({message:'服务器出错！'})
+  }
 })
 /* GET home page. */
 router.post('/submit', async function (req, res, next) {
