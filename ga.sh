@@ -1,5 +1,7 @@
 #!/bin/bash
 echo '#####👉开始上传👈#####'
+source ~/.zshrc
+
 # 提取传递的 commit message 参数
 message="$1"
 
