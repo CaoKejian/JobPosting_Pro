@@ -9,6 +9,9 @@ git add .
 # 执行 git commit -m
 git commit -m "$message"
 
+#开启代理
+proxy
+
 git pull
 
 echo '#####👉提交成功👈#####'
