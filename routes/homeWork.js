@@ -37,6 +37,7 @@ router.get('/mywork', async function (req, res) {
 router.get('/otherwork', async function (req, res) {
   try {
     const { id } = req.query
+    console.log(id);
     const data = await HomeWorkModel.findOne({ _id:id })
     if(data){
       res.json(data)
@@ -49,7 +50,7 @@ router.get('/otherwork', async function (req, res) {
 })
 /* GET home page. */
 router.post('/submit', async function (req, res, next) {
-  const { classId, stuId, subject, branch, file } = req.body
+  const { classId, stuId, subject, branch, file,content,score,tComments,favor = false,isPass } = req.body
   const timestamp = Date.now();
   const isHave = await HomeWorkModel.find({
     classId: classId,
@@ -64,6 +65,11 @@ router.post('/submit', async function (req, res, next) {
       subject,
       branch,
       file,
+      content,
+      score,
+      tComments,
+      favor,
+      isPass,
       time: timestamp
     })
     console.log(data);
