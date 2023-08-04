@@ -23,4 +23,4 @@ git commit -m "$message"
 
 git push 
 
-title '👉提交成功👈
+title '👉提交成功👈'
