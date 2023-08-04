@@ -90,7 +90,19 @@ describe('作业', function () {
       .expect(402);
     // 断言响应
     const data = res.body;
-    console.log('123', data);
     expect(data.message).to.equal('不要重复上传');
   });
+  it('删除作业', async function () {
+    const textData = [
+      { _id: '611dbf6f82f7eb001f8a93b1', name: '作业1', stuId: '2001063037' },
+      { _id: '611dbf6f82f7eb001f8a93b2', name: '作业2', stuId: '2001063037' },
+    ]
+    await HomeWorkModel.insertMany(textData)
+    const res = await request(app)
+      .post('/api/work/delete')
+      .query({ id: '611dbf6f82f7eb001f8a93b1' })
+      .expect(200)
+      const data = res.body
+      expect(data.message).to.equal('删除成功！')
+  })
 });

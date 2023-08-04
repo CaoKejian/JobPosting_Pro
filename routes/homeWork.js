@@ -47,6 +47,20 @@ router.get('/otherwork', async function (req, res) {
     res.status(500).json({message:'服务器出错！'})
   }
 })
+
+router.post('/delete', async function (req,res) {
+  try{
+    const { id } = req.query
+    const data = await HomeWorkModel.deleteOne({_id:id})
+    if(data){
+      res.json({message:'删除成功！'})
+    }else{
+      res.status(402).json({message:'未找到相关作业！'})
+    }
+  }catch(error){
+    res.status(500).json({message:'服务器出错！'})
+  }
+})
 /* GET home page. */
 router.post('/submit', async function (req, res, next) {
   const { classId, stuId, subject, branch, file,content,score,tComments,favor = false,isPass } = req.body

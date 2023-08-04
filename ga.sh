@@ -12,6 +12,6 @@ git commit -m "$message"
 
 #开启代理
 
-git pull -f
+git push 
 
 echo '👉提交成功👈#########################'
