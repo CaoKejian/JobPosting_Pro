@@ -105,17 +105,35 @@ describe('作业', function () {
       const data = res.body
       expect(data.message).to.equal('删除成功！')
   })
-  it('删除作业', async function () {
-    const textData = [
-      { _id: '611dbf6f82f7eb001f8a93b1', name: '作业1', stuId: '2001063037' },
-      { _id: '611dbf6f82f7eb001f8a93b2', name: '作业2', stuId: '2001063037' },
-    ]
-    await HomeWorkModel.insertMany(textData)
+  it('更新作业', async function () {
+    const testData = {
+      classId: 123123,
+      stuId: 2001063037,
+      subject: 'Math',
+      branch: 'branch123',
+      file: {},
+      content: '作业内容...',
+      score: 90,
+      tComments: '老师评语...',
+      favor: false,
+      isPass: true
+    };
+    const updatedData = {
+      classId:111111,
+      stuId: 2001063037,
+      subject:'Chinese',
+      branch: '我修改了',
+      file: {},
+    };
+    const x = await HomeWorkModel.create(testData)
     const res = await request(app)
-      .post('/api/work/delete')
-      .query({ id: '611dbf6f82f7eb001f8a93b1' })
+      .post(`/api/work/upload?id=${x._id}`)
+      .send(updatedData)
       .expect(200)
       const data = res.body
-      expect(data.message).to.equal('删除成功！')
+      console.log(data);
+      expect(data).to.be.an('object')
+      expect(data.classId).to.equal(111111)
+      expect(data.branch).to.equal('我修改了')
   })
 });

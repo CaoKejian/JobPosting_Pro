@@ -1,6 +1,30 @@
 var express = require('express');
 const HomeWorkModel = require('../model/homeWork');
 var router = express.Router();
+const { check, validationResult } = require('express-validator');
+// 定义数据验证规则
+const createUserValidationRules = [
+  check('classId').notEmpty().withMessage('班级码不能为空'),
+  check('stuId').notEmpty().withMessage('学号不能为空'),
+  check('subject').notEmpty().withMessage('学科不能为空'),
+  check('branch').notEmpty().withMessage('作业分支不能为空'),
+  check('file').custom((value, { req }) => {
+    if (!value) {
+      throw new Error('上传文件不能为空');
+    }
+    return true;
+  }),
+  check('stuId').notEmpty().withMessage('学号不能为空'),
+  check('stuId').notEmpty().withMessage('学号不能为空'),
+];
+// 中间件，用于处理数据验证
+const validate = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  next();
+};
 
 router.get('/', async function (req, res) {
   const { classId, page } = req.query
@@ -62,10 +86,10 @@ router.post('/delete', async function (req,res) {
   }
 })
 
-router.post('/upload', async function (req,res) {
+router.post('/upload',createUserValidationRules,validate, async function (req,res) {
   try{
     const { id } = req.query;
-    const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass } = req.body;
+    const { classId, stuId, subject, branch, file, content='', score=0, tComments='', favor=false, isPass=false } = req.body;
     const x = await HomeWorkModel.findById(id);
     if (!xdescribe) {
       return res.status(402).json({ message: '未找到相关作业！' });
