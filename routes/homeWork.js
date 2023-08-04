@@ -61,6 +61,31 @@ router.post('/delete', async function (req,res) {
     res.status(500).json({message:'服务器出错！'})
   }
 })
+
+router.post('/upload', async function (req,res) {
+  try{
+    const { id } = req.query;
+    const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass } = req.body;
+    const x = await HomeWorkModel.findById(id);
+    if (!xdescribe) {
+      return res.status(402).json({ message: '未找到相关作业！' });
+    }
+    x.classId = classId;
+    x.stuId = stuId;
+    x.subject = subject;
+    x.branch = branch;
+    x.file = file;
+    x.content = content;
+    x.score = score;
+    x.tComments = tComments;
+    x.favor = favor;
+    x.isPass = isPass;
+    await x.save();
+    res.json(x);
+  }catch(error){
+    res.status(500).json({message:'服务器出错！'})
+  }
+})
 /* GET home page. */
 router.post('/submit', async function (req, res, next) {
   const { classId, stuId, subject, branch, file,content,score,tComments,favor = false,isPass } = req.body
