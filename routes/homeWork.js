@@ -37,7 +37,6 @@ router.get('/mywork', async function (req, res) {
 router.get('/otherwork', async function (req, res) {
   try {
     const { id } = req.query
-    console.log(id);
     const data = await HomeWorkModel.findOne({ _id:id })
     if(data){
       res.json(data)
@@ -72,10 +71,8 @@ router.post('/submit', async function (req, res, next) {
       isPass,
       time: timestamp
     })
-    console.log(data);
     res.status(200).send(data)
   }
-
 });
 
 

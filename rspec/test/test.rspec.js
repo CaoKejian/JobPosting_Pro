@@ -64,4 +64,33 @@ describe('作业', function () {
     const data = res.body;
     expect(data).to.be.an('object');
   });
+  it('存储作业', async function () {
+    const timestamp = Date.now();
+    const testData = {
+      classId: 123123,
+      stuId: 2001063037,
+      subject: 'Math',
+      branch: 'branch123',
+      time: timestamp,
+      file: 'homework.txt',
+      content: '作业内容...',
+      score: 90,
+      tComments: '老师评语...',
+      favor: false,
+      isPass: true
+    };
+    const ishaveobj = {
+      classId: 123123,
+      branch: 'branch123'
+    }
+    await HomeWorkModel.create(ishaveobj);
+    const res = await request(app)
+      .post('/api/work/submit')
+      .send(testData) // 在请求中发送测试数据
+      .expect(402);
+    // 断言响应
+    const data = res.body;
+    console.log('123', data);
+    expect(data.message).to.equal('不要重复上传');
+  });
 });
