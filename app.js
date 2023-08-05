@@ -14,11 +14,15 @@ var app = express();
 app.use(cors());
 app.use(express.static('uploads')); //静态资源
 
+// 禁用默认的中间件日志
+app.disable('x-powered-by'); // 可选，禁用 x-powered-by 标识
+app.disable('etag'); // 可选，禁用 etag 标识
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

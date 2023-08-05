@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "rspec": "mocha --timeout 5000  --quiet --exit rspec/test"
+    "rspec": "mocha --timeout 5000  --reporter dot --quiet --exit rspec/test"
   },
   "dependencies": {
     "@babel/register": "^7.22.5",

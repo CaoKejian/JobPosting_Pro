@@ -12,7 +12,8 @@ require('../config/db.config.js')
 /**
  * Get port from environment and store in Express.
  */
-
+app.disable('x-powered-by'); // 可选，禁用 x-powered-by 标识
+app.disable('etag'); // 可选，禁用 etag 标识
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
