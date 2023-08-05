@@ -61,35 +61,35 @@ router.get('/mywork', async function (req, res) {
 router.get('/otherwork', async function (req, res) {
   try {
     const { id } = req.query
-    const data = await HomeWorkModel.findOne({ _id:id })
-    if(data){
+    const data = await HomeWorkModel.findOne({ _id: id })
+    if (data) {
       res.json(data)
-    }else{
-      res.status(402).json({message:'未找到相关信息！'})
+    } else {
+      res.status(402).json({ message: '未找到相关信息！' })
     }
   } catch (error) {
-    res.status(500).json({message:'服务器出错！'})
+    res.status(500).json({ message: '服务器出错！' })
   }
 })
 
-router.post('/delete', async function (req,res) {
-  try{
+router.post('/delete', async function (req, res) {
+  try {
     const { id } = req.query
-    const data = await HomeWorkModel.deleteOne({_id:id})
-    if(data){
-      res.json({message:'删除成功！'})
-    }else{
-      res.status(402).json({message:'未找到相关作业！'})
+    const data = await HomeWorkModel.deleteOne({ _id: id })
+    if (data) {
+      res.json({ message: '删除成功！' })
+    } else {
+      res.status(402).json({ message: '未找到相关作业！' })
     }
-  }catch(error){
-    res.status(500).json({message:'服务器出错！'})
+  } catch (error) {
+    res.status(500).json({ message: '服务器出错！' })
   }
 })
 
-router.post('/upload',createUserValidationRules,validate, async function (req,res) {
-  try{
+router.post('/upload', createUserValidationRules, validate, async function (req, res) {
+  try {
     const { id } = req.query;
-    const { classId, stuId, subject, branch, file, content='', score=0, tComments='', favor=false, isPass=false } = req.body;
+    const { classId, stuId, subject, branch, file, content = '', score = 0, tComments = '', favor = false, isPass = false } = req.body;
     const x = await HomeWorkModel.findById(id);
     if (!xdescribe) {
       return res.status(402).json({ message: '未找到相关作业！' });
@@ -106,13 +106,31 @@ router.post('/upload',createUserValidationRules,validate, async function (req,re
     x.isPass = isPass;
     await x.save();
     res.json(x);
-  }catch(error){
-    res.status(500).json({message:'服务器出错！'})
+  } catch (error) {
+    res.status(500).json({ message: '服务器出错！' })
+  }
+})
+router.get('/download', async function (req, res) {
+  try {
+    const { classId, branch, subject } = req.query
+    console.log(classId, branch, subject);
+    const data = await HomeWorkModel.find({
+      classId,
+      branch,
+      subject
+    })
+    if (data) {
+      res.json(data)
+    } else {
+      res.status(402).json({ message: '未找到相关作业！' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: '服务器出错！' })
   }
 })
 /* GET home page. */
 router.post('/submit', async function (req, res, next) {
-  const { classId, stuId, subject, branch, file,content,score,tComments,favor = false,isPass } = req.body
+  const { classId, stuId, subject, branch, file, content, score, tComments, favor = false, isPass } = req.body
   const timestamp = Date.now();
   const isHave = await HomeWorkModel.find({
     classId: classId,
