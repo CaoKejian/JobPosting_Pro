@@ -120,7 +120,8 @@ router.get('/download', async function (req, res) {
       subject
     })
     if (data) {
-      res.json(data)
+      const stuIds = data.map(item => item.stuId); // 提取 stuId 到数组
+      res.json({ stuIds });
     } else {
       res.status(402).json({ message: '未找到相关作业！' })
     }

@@ -44,6 +44,23 @@ router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (
     }
   }
 });
+router.get('/addclassId', async function (req, res) {
+  try {
+    const { stuId,classId } = req.query
+    const updatedData = await UserModel.findOneAndUpdate(
+      { stuId }, // 匹配的查询条件
+      { $set: { classId } }, // 更新的操作，$set 操作符用于设置字段的值
+      { new: true } // 选项，返回更新后的文档
+    );
+    if (updatedData) {
+      res.json({ success: true, updatedData });
+    } else {
+      res.json({ success: false, message: '学号没找到！' });
+    }
+  } catch (error) {
+    res.status(500).json({message:'服务器出错！'})
+  }
+})
 
 let randomCode = 0; // 保存验证码
 let stuid // 学号
@@ -128,13 +145,26 @@ router.get('/verify/jwt', async (req, res, next) => {
     if (isExpired) {
       return res.status(401).json({ message: 'JWT令牌已过期' });
     }
-    const newToken = jwt.sign({ stuId:stuid }, uuid, { expiresIn: '2h' });
+    const newToken = jwt.sign({ stuId: stuid }, uuid, { expiresIn: '2h' });
     res.setHeader('Authorization', `Bearer ${newToken}`);
-    res.status(200).json({ message: 'JWT token is valid.'});
+    res.status(200).json({ message: 'JWT token is valid.' });
   } catch (err) {
     return res.status(401).json({ message: '无效的JWT令牌' });
   }
 });
 
+router.get('/total', async function (req, res) {
+  try {
+  
+    if (data) {
+      res.json(data)
+    } else {
+      res.status(402).json({ message: '未找到班级信息' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: "服务器出错！" })
+  }
+
+})
 // router.get()
 module.exports = router;

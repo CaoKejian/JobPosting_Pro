@@ -131,7 +131,6 @@ describe('作业', function () {
       .send(updatedData)
       .expect(200)
       const data = res.body
-      console.log(data);
       expect(data).to.be.an('object')
       expect(data.classId).to.equal(111111)
       expect(data.branch).to.equal('我修改了')
