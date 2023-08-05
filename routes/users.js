@@ -46,7 +46,7 @@ router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (
 });
 router.get('/addclassId', async function (req, res) {
   try {
-    const { stuId,classId } = req.query
+    const { stuId, classId } = req.query
     const updatedData = await UserModel.findOneAndUpdate(
       { stuId }, // 匹配的查询条件
       { $set: { classId } }, // 更新的操作，$set 操作符用于设置字段的值
@@ -58,7 +58,7 @@ router.get('/addclassId', async function (req, res) {
       res.json({ success: false, message: '学号没找到！' });
     }
   } catch (error) {
-    res.status(500).json({message:'服务器出错！'})
+    res.status(500).json({ message: '服务器出错！' })
   }
 })
 
@@ -155,9 +155,14 @@ router.get('/verify/jwt', async (req, res, next) => {
 
 router.get('/total', async function (req, res) {
   try {
-  
-    if (data) {
-      res.json(data)
+    const peopleData = [
+      { stuId: 2001063037, classId: 123123 },
+      { stuId: 2001062028, classId: 123123 },
+    ]
+    const { classId, stuIds } = req.query
+    const filteredPeopleData = peopleData.filter(item => !stuIds.includes(item.stuId.toString()));
+    if (filteredPeopleData) {
+      res.json(filteredPeopleData)
     } else {
       res.status(402).json({ message: '未找到班级信息' })
     }

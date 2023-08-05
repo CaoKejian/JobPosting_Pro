@@ -113,7 +113,6 @@ router.post('/upload', createUserValidationRules, validate, async function (req,
 router.get('/download', async function (req, res) {
   try {
     const { classId, branch, subject } = req.query
-    console.log(classId, branch, subject);
     const data = await HomeWorkModel.find({
       classId,
       branch,
