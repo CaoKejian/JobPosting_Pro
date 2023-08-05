@@ -74,8 +74,8 @@ router.get('/otherwork', async function (req, res) {
 
 router.post('/delete', async function (req, res) {
   try {
-    const { id } = req.query
-    const data = await HomeWorkModel.deleteOne({ _id: id })
+    const { _id } = req.body
+    const data = await HomeWorkModel.deleteOne({ _id})
     if (data) {
       res.json({ message: '删除成功！' })
     } else {
@@ -88,10 +88,10 @@ router.post('/delete', async function (req, res) {
 
 router.post('/upload', createUserValidationRules, validate, async function (req, res) {
   try {
-    const { id } = req.query;
-    const { classId, stuId, subject, branch, file, content = '', score = 0, tComments = '', favor = false, isPass = false } = req.body;
-    const x = await HomeWorkModel.findById(id);
-    if (!xdescribe) {
+    const { id, classId, stuId, subject, branch, file, content = '', score = 0, tComments = '', favor = false, isPass = false } = req.body;
+    console.log(req.body);
+    const x = await HomeWorkModel.findById({_id:id});
+    if (!x) {
       return res.status(402).json({ message: '未找到相关作业！' });
     }
     x.classId = classId;
