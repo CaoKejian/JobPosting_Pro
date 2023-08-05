@@ -117,10 +117,11 @@ router.get('/download', async function (req, res) {
       classId,
       branch,
       subject
-    })
+    }).select('file stuId')
+    console.log(data);
     if (data) {
       const stuIds = data.map(item => item.stuId); // 提取 stuId 到数组
-      res.json({ stuIds });
+      res.json({ stuIds, data });
     } else {
       res.status(402).json({ message: '未找到相关作业！' })
     }
@@ -133,6 +134,7 @@ router.post('/submit', async function (req, res, next) {
   const { classId, stuId, subject, branch, file, content, score, tComments, favor = false, isPass } = req.body
   const timestamp = Date.now();
   const isHave = await HomeWorkModel.find({
+    stuId,
     classId: classId,
     branch: branch
   })

@@ -29,7 +29,7 @@ router.post('/file', upload.single('file'), function (req, res, next) {
         console.log('-----', a);
         const { originalname, buffer } = req.file;
         // fs.writeFileSync(path.resolve(__dirname, '../..'), buffer)
-        const key = Date.now().toString() + '_' + iconv.decode(Buffer.from(req.file.originalname, 'binary'), 'utf-8'); // 生成七牛云存储的文件名
+        const key = iconv.decode(Buffer.from(req.file.originalname, 'binary'), 'utf-8'); // 生成七牛云存储的文件名
         const formUploader = new qiniu.form_up.FormUploader(config);
         const putExtra = new qiniu.form_up.PutExtra();
         // 文件上传
