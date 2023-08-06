@@ -2,7 +2,7 @@
 
 user=ubuntu
 host=43.139.142.203
-
+deploy_dir=jobpro
 function title {
   echo 
   echo "###############################################################################"
@@ -10,20 +10,13 @@ function title {
   echo "###############################################################################" 
   echo 
 }
-title "我进来了"
-# title "连接远程机器"
-# ssh -t $user@$host "
-#   title \"进入目录\"
-#   cd /
-#   title \"删除目录\"
-#   sudo rm -rf JobPosting_Pro
-#   title \"克隆代码\"
-#   sudo git clone git@github.com:CaoKejian/JobPosting_Pro.git
-#   title \"进入项目目录\"
-#   cd JobPosting_Pro
-#   title \"安装依赖\"
-#   sudo npm install
-#   title \"启动开发服务器\"
-#   npm run dev
-#   title \"执行完毕！\"
-# "
+title "下载依赖"
+ssh -t $user@$host "
+      title \"进入目录"\
+      cd $deploy_dir
+      title \"下载依赖"\
+      sudo npm install
+      title \"启动服务"\
+      npm run dev
+      title \"执行完毕！请访问:"http://43.139.142.203:3000/api" "\
+      "
