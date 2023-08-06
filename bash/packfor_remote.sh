@@ -15,6 +15,9 @@ function title {
   echo "###############################################################################" 
   echo 
 }
+title "更新代码"
+bash/ga.sh "更新本地代码"
+
 title "打包源代码"
 tar --exclude="node_modules/*" --exclude="bash/*" -czf $dist *
 
