@@ -19,7 +19,7 @@ let config = new qiniu.conf.Config();
 config.zone = qiniu.zone.Zone_z0;//华东区
 config.useHttpsDomain = true;
 config.useCdnDomain = true;
-const baseUrl = 'ryjt0vld4.hd-bkt.clouddn.com' //七牛云空间访问的域名
+const baseUrl = 'qny.caokejian.club' //七牛云空间访问的域名
 
 const upload = multer();
 

@@ -29,6 +29,9 @@ else
   echo "无效的选择。请输入 'yes' 或 'no'。"
 fi
 
+title "clear tar*"
+rm -rf $dist $bash_dist $db_dist
+
 title "打包源代码"
 tar --exclude="node_modules/*" --exclude="bash/*" -czf $dist *
 
@@ -36,7 +39,6 @@ title "打包本地依赖"
 tar -czf $bash_dist -C ./bash . 
 
 title "导出数据库并打包"
-# cd $home_dir/
 mongodump --host localhost --port 27017 -o $home_dir -d jobpost
 tar -czf $db_dist -C ../jobpost .
 
