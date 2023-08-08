@@ -65,20 +65,6 @@ describe('作业', function () {
     expect(data).to.be.an('object');
   });
   it('存储作业', async function () {
-    const timestamp = Date.now();
-    const testData = {
-      classId: 123123,
-      stuId: 2001063037,
-      subject: 'Math',
-      branch: 'branch123',
-      time: timestamp,
-      file: 'homework.txt',
-      content: '作业内容...',
-      score: 90,
-      tComments: '老师评语...',
-      favor: false,
-      isPass: true
-    };
     const ishaveobj = {
       classId: 123123,
       branch: 'branch123'
@@ -86,7 +72,7 @@ describe('作业', function () {
     await HomeWorkModel.create(ishaveobj);
     const res = await request(app)
       .post('/api/work/submit')
-      .send(testData) // 在请求中发送测试数据
+      .send(ishaveobj) // 在请求中发送测试数据
       .expect(402);
     // 断言响应
     const data = res.body;
@@ -118,21 +104,26 @@ describe('作业', function () {
       favor: false,
       isPass: true
     };
-    const updatedData = {
-      classId:111111,
-      stuId: 2001063037,
-      subject:'Chinese',
-      branch: '我修改了',
-      file: {},
-    };
     const x = await HomeWorkModel.create(testData)
     const res = await request(app)
-      .post(`/api/work/upload?id=${x._id}`)
-      .send(updatedData)
+      .post(`/api/work/upload`)
+      .send({
+        id:x._id,
+        classId: 123123,
+        stuId: 2001063037,
+        subject: 'Math',
+        branch: '我修改了',
+        file: {},
+        content: '作业内容...',
+        score: 90,
+        tComments: '老师评语...',
+        favor: false,
+        isPass: true
+      })
       .expect(200)
       const data = res.body
       expect(data).to.be.an('object')
-      expect(data.classId).to.equal(111111)
+      expect(data.classId).to.equal(123123)
       expect(data.branch).to.equal('我修改了')
   })
 });
