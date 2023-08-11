@@ -22,5 +22,5 @@ title "下载依赖"
 sudo npm install
 title "启动服务"
 killall node
-export NODE_ENV=production && npm run dev:pro > /dev/null 2>&1 &
+NODE_ENV=production && npm run dev:pro
 title '执行完毕！请访问:"http://43.139.142.203:3000/api"'
