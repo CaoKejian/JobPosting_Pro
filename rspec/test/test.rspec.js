@@ -1,6 +1,4 @@
 // add.test.js
-const { MongoMemoryServer } = require('mongodb-memory-server');
-const mongoose = require('mongoose'); //启动mongodb
 var chai = require('chai');
 const chaiHttp = require('chai-http');
 const request = require('supertest');
@@ -9,20 +7,8 @@ const HomeWorkModel = require('../../model/homeWork.js');
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-// 启动测试数据库
-let mongoServer;
-before(async function () {
-  mongoServer = new MongoMemoryServer();
-  const mongoUri = await mongoServer.getUri();
-  await mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-});
-after(async function () {
-  await mongoose.disconnect();
-  await mongoServer.stop();
-});
+require('../mongodb.setup.js')
+
 
 describe('作业', function () {
   it('我的作业', async function () {

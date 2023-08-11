@@ -1,5 +1,3 @@
-const { MongoMemoryServer } = require('mongodb-memory-server');
-const mongoose = require('mongoose'); //启动mongodb
 var chai = require('chai');
 const chaiHttp = require('chai-http');
 const request = require('supertest');
@@ -7,21 +5,8 @@ const app = require('../../app.js');
 const UserModel = require('../../model/user.js');
 chai.use(chaiHttp);
 const expect = chai.expect;
+require('../mongodb.setup.js')
 
-// 启动测试数据库
-let mongoServer;
-before(async function () {
-  mongoServer = new MongoMemoryServer();
-  const mongoUri = await mongoServer.getUri();
-  await mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-});
-after(async function () {
-  await mongoose.disconnect();
-  await mongoServer.stop();
-});
 
 describe('班级信息', function(){
   it('查询相关同学', async function() {
