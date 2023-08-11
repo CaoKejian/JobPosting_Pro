@@ -11,7 +11,7 @@ router.get('/', async function (req, res, next) {
       classId
     })
     if(data.length===0){
-      res.status(200).send({message:'改班级下没有同学'})
+      res.status(200).send({message:'该班级下没有同学'})
     }
     res.status(200).send(data)
   }catch(error){

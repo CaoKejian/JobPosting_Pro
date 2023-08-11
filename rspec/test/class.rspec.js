@@ -37,6 +37,6 @@ describe('班级信息', function(){
       .query({classId})
       .expect(200)
     const data = res.body
-    expect(data.message).to.equal('改班级下没有同学')
+    expect(data.message).to.equal('该班级下没有同学')
   })
 })
