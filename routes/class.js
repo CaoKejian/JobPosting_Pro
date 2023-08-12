@@ -1,5 +1,6 @@
 var express = require('express');
 const UserModel = require('../model/user');
+const ClassInfoModel = require('../model/classInfo');
 
 var router = express.Router();
 
@@ -17,8 +18,31 @@ router.get('/', async function (req, res, next) {
   }catch(error){
     res.status(500).json({message: '服务器出错！'})
   }
-  
 });
-
+const usersToInsert = [
+  { stuId: 2001063037, name: '曹珂俭', classId: 123123 },
+  { stuId: 2001062028, name: '黄梦瑶', classId: 123123 },
+  { stuId: 2001062036, name: '蔡奇奇', classId: 123123 },
+  { stuId: 2001062011, name: '捏于波', classId: 123123 },
+  { stuId: 2001040023, name: '李梓良', classId: 123123 },
+  { stuId: 2001063036, name: '张博涵', classId: 123123 },
+  { stuId: 2001062067, name: '王硕', classId: 123123 },
+  { stuId: 2001063037, name: '小一', classId: 123123 },
+  { stuId: 2001063037, name: '小二', classId: 123123 },
+  { stuId: 2001063037, name: '小三', classId: 123123 },
+  
+];
+router.get('/insert/info', async function(req,res){
+  const data = await ClassInfoModel.insertMany(usersToInsert)
+  res.send(data)
+})
+// router.get('/insert/info', async function(req,res){
+//   const data = await ClassInfoModel.insertMany(usersToInsert)
+//   res.send(data)
+// })
+// router.get('/insert/delete', async function(req,res){
+//   const data =await ClassInfoModel.deleteMany({})
+//   res.send(data)
+// })
 
 module.exports = router;
