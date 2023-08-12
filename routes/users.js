@@ -121,6 +121,8 @@ router.post('/veifycode', async (req, res, next) => {
           return res.status(500).json({ code: 500, message: '生成 JWT 出错' });
         }
         // 成功生成 JWT，将 JWT 返回给客户端
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Expose-Headers', 'Authorization');
         res.setHeader('Authorization', `Bearer ${token}`);
         return res.status(200).json({ message: '验证码输入正确！' });
       });

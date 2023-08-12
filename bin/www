@@ -27,9 +27,10 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 const id = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
-// console.log(process.env.NODE_ENV)
+console.log(process.env.NODE_ENV)
 server.listen(port, id, () => {
-  console.log("请访问： http://localhost:3000")
+  process.env.NODE_ENV === 'production' ? console.log("请访问: 'http://43.139.142.203:3000'") :
+  console.log("请访问: 'http://localhost:3000'")
 });
 server.on('error', onError);
 server.on('listening', onListening);
