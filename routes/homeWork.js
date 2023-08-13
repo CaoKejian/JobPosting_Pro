@@ -71,7 +71,18 @@ router.get('/otherwork', async function (req, res) {
     res.status(500).json({ message: '服务器出错！' })
   }
 })
-
+router.get('/one', async function(req,res) {
+  const {stuId, branch} = req.query
+  try{
+    const data = await HomeWorkModel.findOne({
+      branch,
+      stuId: Number(stuId)
+    })
+    res.json(data)
+  }catch(error){
+    res.status
+  }
+})
 router.post('/delete', async function (req, res) {
   try {
     const { _id } = req.body
