@@ -13,6 +13,11 @@ function title {
   echo "###############################################################################" 
   echo 
 }
+title "删除远端数据库"
+collections=$(mongo $db_name --quiet --eval "db.getCollectionNames()")
+for collection in $collections; do
+  mongo $db_name --eval "db.${collection}.remove({})"
+done
 title "迁移数据库"
 cd $deploy_dir/db/ && sudo rm -rf *.json
 mongorestore -d $db_name $db_folder
