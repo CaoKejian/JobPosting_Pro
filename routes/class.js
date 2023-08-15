@@ -27,7 +27,6 @@ const usersToInsert = [
   { stuId: 2001040023, name: '李梓良', classId: 123123 },
   { stuId: 2001063036, name: '张博涵', classId: 123123 },
   { stuId: 2001062067, name: '王硕', classId: 123123 },
-
 ];
 
 router.get('/insert/info', async function(req,res){

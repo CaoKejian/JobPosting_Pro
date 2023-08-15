@@ -150,12 +150,10 @@ router.get('/download', async function (req, res) {
 router.get('/download/one', async function (req, res) {
   try {
     const { stuId, branch } = req.query
-    console.log(stuId,branch)
     const data = await HomeWorkModel.findOne({
       stuId: Number(stuId),
       branch,
     }).select('file stuId')
-    console.log(data)
     const stuIds = data.stuId; // 提取 stuId 到数组
     res.json({stuIds,data})
   } catch (error) {
@@ -165,7 +163,6 @@ router.get('/download/one', async function (req, res) {
 /* GET home page. */
 router.post('/submit', async function (req, res, next) {
   const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass } = req.body
-  console.log(classId, stuId, subject, branch, file, content, score, tComments, favor, isPass)
   const timestamp = Date.now();
   const isHave = await HomeWorkModel.find({
     stuId,

@@ -65,7 +65,7 @@ router.get('/addclassId', async function (req, res) {
 let randomCode = 0; // 保存验证码
 let stuid // 学号
 let codeTimestamp; // 时间戳
-router.post('/email', async (req, res, next) => {
+router.post('/email',rateLimit, async (req, res, next) => {
   const { stuId, email } = req.body
   stuid = stuId
   const data = await UserModel.find({
