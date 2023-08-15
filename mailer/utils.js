@@ -20,8 +20,10 @@ function rateLimit(req, res, next) {
   // 如果该 IP 地址的请求次数超过了限制，则返回 429 状态码
   if (requestCount[ipAddress] > MAX_REQUESTS_PER_MINUTE) {
     const timeRemaining = WINDOW_SIZE_IN_MS - (Date.now() - lastRequestTime[ipAddress]);
-    res.setHeader('Retry-After', Math.ceil(timeRemaining / 1000)); // 设置 Retry-After 头，表示多久后可以重试
-    return res.status(429).send('Too Many Requests');
+    if(timeRemaining>=0){
+      res.setHeader('Retry-After', Math.ceil(timeRemaining / 1000)); // 设置 Retry-After 头，表示多久后可以重试
+      return res.status(429).send('Too Many Requests');
+    }
   }
 
   // 更新该 IP 地址的最近请求时间
