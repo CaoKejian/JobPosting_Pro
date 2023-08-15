@@ -112,4 +112,23 @@ describe('作业', function () {
       expect(data.classId).to.equal(123123)
       expect(data.branch).to.equal('我修改了')
   })
+  it('单项作业', async function () {
+    const testData = [
+      { branch: 'React', stuId: '2001063037' },
+      { branch: 'Vue', stuId: '2001063037' },
+    ];
+    await HomeWorkModel.create(testData);
+    const stuId = '2001063037';
+    const branch = 'React'
+    // 发起HTTP请求
+    const res = await request(app)
+      .get('/api/work/one')
+      .query({ stuId, branch })
+      .expect(200);
+
+    // 断言返回数据
+    const data = res.body;
+    expect(data).to.be.an('object');
+    expect(data.branch).to.equal('React')
+  });
 });
