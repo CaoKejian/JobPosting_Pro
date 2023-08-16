@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var homeWorksRouter = require('./routes/homeWork');
 var uploadRouter = require('./routes/upload');
 var classRouter = require('./routes/class')
+var publishRouter = require('./routes/publishwork')
 
 var app = express();
 app.use(cors());
@@ -34,6 +35,7 @@ app.use('/api/user', usersRouter);
 app.use('/api/work', homeWorksRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/class', classRouter);
+app.use('/api/pub', publishRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

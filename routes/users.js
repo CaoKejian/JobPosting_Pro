@@ -107,14 +107,13 @@ router.post('/veifycode', async (req, res, next) => {
   }
   // 比较用户输入的验证码与之前保存的随机验证码
   if (code === randomCode) {
-    const nowTimestamp = Date.now(); // 获取当前时间戳
-    const timeDifference = nowTimestamp - codeTimestamp; // 计算当前时间与验证码生成时间的差值
-    // 设置验证码有效期为 5 分钟，即 300000 毫秒
+    const nowTimestamp = Date.now();
+    const timeDifference = nowTimestamp - codeTimestamp; 
     const validDuration = 300000;
     if (timeDifference <= validDuration) {
-      const secretKey = uuid; // 请替换为您的实际密钥
-      const payload = { stuId: stuid }; // 可根据需要设置 JWT 的 payload
-      const options = { expiresIn: '2h' }; // 设置 JWT 的有效期，这里设置为 1 小时
+      const secretKey = uuid;
+      const payload = { stuId: stuid }; 
+      const options = { expiresIn: '2h' }; 
       jwt.sign(payload, secretKey, options, (err, token) => {
         if (err) {
           console.error('生成 JWT 出错：', err);

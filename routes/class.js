@@ -12,12 +12,13 @@ router.get('/', async function (req, res, next) {
       classId
     })
     if (data.length === 0) {
-      res.status(402).send({ message: '该班级下没有同学' })
+      return res.status(402).send({ message: '该班级下没有同学' })
     }
     res.status(200).send(data)
   } catch (error) {
     res.status(500).json({ message: '服务器出错！' })
   }
+  // res.send({ok: 1})
 });
 const usersToInsert = [
   { stuId: 2001063037, name: '曹珂俭', classId: 123123 },
