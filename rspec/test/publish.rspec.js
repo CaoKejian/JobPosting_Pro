@@ -25,7 +25,6 @@ describe('作业发布', function () {
       .query(testData)
       .expect(200)
     const data = res.body
-    console.log(data)
     expect(data).to.be.an('object')
     expect(data.user).to.equal('嘿老师')
   })
@@ -49,9 +48,8 @@ describe('作业发布', function () {
       .query(testData)
       .expect(200)
     const data = res.body
-    console.log(data)
     expect(data).to.be.an('object')
     expect(data.user).to.equal('嘿老师')
   })
-  it('按发布者查询',)
+  // it('按发布者查询',)
 })
