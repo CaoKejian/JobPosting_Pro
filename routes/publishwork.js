@@ -12,8 +12,6 @@ router.get('/', async function (req, res, next) {
     cutTime,
     content, } = req.query
   codeTimestamp = Date.now();
-  const twoDaysInMillis = 2 * 24 * 60 * 60 * 1000; 
-  // const cutTime = codeTimestamp + twoDaysInMillis;
   const data = await PublishWorkModel.create({
     user,
     classId,
@@ -26,5 +24,39 @@ router.get('/', async function (req, res, next) {
   res.send(data)
 });
 
+/**
+ * 查询：
+ * @按班级查询
+ * @按老师查询
+ * @按学科查询
+ * */
+router.get('/class', async function (req, res) {
+  const { classId } = req.query
+  console.log(classId)
+  const data = await PublishWorkModel.find({ classId })
+  if (data) {
+    res.send(data)
+  } else {
+    res.status(402).json({ message: '没有相关信息！' })
+  }
+})
+router.get('/user', async function (req, res) {
+  const { user } = req.query
+  const data = await PublishWorkModel.find({ user })
+  if (data) {
+    res.send(data)
+  } else {
+    res.status(402).json({ message: '没有相关信息！' })
+  }
+})
+router.get('/subject', async function (req, res) {
+  const { subject } = req.query
+  const data = await PublishWorkModel.find({ subject })
+  if (data) {
+    res.send(data)
+  } else {
+    res.status(402).json({ message: '没有相关信息！' })
+  }
+})
 
 module.exports = router;
