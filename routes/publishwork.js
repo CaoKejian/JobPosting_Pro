@@ -45,7 +45,7 @@ router.get('/user', async function (req, res) {
   const data = await PublishWorkModel.find({ user })
   if (data) {
     res.send(data)
-  } else {
+  } else if(data.length === 0) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
