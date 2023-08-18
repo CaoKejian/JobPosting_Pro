@@ -16,7 +16,7 @@ function title {
 title "删除远端数据库"
 collections=$(mongo $db_name --quiet --eval "db.getCollectionNames()")
 for collection in $collections; do
-  mongo $db_name --eval "db.${collection}.remove({})"
+  sudo mongo $db_name --eval "db.${collection}.deleteMany({})"
 done
 title "迁移数据库"
 cd $deploy_dir/db/ && sudo rm -rf *.json
