@@ -18,7 +18,6 @@ router.get('/', async function (req, res, next) {
   } catch (error) {
     res.status(500).json({ message: '服务器出错！' })
   }
-  // res.send({ok: 1})
 });
 const usersToInsert = [
   { stuId: 2001063037, name: '曹珂俭', classId: 123123 },
