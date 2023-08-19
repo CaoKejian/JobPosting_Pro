@@ -63,5 +63,13 @@ router.get('/subject', async function (req, res) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
-
+router.get('/branch', async function (req, res) {
+  const { branch } = req.query
+  const data = await PublishWorkModel.find({ branch })
+  if (data) {
+    res.send(data)
+  } else {
+    res.status(402).json({ message: '没有相关信息！' })
+  }
+})
 module.exports = router;
