@@ -4,8 +4,8 @@ const SubjectModel = require('../model/subject');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', async function (req, res, next) {
-  const { subject, classId } = req.query
+router.post('/', async function (req, res, next) {
+  const { subject, classId, user } = req.body
   const isHave = await SubjectModel.find({
     subject,
     classId
@@ -14,8 +14,9 @@ router.get('/', async function (req, res, next) {
     return res.status(402).json({ message: '已存在该学科！' })
   }
   const data = await SubjectModel.create({
-    subject: subject,
-    classId: classId
+    subject,
+    classId,
+    user
   })
   res.status(200).send(data)
 });

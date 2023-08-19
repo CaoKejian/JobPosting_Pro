@@ -4,13 +4,14 @@ const PublishWorkModel = require('../model/publishWork');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
   const { user,
     classId,
     subject,
     branch,
     cutTime,
-    content, } = req.query
+    content, } = req.body
+  console.log(req.body)
   codeTimestamp = Date.now();
   const data = await PublishWorkModel.create({
     user,
@@ -32,7 +33,6 @@ router.get('/', async function (req, res, next) {
  * */
 router.get('/class', async function (req, res) {
   const { classId } = req.query
-  console.log(classId)
   const data = await PublishWorkModel.find({ classId })
   if (data) {
     res.send(data)
@@ -45,7 +45,7 @@ router.get('/user', async function (req, res) {
   const data = await PublishWorkModel.find({ user })
   if (data) {
     res.send(data)
-  } else if(data.length === 0) {
+  } else if (data.length === 0) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })

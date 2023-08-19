@@ -89,4 +89,23 @@ describe('作业发布', function () {
     expect(data).to.have.lengthOf(1)
     expect(data[0].subject).to.equal('测试')
   })
+  it('按班级查询',async function (){
+    const testData = {
+      user: 'xxx',
+      classId: 111222,
+      subject: '测试',
+      branch: '积分',
+      content: '预习积分，完成第二章课后题T32.',
+      cutTime: 120
+    }
+    await PublishWorkModel.create(testData)
+    const res = await request(app)
+      .get('/api/pub/class')
+      .query({classId: 111222})
+      .expect(200)
+    const data = res.body
+    expect(data).to.be.an('array')
+    expect(data).to.have.lengthOf(1)
+    expect(data[0].classId).to.equal(111222)
+  })
 })
