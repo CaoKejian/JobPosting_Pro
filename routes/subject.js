@@ -26,11 +26,14 @@ router.get('/myclass', async function (req, res) {
   if (data.length === 0) {
     res.status(402).json({ message: '需要发布作业才能关联班级！' })
   } else {
+    console.log(data)
     const classIds = new Set();
+    const subjects = new Set()
     data.forEach(item => {
       classIds.add(item.classId);
+      subjects.add(item.subject);
     });
-    res.json({ classes: [...classIds] });
+    res.json({ classes: [...classIds], subjects: [...subjects] });
   }
 })
 router.get('/myclass/work', async function (req, res) {
