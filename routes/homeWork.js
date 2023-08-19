@@ -174,7 +174,7 @@ router.get('/download/one', async function (req, res) {
 })
 /* GET home page. */
 router.post('/submit', async function (req, res, next) {
-  const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass } = req.body
+  const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass, user,curTime } = req.body
   const timestamp = Date.now();
   const isHave = await HomeWorkModel.find({
     stuId,
@@ -195,6 +195,8 @@ router.post('/submit', async function (req, res, next) {
       tComments,
       favor,
       isPass,
+      user,
+      curTime,
       time: timestamp
     })
     res.status(200).send(data)

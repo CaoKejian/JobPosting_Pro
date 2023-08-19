@@ -64,8 +64,8 @@ router.get('/subject', async function (req, res) {
   }
 })
 router.get('/branch', async function (req, res) {
-  const { branch } = req.query
-  const data = await PublishWorkModel.find({ branch })
+  const { branch, subject, classId } = req.query
+  const data = await PublishWorkModel.findOne({ branch, subject, classId })
   if (data) {
     res.send(data)
   } else {
