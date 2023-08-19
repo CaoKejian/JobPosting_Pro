@@ -84,11 +84,11 @@ router.get('/one', async function (req, res) {
   }
 })
 router.get('/correct/work', async function (req, res) {
-  const { classId, subject } = req.query
+  const { classId, branch } = req.query
   try {
-    const data = await HomeWorkModel.findOne({
+    const data = await HomeWorkModel.find({
       classId,
-      subject
+      branch
     })
     res.json(data)
   } catch (error) {
@@ -138,7 +138,7 @@ router.post('/upload', createUserValidationRules, validate, async function (req,
     await x.save();
     res.json(x);
   } catch (error) {
-    res.status(500).json({ message: error})
+    res.status(500).json({ message: error })
   }
 })
 router.get('/download', async function (req, res) {
