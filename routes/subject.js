@@ -26,7 +26,6 @@ router.get('/myclass', async function (req, res) {
   if (data.length === 0) {
     res.status(402).json({ message: '需要发布作业才能关联班级！' })
   } else {
-    console.log(data)
     const classIds = new Set();
     const subjects = new Set()
     data.forEach(item => {
@@ -38,7 +37,7 @@ router.get('/myclass', async function (req, res) {
 })
 router.get('/myclass/work', async function (req, res) {
   const { user, classId, subject } = req.query
-  console.log(user,classId,subject)
+  console.log(user, classId, subject)
   const data = await SubjectModel.find({ user, classId, subject })
   if (data.length === 0) {
     res.status(402).json({ message: '没有相关作业发布！' })

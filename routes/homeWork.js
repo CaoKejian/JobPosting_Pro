@@ -68,19 +68,31 @@ router.get('/otherwork', async function (req, res) {
       res.status(402).json({ message: '未找到相关信息！' })
     }
   } catch (error) {
-    res.status(500).json({ message: '服务器出错！' })
+    res.status(500).json({ message: error })
   }
 })
-router.get('/one', async function(req,res) {
-  const {stuId, branch} = req.query
-  try{
+router.get('/one', async function (req, res) {
+  const { stuId, branch } = req.query
+  try {
     const data = await HomeWorkModel.findOne({
       branch,
       stuId: Number(stuId)
     })
     res.json(data)
-  }catch(error){
-    res.status
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+})
+router.get('/correct/work', async function (req, res) {
+  const { classId, subject } = req.query
+  try {
+    const data = await HomeWorkModel.findOne({
+      classId,
+      subject
+    })
+    res.json(data)
+  } catch (error) {
+    res.status(500).json({ message: error })
   }
 })
 router.post('/delete', async function (req, res) {
@@ -126,7 +138,7 @@ router.post('/upload', createUserValidationRules, validate, async function (req,
     await x.save();
     res.json(x);
   } catch (error) {
-    res.status(500).json({ message: '服务器出错！' })
+    res.status(500).json({ message: error})
   }
 })
 router.get('/download', async function (req, res) {
@@ -144,7 +156,7 @@ router.get('/download', async function (req, res) {
       res.status(402).json({ message: '未找到相关作业！' })
     }
   } catch (error) {
-    res.status(500).json({ message: '服务器出错！' })
+    res.status(500).json({ message: error })
   }
 })
 router.get('/download/one', async function (req, res) {
@@ -155,9 +167,9 @@ router.get('/download/one', async function (req, res) {
       branch,
     }).select('file stuId')
     const stuIds = data.stuId; // 提取 stuId 到数组
-    res.json({stuIds,data})
+    res.json({ stuIds, data })
   } catch (error) {
-    res.status(500).json({ message: '服务器出错！' })
+    res.status(500).json({ message: error })
   }
 })
 /* GET home page. */
