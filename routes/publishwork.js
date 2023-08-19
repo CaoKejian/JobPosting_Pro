@@ -11,7 +11,12 @@ router.post('/', async function (req, res, next) {
     branch,
     cutTime,
     content, } = req.body
-  console.log(req.body)
+  const isHave = await PublishWorkModel.find({
+    classId, branch, subject
+  })
+  if (isHave.length !== 0) {
+    return res.status(402).json({ message: '已发布该作业！' })
+  }
   codeTimestamp = Date.now();
   const data = await PublishWorkModel.create({
     user,

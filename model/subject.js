@@ -2,7 +2,8 @@ const mongoose = require("mongoose")
 
 const SubjectType = {
   subject: String,
-  classId: Number
+  classId: Number,
+  user: String
 }
 
 
