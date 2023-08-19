@@ -18,11 +18,11 @@ describe('作业发布', function () {
       subject: '高数二',
       branch: '积分',
       content: '预习积分，完成第二章课后题T32.',
-      cutTime
+      cutTime: cutTime
     }
     const res = await request(app)
-      .get('/api/pub')
-      .query(testData)
+      .post('/api/pub')
+      .send(testData)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('object')
@@ -38,18 +38,18 @@ describe('作业发布', function () {
       subject: '高数二',
       branch: '积分',
       content: '预习积分，完成第二章课后题T32.',
-      cutTime
+      cutTime: cutTime
     }
     await PublishWorkModel.create(testData)
     await PublishWorkModel.create(testData)
     await PublishWorkModel.create(testData)
     const res = await request(app)
-      .get('/api/pub')
-      .query(testData)
-      .expect(200)
+      .post('/api/pub')
+      .send(testData)
+      .expect(402)
     const data = res.body
     expect(data).to.be.an('object')
-    expect(data.user).to.equal('嘿老师')
+    expect(data.message).to.equal('已发布该作业！')
   })
   it('按发布者查询',async function (){
     const testData = {

@@ -88,7 +88,9 @@ describe('作业', function () {
       score: 90,
       tComments: '老师评语...',
       favor: false,
-      isPass: true
+      isPass: true,
+      user:'xxx',
+      cutTime: 123123
     };
     const x = await HomeWorkModel.create(testData)
     const res = await request(app)
@@ -104,7 +106,9 @@ describe('作业', function () {
         score: 90,
         tComments: '老师评语...',
         favor: false,
-        isPass: true
+        isPass: true,
+        user:'xxx',
+        cutTime: 123123
       })
       .expect(200)
       const data = res.body
