@@ -33,5 +33,15 @@ router.get('/myclass', async function (req, res) {
     res.json({ classes: [...classIds] });
   }
 })
+router.get('/myclass/work', async function (req, res) {
+  const { user, classId, subject } = req.query
+  console.log(user,classId,subject)
+  const data = await SubjectModel.find({ user, classId, subject })
+  if (data.length === 0) {
+    res.status(402).json({ message: '没有相关作业发布！' })
+  } else {
+    res.send(data)
+  }
+})
 
 module.exports = router;
