@@ -12,7 +12,7 @@ const WorkType = {
   tComments: String, // 教师评语
   isPass:Boolean,// 已评
   user: String,
-  curTime: Number,
+  cutTime: Number,
   file: {}
 }
 

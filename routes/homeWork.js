@@ -120,8 +120,9 @@ router.get('/upload/work', async function (req, res) {
 })
 router.post('/upload', createUserValidationRules, validate, async function (req, res) {
   try {
-    const { id, classId, stuId, subject, branch, file, content = '', score = 0, tComments = '', favor = false, isPass = false } = req.body;
-    const x = await HomeWorkModel.findById({ _id: id });
+    const { _id, id, classId, stuId, subject, branch, file, content = '', score = 0, tComments = '', favor = false, isPass = false, cutTime = 0,user='', } = req.body;
+    console.log(id, classId,branch)
+    const x = await HomeWorkModel.findById({ _id: id || _id });
     if (!x) {
       return res.status(402).json({ message: '未找到相关作业！' });
     }
@@ -135,6 +136,8 @@ router.post('/upload', createUserValidationRules, validate, async function (req,
     x.tComments = tComments;
     x.favor = favor;
     x.isPass = isPass;
+    x.cutTime = cutTime;
+    x.user = user;
     await x.save();
     res.json(x);
   } catch (error) {
@@ -174,7 +177,8 @@ router.get('/download/one', async function (req, res) {
 })
 /* GET home page. */
 router.post('/submit', async function (req, res, next) {
-  const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass, user,curTime } = req.body
+  const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass, user,cutTime } = req.body
+  console.log(cutTime)
   const timestamp = Date.now();
   const isHave = await HomeWorkModel.find({
     stuId,
@@ -196,7 +200,7 @@ router.post('/submit', async function (req, res, next) {
       favor,
       isPass,
       user,
-      curTime,
+      cutTime,
       time: timestamp
     })
     res.status(200).send(data)
