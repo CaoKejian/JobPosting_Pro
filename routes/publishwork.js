@@ -63,6 +63,20 @@ router.get('/subject', async function (req, res) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
+router.get('/subject/branch', async function (req, res) {
+  const { subject } = req.query
+  const data = await PublishWorkModel.find({ subject })
+  if (data) {
+    const branches = new Set()
+    data.forEach(item => {
+      branches.add(item.branch);
+    });
+    res.send({branches: [...branches]})
+    res.send(data)
+  } else {
+    res.status(402).json({ message: '没有相关信息！' })
+  }
+})
 router.get('/branch', async function (req, res) {
   const { branch, subject, classId } = req.query
   const data = await PublishWorkModel.findOne({ branch, subject, classId })
