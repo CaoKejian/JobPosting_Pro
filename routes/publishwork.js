@@ -71,19 +71,24 @@ router.get('/subject/branch', async function (req, res) {
     data.forEach(item => {
       branches.add(item.branch);
     });
-    res.send({branches: [...branches]})
-    res.send(data)
+    res.send({ branches: [...branches] })
   } else {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
 router.get('/branch', async function (req, res) {
   const { branch, subject, classId } = req.query
-  const data = await PublishWorkModel.findOne({ branch, subject, classId })
-  if (data) {
-    res.send(data)
-  } else {
-    res.status(402).json({ message: '没有相关信息！' })
+  try {
+    console.log(branch, subject, classId)
+    const data = await PublishWorkModel.findOne({ branch, subject, classId })
+    console.log(data)
+    if (data) {
+      res.send(data)
+    } else {
+      res.status(402).json({ message: '没有相关信息！' })
+    }
+  } catch (err) {
+    res.status(500).json({ message: '服务器内部错误！' });
   }
 })
 module.exports = router;
