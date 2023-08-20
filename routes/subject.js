@@ -45,9 +45,24 @@ router.get('/myclass/classId', async function (req, res) {
     data.forEach(item => {
       subjects.add(item.subject);
     });
-    res.send({subjects: [...subjects]})
+    res.send({ subjects: [...subjects] })
   }
 })
+
+router.get('/myAll/subject', async function (req, res) {
+  const { classId, user } = req.query
+  const data = await SubjectModel.find({ classId, user })
+  if (data.length === 0) {
+    res.status(402).json({ message: '没有相关作业发布！' })
+  } else {
+    const subjects = new Set()
+    data.forEach(item => {
+      subjects.add(item.subject);
+    });
+    res.send({ subjects: [...subjects] })
+  }
+})
+
 router.get('/myclass/work', async function (req, res) {
   const { user, classId, subject } = req.query
   const data = await SubjectModel.find({ user, classId, subject })
@@ -57,5 +72,6 @@ router.get('/myclass/work', async function (req, res) {
     res.send(data)
   }
 })
+
 
 module.exports = router;
