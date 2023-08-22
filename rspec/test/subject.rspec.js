@@ -55,4 +55,22 @@ describe('学科', function () {
     expect(data.classes).to.have.lengthOf(2)
     expect(data.subjects).to.have.lengthOf(3)
   })
+  it('按班级查询所有学科', async function () {
+    const testData = [
+      { classId: 111, subject: '高数', user: '曹Sir' },
+      { classId: 111, subject: 'React', user: '曹Sir' },
+      { classId: 222, subject: '英语', user: '曹Sir' },
+      { classId: 111, subject: 'React', user: '曹Sir222' },
+    ]
+    await SubjectModel.insertMany(testData)
+    const classId = 111
+    const res = await request(app)
+      .get('/api/subject/myclass/classId')
+      .query({ classId })
+      .expect(200)
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.subjects).to.be.an('array')
+    expect(data.subjects).to.have.lengthOf(2)
+  })
 })
