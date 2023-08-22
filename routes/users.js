@@ -181,17 +181,15 @@ router.get('/verify/jwt', async (req, res, next) => {
 });
 
 /** 
-  * @param {code}
-  * @method 校验验证码
+  * @param {classId, stuIds}
+  * @method 查询未交的名单
+  * @return {data:[{stuId,classId}]}
   */
 
 router.get('/total', async function (req, res) {
   try {
-    const peopleData = [
-      { stuId: 2001063037, classId: 123123 },
-      { stuId: 2001062028, classId: 123123 },
-    ]
     const { classId, stuIds } = req.query
+    const peopleData = await UserModel.find({ classId }).select('stuId classId');
     const filteredPeopleData = peopleData.filter(item => !stuIds.includes(item.stuId.toString()));
     if (filteredPeopleData) {
       res.json(filteredPeopleData)
