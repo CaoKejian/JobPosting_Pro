@@ -3,7 +3,11 @@ const SubjectModel = require('../model/subject');
 
 var router = express.Router();
 
-/* GET home page. */
+/** 
+  * @param {个人、学科、班级}
+  * @method 发布学科
+  */
+
 router.post('/', async function (req, res, next) {
   const { subject, classId, user } = req.body
   const isHave = await SubjectModel.find({
@@ -20,6 +24,12 @@ router.post('/', async function (req, res, next) {
   })
   res.status(200).send(data)
 });
+
+/** 
+  * @param {个人}
+  * @method 返回个人所有的关联班级&学科
+  */
+
 router.get('/myclass', async function (req, res) {
   const { user } = req.query
   const data = await SubjectModel.find({ user })
@@ -35,6 +45,12 @@ router.get('/myclass', async function (req, res) {
     res.json({ classes: [...classIds], subjects: [...subjects] });
   }
 })
+
+/** 
+  * @param {班级}
+  * @method 返回班级所有学科
+  */
+
 router.get('/myclass/classId', async function (req, res) {
   const { classId } = req.query
   const data = await SubjectModel.find({ classId })

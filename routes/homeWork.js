@@ -26,6 +26,11 @@ const validate = (req, res, next) => {
   next();
 };
 
+/** 
+  * @param {classId,page}
+  * @method 查询班级下所有作业
+  */
+
 router.get('/', async function (req, res) {
   const { classId, page } = req.query
   try {
@@ -53,11 +58,23 @@ router.get('/', async function (req, res) {
     });
   }
 })
+
+/** 
+  * @param {stuId}
+  * @method 查询某同学所有作业并限制最多5条
+  */
+
 router.get('/mywork', async function (req, res) {
   const { stuId } = req.query
   const data = await HomeWorkModel.find({ stuId }).limit(5)
   res.send(data)
 })
+
+/** 
+  * @param {id}
+  * @method 查询_id的作业
+  */
+
 router.get('/otherwork', async function (req, res) {
   try {
     const { id } = req.query
@@ -71,6 +88,12 @@ router.get('/otherwork', async function (req, res) {
     res.status(500).json({ message: error })
   }
 })
+
+/** 
+  * @param {stuId, branch}
+  * @method 查询某同学的某个作业分支的作业信息
+  */
+
 router.get('/one', async function (req, res) {
   const { stuId, branch } = req.query
   try {
@@ -83,6 +106,12 @@ router.get('/one', async function (req, res) {
     res.status(500).json({ message: error })
   }
 })
+
+/** 
+  * @param {classId, branch}
+  * @method 查询某班级的某个作业分支所有提交的作业
+  */
+
 router.get('/correct/work', async function (req, res) {
   const { classId, branch } = req.query
   try {
@@ -95,6 +124,12 @@ router.get('/correct/work', async function (req, res) {
     res.status(500).json({ message: error })
   }
 })
+
+/** 
+  * @param {_id}
+  * @method 删除为_id的作业信息
+  */
+
 router.post('/delete', async function (req, res) {
   try {
     const { _id } = req.body
@@ -109,6 +144,11 @@ router.post('/delete', async function (req, res) {
   }
 })
 
+/** 
+  * @param {id}
+  * @method 查询为id的作业
+  */
+
 router.get('/upload/work', async function (req, res) {
   const { id } = req.query
   const data = await HomeWorkModel.findOne({ _id: id })
@@ -118,10 +158,15 @@ router.get('/upload/work', async function (req, res) {
     res.send(data)
   }
 })
+
+/** 
+  * @param {Work}
+  * @method 更新作业、Work所有字段
+  */
+
 router.post('/upload', createUserValidationRules, validate, async function (req, res) {
   try {
     const { _id, id, classId, stuId, subject, branch, file, content = '', score = 0, tComments = '', favor = false, isPass = false, cutTime = 0,user='', } = req.body;
-    console.log(id, classId,branch)
     const x = await HomeWorkModel.findById({ _id: id || _id });
     if (!x) {
       return res.status(402).json({ message: '未找到相关作业！' });
@@ -144,6 +189,13 @@ router.post('/upload', createUserValidationRules, validate, async function (req,
     res.status(500).json({ message: error })
   }
 })
+
+/** 
+  * @param { classId, branch, subject}
+  * @method （直接下载多项）下载作业
+  * @return {{ stuIds, data:{file,stuId} }}
+  */
+
 router.get('/download', async function (req, res) {
   try {
     const { classId, branch, subject } = req.query
@@ -162,6 +214,13 @@ router.get('/download', async function (req, res) {
     res.status(500).json({ message: error })
   }
 })
+
+/** 
+  * @param {stuId, branch}
+  * @method （单项）下载作业
+  * @return {{ stuIds, data:{file,stuId} }}
+  */
+
 router.get('/download/one', async function (req, res) {
   try {
     const { stuId, branch } = req.query
@@ -175,7 +234,12 @@ router.get('/download/one', async function (req, res) {
     res.status(500).json({ message: error })
   }
 })
-/* GET home page. */
+
+/** 
+  * @param {Work}
+  * @method 上传作业
+  */
+
 router.post('/submit', async function (req, res, next) {
   const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass, user,cutTime } = req.body
   console.log(cutTime)

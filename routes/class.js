@@ -4,7 +4,11 @@ const ClassInfoModel = require('../model/classInfo');
 
 var router = express.Router();
 
-/* GET home page. */
+/** 
+  * @param {classId}
+  * @method 查询此班级下的所有同学信息
+  */
+
 router.get('/', async function (req, res, next) {
   const { classId } = req.query
   try {

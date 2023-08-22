@@ -23,7 +23,11 @@ const validate = (req, res, next) => {
   next();
 };
 
-/* GET users listing. */
+/** 
+  * @param {stuId, email }
+  * @method 创建用户
+  */
+
 router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (req, res) => {
   const { stuId, email } = req.body
   const x = await UserModel.find({
@@ -44,6 +48,12 @@ router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (
     }
   }
 });
+
+/** 
+  * @param {stuId, classId}
+  * @method 添加
+  */
+
 router.get('/addclassId', async function (req, res) {
   try {
     const { stuId, classId } = req.query
@@ -62,10 +72,15 @@ router.get('/addclassId', async function (req, res) {
   }
 })
 
+/** 
+  * @param {stuId, email}
+  * @method 发送验证码
+  */
+
 let randomCode = 0; // 保存验证码
 let stuid // 学号
 let codeTimestamp; // 时间戳
-router.post('/email',rateLimit, async (req, res, next) => {
+router.post('/email', rateLimit, async (req, res, next) => {
   const { stuId, email } = req.body
   stuid = stuId
   const data = await UserModel.find({
@@ -100,6 +115,12 @@ router.post('/email',rateLimit, async (req, res, next) => {
   }
 });
 
+/** 
+  * @param {code}
+  * @method 校验验证码|下发jwt
+  * @return {Authorization}
+  */
+
 router.post('/veifycode', async (req, res, next) => {
   const { code } = req.body
   if (!code) {
@@ -108,12 +129,12 @@ router.post('/veifycode', async (req, res, next) => {
   // 比较用户输入的验证码与之前保存的随机验证码
   if (code === randomCode) {
     const nowTimestamp = Date.now();
-    const timeDifference = nowTimestamp - codeTimestamp; 
+    const timeDifference = nowTimestamp - codeTimestamp;
     const validDuration = 300000;
     if (timeDifference <= validDuration) {
       const secretKey = uuid;
-      const payload = { stuId: stuid }; 
-      const options = { expiresIn: '2h' }; 
+      const payload = { stuId: stuid };
+      const options = { expiresIn: '2h' };
       jwt.sign(payload, secretKey, options, (err, token) => {
         if (err) {
           console.error('生成 JWT 出错：', err);
@@ -135,6 +156,11 @@ router.post('/veifycode', async (req, res, next) => {
   }
 })
 
+/** 
+  * @param {headers.authorization}
+  * @method 校验jwt|续期
+  */
+
 router.get('/verify/jwt', async (req, res, next) => {
   const token = req.headers.authorization; // Get the JWT token from the request headers
   if (!token) {
@@ -153,6 +179,11 @@ router.get('/verify/jwt', async (req, res, next) => {
     return res.status(401).json({ message: '无效的JWT令牌' });
   }
 });
+
+/** 
+  * @param {code}
+  * @method 校验验证码
+  */
 
 router.get('/total', async function (req, res) {
   try {

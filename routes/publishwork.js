@@ -3,7 +3,11 @@ const PublishWorkModel = require('../model/publishWork');
 
 var router = express.Router();
 
-/* GET home page. */
+/** 
+  * @param {Work}
+  * @method 发布作业
+  */
+
 router.post('/', async function (req, res, next) {
   const { user,
     classId,
@@ -31,12 +35,18 @@ router.post('/', async function (req, res, next) {
 });
 
 /**
- * 查询：
+ * @type
  * @按班级查询
  * @按老师查询
  * @按学科查询
  * @按分支查询
  * */
+
+/** 
+  * @param {classId}
+  * @method 按班级查询
+  */
+
 router.get('/class', async function (req, res) {
   const { classId } = req.query
   const data = await PublishWorkModel.find({ classId })
@@ -46,6 +56,12 @@ router.get('/class', async function (req, res) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
+
+/** 
+  * @param {user}
+  * @method 按个人查询
+  */
+
 router.get('/user', async function (req, res) {
   const { user } = req.query
   const data = await PublishWorkModel.find({ user })
@@ -55,6 +71,12 @@ router.get('/user', async function (req, res) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
+
+/** 
+  * @param {subject}
+  * @method 按学科查询
+  */
+
 router.get('/subject', async function (req, res) {
   const { subject } = req.query
   const data = await PublishWorkModel.find({ subject })
@@ -64,6 +86,12 @@ router.get('/subject', async function (req, res) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
+
+/** 
+  * @param {branch, subject, classId}
+  * @method 查询此班级、此学科、此分支的所有作业
+  */
+
 router.get('/branch', async function (req, res) {
   const { branch, subject, classId } = req.query
   try {
@@ -78,10 +106,11 @@ router.get('/branch', async function (req, res) {
   }
 })
 
-/**
- * 查询：
- * @按学科搜集所有分支
- * */
+/** 
+  * @param {subject}
+  * @method 查询此学科下的所有分支
+  */
+
 router.get('/subject/branch', async function (req, res) {
   const { subject } = req.query
   const data = await PublishWorkModel.find({ subject })

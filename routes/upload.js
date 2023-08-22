@@ -5,18 +5,24 @@ const COS = require('qcloud-cos');
 const iconv = require('iconv-lite');
 // 腾讯云 COS 配置
 const cos = new COS({
-  SecretId: 'AKIDRlurc9TaRFtNcS5YwAHHEGA5s047A7Zz', 
-  SecretKey: 'ZxEKEwiKm0ymMiV2Upy1sbI0lfbTAe6T', 
+  SecretId: 'AKIDRlurc9TaRFtNcS5YwAHHEGA5s047A7Zz',
+  SecretKey: 'ZxEKEwiKm0ymMiV2Upy1sbI0lfbTAe6T',
 });
 
 const upload = multer();
+
+/** 
+  * @param {file}
+  * @method 上传文件
+  * @type {file: File}
+  */
 
 router.post('/file', upload.single('file'), function (req, res, next) {
   if (req.file) {
     const { originalname, buffer } = req.file;
     const key = iconv.decode(Buffer.from(req.file.originalname, 'binary'), 'utf-8');
     cos.putObject({
-      Bucket: 'jobpost-file-1314966552', 
+      Bucket: 'jobpost-file-1314966552',
       Region: 'ap-shanghai',
       Key: key,
       Body: buffer,
@@ -30,8 +36,8 @@ router.post('/file', upload.single('file'), function (req, res, next) {
       } else {
         console.log('上传成功', data);
         const url = cos.getObjectUrl({
-          Bucket: 'jobpost-file-1314966552', 
-          Region: 'ap-shanghai', 
+          Bucket: 'jobpost-file-1314966552',
+          Region: 'ap-shanghai',
           Key: key,
         });
         console.log(url)
