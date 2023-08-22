@@ -92,4 +92,45 @@ describe('学科', function () {
     expect(data.subjects).to.be.an('array')
     expect(data.subjects).to.have.lengthOf(2)
   })
+  it('返回此学科所有提交的作业', async function () {
+    const testData = [
+      { classId: 111, subject: '高数', user: '曹Sir1' },
+      { classId: 122, subject: 'React', user: '曹Sir1' },
+      { classId: 111, subject: 'React', user: '曹Sir1' },
+      { classId: 111, subject: '英语', user: '曹Sir2' },
+    ]
+    await SubjectModel.deleteMany({})
+    await SubjectModel.insertMany(testData)
+    const classId = 111
+    const user = '曹Sir1'
+    const subject = 'React'
+    const res = await request(app)
+      .get('/api/subject/myclass/work')
+      .query({ classId, user, subject })
+      .expect(200)
+    const data = res.body
+    expect(data).to.be.an('array')
+    expect(data).to.have.lengthOf(1)
+    expect(data[0].subject).to.equal('React')
+  })
+  it('返回此学科所有提交的作业(空)', async function () {
+    const testData = [
+      { classId: 111, subject: '高数', user: '曹Sir1' },
+      { classId: 122, subject: 'React', user: '曹Sir1' },
+      { classId: 111, subject: 'React', user: '曹Sir1' },
+      { classId: 111, subject: '英语', user: '曹Sir2' },
+    ]
+    await SubjectModel.deleteMany({})
+    await SubjectModel.insertMany(testData)
+    const classId = 111111111
+    const user = '曹Sir1'
+    const subject = 'React'
+    const res = await request(app)
+      .get('/api/subject/myclass/work')
+      .query({ classId, user, subject })
+      .expect(402)
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.message).to.equal('没有相关作业发布！')
+  })
 })

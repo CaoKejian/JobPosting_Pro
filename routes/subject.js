@@ -68,6 +68,11 @@ router.get('/myAll/subject', async function (req, res) {
   }
 })
 
+/** 
+  * @param {班级、个人、学科}
+  * @method 返回此学科所有提交的作业
+  */
+
 router.get('/myclass/work', async function (req, res) {
   const { user, classId, subject } = req.query
   const data = await SubjectModel.find({ user, classId, subject })
