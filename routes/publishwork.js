@@ -80,7 +80,7 @@ router.get('/branch', async function (req, res) {
 
 /**
  * 查询：
- * @按指定学科的分支
+ * @按学科搜集所有分支
  * */
 router.get('/subject/branch', async function (req, res) {
   const { subject } = req.query
