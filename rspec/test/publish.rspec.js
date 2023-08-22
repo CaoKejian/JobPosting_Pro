@@ -108,4 +108,40 @@ describe('作业发布', function () {
     expect(data).to.have.lengthOf(1)
     expect(data[0].classId).to.equal(111222)
   })
+  it('按分支查询',async function (){
+    const testData = {
+      user: '曹Sir',
+      classId: 222222,
+      subject: 'React',
+      branch: '组件定义',
+      content: '预习积分，完成第二章课后题T32.',
+      cutTime: 120
+    }
+    await PublishWorkModel.create(testData)
+    const res = await request(app)
+      .get('/api/pub/branch')
+      .query({branch: '组件定义', subject:'React', classId: 222222})
+      .expect(200)
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.classId).to.equal(222222)
+  })
+  it('按分支查询(空结果)',async function (){
+    const testData = {
+      user: '曹Sir',
+      classId: 222222,
+      subject: 'React',
+      branch: '组件定义',
+      content: '预习积分，完成第二章课后题T32.',
+      cutTime: 120
+    }
+    await PublishWorkModel.create(testData)
+    const res = await request(app)
+      .get('/api/pub/branch')
+      .query({branch: 'en', subject:'React', classId: 222222})
+      .expect(402)
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.message).to.equal('没有相关信息！')
+  })
 })

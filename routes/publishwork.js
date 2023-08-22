@@ -35,6 +35,7 @@ router.post('/', async function (req, res, next) {
  * @按班级查询
  * @按老师查询
  * @按学科查询
+ * @按分支查询
  * */
 router.get('/class', async function (req, res) {
   const { classId } = req.query
@@ -63,6 +64,24 @@ router.get('/subject', async function (req, res) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
+router.get('/branch', async function (req, res) {
+  const { branch, subject, classId } = req.query
+  try {
+    const data = await PublishWorkModel.findOne({ branch, subject, classId })
+    if (data) {
+      res.send(data)
+    } else {
+      res.status(402).json({ message: '没有相关信息！' })
+    }
+  } catch (err) {
+    res.status(500).json({ message: '服务器内部错误！' });
+  }
+})
+
+/**
+ * 查询：
+ * @按指定学科的分支
+ * */
 router.get('/subject/branch', async function (req, res) {
   const { subject } = req.query
   const data = await PublishWorkModel.find({ subject })
@@ -76,19 +95,5 @@ router.get('/subject/branch', async function (req, res) {
     res.status(402).json({ message: '没有相关信息！' })
   }
 })
-router.get('/branch', async function (req, res) {
-  const { branch, subject, classId } = req.query
-  try {
-    console.log(branch, subject, classId)
-    const data = await PublishWorkModel.findOne({ branch, subject, classId })
-    console.log(data)
-    if (data) {
-      res.send(data)
-    } else {
-      res.status(402).json({ message: '没有相关信息！' })
-    }
-  } catch (err) {
-    res.status(500).json({ message: '服务器内部错误！' });
-  }
-})
+
 module.exports = router;
