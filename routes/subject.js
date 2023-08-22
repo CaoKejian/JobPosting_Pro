@@ -49,6 +49,11 @@ router.get('/myclass/classId', async function (req, res) {
   }
 })
 
+/** 
+  * @param {班级、个人}
+  * @method 返回个人所属班级的有所有学科
+  */
+
 router.get('/myAll/subject', async function (req, res) {
   const { classId, user } = req.query
   const data = await SubjectModel.find({ classId, user })
