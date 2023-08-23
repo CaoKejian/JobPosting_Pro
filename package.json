@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "concurrently --prefix \"[{name}]\" \"nodemon ./bin/www\" \"cd portDocument && npm run dev\"",
+    "dev":"nodemon ./bin/www",
     "dev:pro": "nodemon NODE_ENV=production ./bin/www",
     "rspec": "mocha --timeout 5000  --reporter dot --quiet --exit rspec/test"
   },
