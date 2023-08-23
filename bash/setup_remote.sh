@@ -23,6 +23,8 @@ cd $deploy_dir/db && sudo rm -rf *.json
 mongorestore -d $db_name $db_folder
 title "服务端开始执行脚本"
 sudo npm cache clean -f
+title "重启Nginx服务"
+sudo service nginx restart
 title "下载依赖"
 sudo npm install
 title "启动服务"
