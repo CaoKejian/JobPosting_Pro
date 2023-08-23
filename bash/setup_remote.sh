@@ -19,10 +19,10 @@ for collection in $collections; do
   sudo mongo $db_name --eval "db.${collection}.deleteMany({})"
 done
 title "迁移数据库"
-cd $deploy_dir/db/ && sudo rm -rf *.json
+cd $deploy_dir/db && sudo rm -rf *.json
 mongorestore -d $db_name $db_folder
-echo "迁移完成！"
 title "服务端开始执行脚本"
+sudo npm cache clean -f
 title "下载依赖"
 sudo npm install
 title "启动服务"
