@@ -285,7 +285,6 @@ router.get('/download/one', async function (req, res) {
 
 router.post('/submit', async function (req, res, next) {
   const { classId, stuId, subject, branch, file, content, score, tComments, favor, isPass, user,cutTime } = req.body
-  console.log(cutTime)
   const timestamp = Date.now();
   const isHave = await HomeWorkModel.find({
     stuId,

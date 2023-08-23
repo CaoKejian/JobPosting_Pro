@@ -162,4 +162,20 @@ describe('作业发布', function () {
     expect(data.branches).to.have.lengthOf(3)
     expect(data.branches[1]).to.equal('作业2')
   })
+   it('查询某分支的作业详情', async function () {
+    const testData = [
+      {user: '曹Sir',classId: 222222,subject: 'React',branch: '作业1',content: '1'},
+      {user: '曹Sir',classId: 222222,subject: 'React',branch: '作业2',content: '2'},
+      {user: '曹Sir',classId: 222222,subject: 'React',branch: '作业3',content: '3'}
+    ]
+    await PublishWorkModel.deleteMany({})
+    await PublishWorkModel.insertMany(testData)
+    const res = await request(app)
+      .get('/api/pub/subject/branch/info')
+      .query({ classId:222222, branch: '作业2' })
+      .expect(200)
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.content).to.equal('2')
+  })
 })
