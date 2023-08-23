@@ -1,9 +1,11 @@
 .wrapper{
   width: 100%;
-  >header{
-    margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  .left{
+    width: 15%;
   }
-  >footer{
-    margin-top: 3rem;
+  .right{
+    flex: 1;
   }
 }

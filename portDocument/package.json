@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite &> /dev/null",
+    "dev:local": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
