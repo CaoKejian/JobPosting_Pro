@@ -125,4 +125,18 @@ router.get('/subject/branch', async function (req, res) {
   }
 })
 
+/** 
+  * @param {classId,branch}
+  * @method 查询此分支的作业详情
+  */
+
+router.get('/subject/branch/info', async function (req, res) {
+  const { classId, branch } = req.query
+  const data = await PublishWorkModel.findOne({ classId,branch })
+  if (data) {
+    res.send(data)
+  } else {
+    res.status(402).json({ message: '没有相关信息！' })
+  }
+})
 module.exports = router;

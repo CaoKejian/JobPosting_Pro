@@ -4,7 +4,7 @@ const SubjectModel = require('../model/subject');
 var router = express.Router();
 
 /** 
-  * @param {个人、学科、班级}
+  * @param {subject, classId, user}
   * @method 发布学科
   */
 
@@ -26,7 +26,7 @@ router.post('/', async function (req, res, next) {
 });
 
 /** 
-  * @param {个人}
+  * @param {user}
   * @method 返回个人所有的关联班级&学科
   */
 
@@ -47,7 +47,7 @@ router.get('/myclass', async function (req, res) {
 })
 
 /** 
-  * @param {班级}
+  * @param {classId}
   * @method 返回班级所有学科
   */
 
@@ -66,7 +66,7 @@ router.get('/myclass/classId', async function (req, res) {
 })
 
 /** 
-  * @param {班级、个人}
+  * @param {classId, user}
   * @method 返回个人所属班级的有所有学科
   */
 
@@ -85,7 +85,7 @@ router.get('/myAll/subject', async function (req, res) {
 })
 
 /** 
-  * @param {班级、个人、学科}
+  * @param {user, classId, subject}
   * @method 返回此学科所有提交的作业
   */
 
