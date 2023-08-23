@@ -74,8 +74,8 @@ describe('作业', function () {
       .post('/api/work/delete')
       .query({ id: '611dbf6f82f7eb001f8a93b1' })
       .expect(200)
-      const data = res.body
-      expect(data.message).to.equal('删除成功！')
+    const data = res.body
+    expect(data.message).to.equal('删除成功！')
   })
   it('更新作业', async function () {
     const testData = {
@@ -89,14 +89,14 @@ describe('作业', function () {
       tComments: '老师评语...',
       favor: false,
       isPass: true,
-      user:'xxx',
+      user: 'xxx',
       cutTime: 123123
     };
     const x = await HomeWorkModel.create(testData)
     const res = await request(app)
       .post(`/api/work/upload`)
       .send({
-        id:x._id,
+        id: x._id,
         classId: 123123,
         stuId: 2001063037,
         subject: 'Math',
@@ -107,14 +107,14 @@ describe('作业', function () {
         tComments: '老师评语...',
         favor: false,
         isPass: true,
-        user:'xxx',
+        user: 'xxx',
         cutTime: 123123
       })
       .expect(200)
-      const data = res.body
-      expect(data).to.be.an('object')
-      expect(data.classId).to.equal(123123)
-      expect(data.branch).to.equal('我修改了')
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.classId).to.equal(123123)
+    expect(data.branch).to.equal('我修改了')
   })
   it('单项作业', async function () {
     const testData = [
@@ -135,4 +135,20 @@ describe('作业', function () {
     expect(data).to.be.an('object');
     expect(data.branch).to.equal('React')
   });
+  it('查询多项作业', async function () {
+    const textData = [
+      { classId: 1231123, branch: 'haha', stuId: 123 },
+      { classId: 1231123, branch: 'haha', stuId: 124 },
+      { classId: 1231123, branch: 'enen', stuId: 125 },
+    ]
+    await HomeWorkModel.insertMany(textData)
+    const res = await request(app)
+      .get('/api/work/class/allWork')
+      .query({ classId: 1231123, branch: 'haha' })
+      .expect(200)
+    const data = res.body
+    expect(data).to.be.an('array')
+    expect(data).to.have.lengthOf(2)
+    expect(data[0].stuId).to.equal(123)
+  })
 });
