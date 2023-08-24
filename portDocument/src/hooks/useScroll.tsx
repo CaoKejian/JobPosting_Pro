@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-function useScrollDown() {
-  const [canScroll, setCanScroll] = useState(false);
-
+function useScrollDown(isAllowUp: boolean, isAllowDown: boolean) {
+  const [canScrollUp, setCanScrollUp] = useState(false);
+  const [canScrollDown, setCanScrollDown] = useState(false);
   const debouncedOnMove = (e: WheelEvent) => {
-    if (e.deltaY > 0) {
-      setCanScroll(true);
+    if (e.deltaY > 100 && isAllowDown) {
+      setCanScrollDown(true);
       setTimeout(() => {
-        setCanScroll(false);
-      }, 1000);
+        setCanScrollDown(false);
+      }, 2000);
+    } else if (e.deltaY < -100 && isAllowUp) {
+      setCanScrollUp(true);
+      setTimeout(() => {
+        setCanScrollUp(false);
+      }, 2000);
     }
-  }
+  };
   useEffect(() => {
     window.addEventListener('wheel', debouncedOnMove);
     return () => {
@@ -18,7 +23,7 @@ function useScrollDown() {
     };
   }, []);
 
-  return canScroll;
+  return { canScrollUp, canScrollDown };
 }
 
 export default useScrollDown;
