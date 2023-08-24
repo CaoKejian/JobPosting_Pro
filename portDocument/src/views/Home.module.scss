@@ -1,0 +1,18 @@
+.wrapper{
+  width: 100%;
+  height: 100vh;
+  background: #bfa;
+}
+.wrapper {
+  animation: fadeIn 1s ease forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

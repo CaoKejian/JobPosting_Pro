@@ -1,28 +1,25 @@
 
 
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import s from './Welcome.module.scss'
+import useScrollDown from '../hooks/useScroll';
 
 interface IProps {
   children?: ReactNode
 }
 
 const WelcomePage: FC<IProps> = () => {
-  const [canPrint, setCanPrint] = useState(true);
-  const onMove = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (!canPrint) return
-    if (e.deltaY > 0) {
-      setCanPrint(false)
-      console.log('向下滚动')
-      setTimeout(() => {
-        setCanPrint(true)
-      }, 1000);
+  const isMove = useScrollDown()
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(isMove){
+      navigate('/home') 
     }
-  }
+  }, [isMove])
   return (
-    <div className={s.wrapper} onWheel={onMove}>
+    <div className={s.wrapper}>
       <svg className={s.svg}><use xlinkHref='#welcome'></use></svg>
       <p>欢迎来到</p>
       <span>交作业啦App-接口文档</span>
