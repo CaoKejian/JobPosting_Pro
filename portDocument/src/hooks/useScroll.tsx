@@ -4,7 +4,7 @@ function useScrollDown(isAllowUp: boolean, isAllowDown: boolean) {
   const [canScrollUp, setCanScrollUp] = useState(false);
   const [canScrollDown, setCanScrollDown] = useState(false);
   const debouncedOnMove = (e: WheelEvent) => {
-    if (e.deltaY > 100 && isAllowDown) {
+    if (e.deltaY > 10 && isAllowDown) {
       setCanScrollDown(true);
       setTimeout(() => {
         setCanScrollDown(false);

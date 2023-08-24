@@ -29,7 +29,7 @@ const WelcomePage: FC<IProps> = () => {
       <div className={s.active}>
         <svg className={s.svg}><use xlinkHref='#welcome'></use></svg>
         <p>欢迎来到</p>
-        <span>交作业啦App-接口文档</span>
+        <div className={s.container}><span className={s.word}>交作业啦App-接口文档</span></div>
         <div className={s.user}>
           <span>作者：<span className={s.colin}>Colin</span></span>
           <span>前端：<Link target="_blank" to='https://github.com/CaoKejian/JobPosting'>代码链接</Link>访问地址：<Link target="_blank" to='http://jobpost-1314966552.cos-website.ap-shanghai.myqcloud.com/'>点击前往</Link></span>
@@ -55,7 +55,7 @@ const WelcomePage: FC<IProps> = () => {
       <div className={s.wrapper}>
         <svg className={s.svg}><use xlinkHref='#welcome'></use></svg>
         <p>欢迎来到</p>
-        <span>交作业啦App-接口文档</span>
+        <div className={s.container}><span className={s.word}>交作业啦App-接口文档</span></div>
         <div className={s.user}>
           <span>作者：<span className={s.colin}>Colin</span></span>
           <span>前端：<Link target="_blank" to='https://github.com/CaoKejian/JobPosting'>代码链接</Link>访问地址：<Link target="_blank" to='http://jobpost-1314966552.cos-website.ap-shanghai.myqcloud.com/'>点击前往</Link></span>

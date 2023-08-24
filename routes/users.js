@@ -150,7 +150,6 @@ router.post('/veifycode', async (req, res, next) => {
       // 验证码已过期，返回错误信息给前端
       return res.status(401).send({ code: 401, message: '验证码已过期！' });
     }
-
   } else {
     return res.status(401).send({ code: 401, message: '验证码错误！' });
   }
