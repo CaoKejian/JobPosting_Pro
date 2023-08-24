@@ -74,18 +74,18 @@
 }
 
 .wrapper {
-  // animation: fadeOut 1s ease forwards;
+  animation: fadeOut 1.5s ease forwards;
 }
 
 
 @keyframes fadeOut {
   from {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0.3;
+    // transform: translateY(0);
   }
   to {
-    opacity: 0;
-    transform: translateY(-100%);
+    opacity: 1;
+    // transform: translateY(-100%);
   }
 }
 

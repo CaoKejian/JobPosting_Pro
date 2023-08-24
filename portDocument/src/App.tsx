@@ -5,9 +5,11 @@ import routes from './router/router'
 function App() {
   return (
     <div className={s.wrapper}>
-        <Suspense fallback="">
-          <div className={s.main}>{useRoutes(routes)}</div>
-        </Suspense>
+      <Suspense fallback="">
+        <div className={s.main}>
+          {useRoutes(routes)}
+        </div>
+      </Suspense>
     </div>
   )
 }

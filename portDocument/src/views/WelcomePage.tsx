@@ -5,6 +5,8 @@ import type { FC, ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import s from './Welcome.module.scss'
 import useScrollDown from '../hooks/useScroll';
+import { TransitionGroup, CSSTransition, SwitchTransition } from 'react-transition-group';
+import './transition.css'
 
 interface IProps {
   children?: ReactNode
@@ -14,8 +16,10 @@ const WelcomePage: FC<IProps> = () => {
   const isMove = useScrollDown()
   const navigate = useNavigate();
   useEffect(() => {
-    if(isMove){
-      navigate('/home') 
+    if (isMove) {
+      setTimeout(() => {
+        navigate('/home')
+      }, 200);
     }
   }, [isMove])
   return (
