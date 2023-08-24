@@ -40,15 +40,6 @@ app.use((req, res, next) => {
     if (err) {
       res.status(401).json({ message: '你没有权限！' })
     } else {
-      const nowTimestamp = Date.now();
-      const expirationTimestamp = decoded.exp * 1000;
-      const renewalThreshold = 5 * 60 * 1000;
-      if (expirationTimestamp - nowTimestamp <= renewalThreshold) {
-        const newExpirationTimestamp = nowTimestamp + 2 * 60 * 60 * 1000; // 设置新的过期时间为当前时间加上 2 小时
-        const newToken = jwt.sign({ ...decoded, exp: newExpirationTimestamp / 1000 }, secretKey);
-        res.setHeader('Authorization', `Bearer ${newToken}`);
-      }
-      req.user = decoded;
       next();
     }
   });
