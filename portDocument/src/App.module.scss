@@ -1,11 +1,8 @@
 .wrapper{
   width: 100%;
-  display: flex;
-  align-items: center;
-  .left{
-    width: 15%;
+
+  .main{
+    width: 100%;
   }
-  .right{
-    flex: 1;
-  }
+  
 }
