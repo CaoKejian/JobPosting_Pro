@@ -212,8 +212,8 @@ router.post('/email/unsubmit', async function (req, res) {
   try {
     const { stuIds } = req.body
     stuIds.map(async item => {
-      const data = await UserModel.findOne({stuId: item}).select('email')
-      if(!data){
+      const data = await UserModel.findOne({ stuId: item }).select('email')
+      if (!data) {
         return
       }
       Email.noticeMail(data.email, '该交作业啦', (state) => {
@@ -224,11 +224,30 @@ router.post('/email/unsubmit', async function (req, res) {
         }
       })
     })
-    res.send({message: 'ok'})
+    res.send({ message: 'ok' })
   } catch (error) {
     res.status(500).json({ message: "服务器出错！" })
   }
 })
 
+/** 
+  * @param {stuids}
+  * @method 发送邮件给未交同学
+  */
+
+router.post('/isself/auth', async function (req, res) {
+  try {
+    const { stuId, email, name } = req.body
+    const data = await UserModel.findOne({ stuId, email, name })
+    console.log(data)
+    if(data){
+      res.send(data)
+    }else{
+      res.status(401).json({message: '个人信息有误，请重新登录！'})
+    }
+  } catch (error) {
+    res.status(500).json({ message: "服务器出错！" })
+  }
+})
 
 module.exports = router;

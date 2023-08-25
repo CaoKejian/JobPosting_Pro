@@ -60,19 +60,20 @@ const usersToInsert = [
 
 router.post('/insert', async function (req, res) {
   const { stuId, name, classId, type = false } = req.body
-  console.log(stuId, name, classId, type)
-  const x = ClassInfoModel.find({
-    stuId: stuId
-  })
-  if (x.length !== 0) {
-    return
-  } else {
-    try {
-      const data = await ClassInfoModel.create(info)
-      res.status(201).json({ message: '成员信息添加成功！', data: data });
-    } catch (error) {
-      res.status(500).json({ message: '创建用户失败', error: error.message });
+  try {
+    const existingRecord = await ClassInfoModel.findOne({ stuId: stuId });
+    if (existingRecord) {
+      return res.status(200).json({ message: '成员信息已存在！' });
     }
+    const data = await ClassInfoModel.create({
+      stuId,
+      name,
+      classId,
+      type
+    });
+    res.status(201).json({ message: '成员信息添加成功！', data: data });
+  } catch (error) {
+    res.status(500).json({ message: '创建用户失败', error: error.message });
   }
 })
 
@@ -83,19 +84,25 @@ router.post('/insert', async function (req, res) {
 
 router.post('/insert', async function (req, res) {
   const { stuId, name, classId, type = false } = req.body
-  const x = ClassInfoModel.find({
-    stuId: stuId
-  })
-  if (x.length !== 0) {
-    return
-  } else {
-    try {
-      const data = await ClassInfoModel.create(info)
-      res.status(201).json({ message: '成员信息添加成功！', data: data });
-    } catch (error) {
-      res.status(500).json({ message: '创建用户失败', error: error.message });
-    }
+  console.log(stuId, name, classId, type)
+  try {
+    const x = ClassInfoModel.find({
+      stuId: +stuId
+    })
+    res.send(1)
+  } catch (err) {
+    res.status(500).json({ message: '创建用户失败', error: error.message });
   }
+  // if (x.length !== 0) {
+  //   return res.status(200).json({message: '已存在！'})
+  // } else {
+  //   try {
+  //     const data = await ClassInfoModel.create({stuId, name, classId, type })
+  //     res.status(201).json({ message: '成员信息添加成功！', data: data });
+  //   } catch (error) {
+  //     res.status(500).json({ message: '创建用户失败', error: error.message });
+  //   }
+  // }
 })
 
 /** 

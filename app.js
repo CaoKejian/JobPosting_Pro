@@ -28,22 +28,23 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // 白名单
-const excludesPath = ['/api/work/mywork', '/api/user/addclassId', '/api/work']
-app.use((req, res, next) => {
-  if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || excludesPath.some(path => path === req._parsedOriginalUrl.pathname)) {
-    next()
-    return
-  }
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  const secretKey = uuid;
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      res.status(401).json({ message: '你没有权限！' })
-    } else {
-      next();
-    }
-  });
-})
+// const excludesPath = ['/api/work/mywork', '/api/user/addclassId', '/api/work']
+// app.use((req, res, next) => {
+//   console.log(req.url)
+//   if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || excludesPath.some(path => path === req._parsedOriginalUrl.pathname)) {
+//     next()
+//     return
+//   }
+//   const token = req.header('Authorization')?.replace('Bearer ', '');
+//   const secretKey = uuid;
+//   jwt.verify(token, secretKey, (err, decoded) => {
+//     if (err) {
+//       res.status(401).json({ message: '你没有权限！' })
+//     } else {
+//       next();
+//     }
+//   });
+// })
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
