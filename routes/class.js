@@ -76,6 +76,56 @@ router.post('/insert', async function (req, res) {
   }
 })
 
+/** 
+  * @param {stuId, name, classId, type = false }
+  * @method 新增人员
+  */
+
+router.post('/insert', async function (req, res) {
+  const { stuId, name, classId, type = false } = req.body
+  const x = ClassInfoModel.find({
+    stuId: stuId
+  })
+  if (x.length !== 0) {
+    return
+  } else {
+    try {
+      const data = await ClassInfoModel.create(info)
+      res.status(201).json({ message: '成员信息添加成功！', data: data });
+    } catch (error) {
+      res.status(500).json({ message: '创建用户失败', error: error.message });
+    }
+  }
+})
+
+/** 
+  * @param {stuId, name, classId, type = false }
+  * @method 更新新增人员权限
+  */
+
+router.post('/upload/auth', async function (req, res) {
+  const { stuId, name, classId, type = false } = req.body
+  const x = ClassInfoModel.find({
+    stuId, name, classId
+  })
+  if (x.length !== 0) {
+    return
+  } else {
+    try {
+      const updateResult = await ClassInfoModel.updateOne(
+        {
+          stuId, name, classId
+        },
+        {
+          type: type
+        }
+      );
+      res.status(200).json({ message: '成员权限更新成功！', data: updateResult });
+    } catch (error) {
+      res.status(500).json({ message: '创建用户失败', error: error.message });
+    }
+  }
+})
 router.get('/insert/info', async function (req, res) {
   const data = await ClassInfoModel.insertMany(usersToInsert)
   res.send(data)
