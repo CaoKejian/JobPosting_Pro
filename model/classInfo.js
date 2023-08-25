@@ -3,7 +3,8 @@ const mongoose = require("mongoose")
 const ClassInfoType = {
   stuId: Number,
   name: String,
-  classId: Number
+  classId: Number,
+  type: Boolean
 }
 
 
