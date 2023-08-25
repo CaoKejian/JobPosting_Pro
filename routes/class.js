@@ -23,6 +23,27 @@ router.get('/', async function (req, res, next) {
     res.status(500).json({ message: '服务器出错！' })
   }
 });
+
+
+/** 
+  * @param {stuId }
+  * @method 查询姓名
+  */
+
+router.get('/stuid/name', async function (req, res) {
+  try {
+    const { stuId } = req.query
+    const data = await ClassInfoModel.findOne({ stuId });
+    if (data) {
+      res.json({name: data.name});
+    } else {
+      res.json({name:''})
+    }
+  } catch (error) {
+    res.status(500).json({ message: '服务器出错！' })
+  }
+})
+
 const usersToInsert = [
   { stuId: 2001063037, name: '曹珂俭', classId: 123123 },
   { stuId: 2001062028, name: '黄梦瑶', classId: 123123 },
