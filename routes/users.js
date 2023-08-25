@@ -239,11 +239,10 @@ router.post('/isself/auth', async function (req, res) {
   try {
     const { stuId, email, name } = req.body
     const data = await UserModel.findOne({ stuId, email, name })
-    console.log(data)
-    if(data){
-      res.send(data)
-    }else{
-      res.status(401).json({message: '个人信息有误，请重新登录！'})
+    if (data) {
+      res.send({ message: 'ok' })
+    } else {
+      res.status(401).json({ message: '个人信息有误，请重新登录！' })
     }
   } catch (error) {
     res.status(500).json({ message: "服务器出错！" })
