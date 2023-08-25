@@ -14,15 +14,21 @@ function title {
   echo 
 }
 title "删除远端数据库"
-collections=$(mongo $db_name --quiet --eval "db.getCollectionNames()")
-for collection in $collections; do
-  sudo mongo $db_name --eval "db.${collection}.deleteMany({})"
-done
+# collections=$(mongo $db_name --quiet --eval "db.getCollectionNames()")
+# for collection in $collections; do
+#   sudo mongo $db_name --eval "db.${collection}.deleteMany({})"
+# done
+mongo $db_name --eval "
+    db.getCollectionNames().forEach(function(collectionName) {
+        if (!collectionName.startsWith('system.')) {
+            db[collectionName].deleteMany({});
+        }
+    });
+"
 title "迁移数据库"
 cd $deploy_dir/db && sudo rm -rf *.json
 mongorestore -d $db_name $db_folder
 title "服务端开始执行脚本"
-sudo npm cache clean -f
 title "重启Nginx服务"
 sudo service nginx restart
 title "下载依赖"

@@ -32,9 +32,7 @@
   }
   .bottom{
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 1rem;
     animation: tobottom 1.5s infinite;
     .tobottom{
       width: 3rem;

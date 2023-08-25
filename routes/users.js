@@ -11,6 +11,7 @@ const verifyJWTAndRenew = require('../middleware/verifyJWT');
 // 定义数据验证规则
 const createUserValidationRules = [
   check('stuId').notEmpty().withMessage('学号不能为空'),
+  check('name').notEmpty().withMessage('姓名不能为空'),
   check('email').notEmpty().withMessage('邮箱不能为空').isEmail().withMessage('请输入有效的邮箱地址'),
 ];
 
@@ -24,18 +25,19 @@ const validate = (req, res, next) => {
 };
 
 /** 
-  * @param {stuId, email }
+  * @param {stuId, email, name }
   * @method 创建用户
   */
 
 router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (req, res) => {
-  const { stuId, email } = req.body
+  const { stuId, email, name } = req.body
   const x = await UserModel.find({
     stuId: stuId
   })
   const info = {
     stuId: stuId,
-    email: email
+    email: email,
+    name: name
   }
   if (x.length !== 0) {
     res.status(202).json({ message: '用户已存在', data: x });
@@ -198,7 +200,35 @@ router.get('/total', async function (req, res) {
   } catch (error) {
     res.status(500).json({ message: "服务器出错！" })
   }
-
 })
+
+/** 
+  * @type {Array}
+  * @param {stuids}
+  * @method 发送邮件给未交同学
+  */
+
+router.post('/email/unsubmit', async function (req, res) {
+  try {
+    const { stuIds } = req.body
+    stuIds.map(async item => {
+      const data = await UserModel.findOne({stuId: item}).select('email')
+      if(!data){
+        return
+      }
+      Email.noticeMail(data.email, '该交作业啦', (state) => {
+        if (state) {
+          return res.status(200).json(data(200, {}))
+        } else {
+          return res.status(400).json(data(400, {}, '发送失败'))
+        }
+      })
+    })
+    res.send({message: 'ok'})
+  } catch (error) {
+    res.status(500).json({ message: "服务器出错！" })
+  }
+})
+
 
 module.exports = router;

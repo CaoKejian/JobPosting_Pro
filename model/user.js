@@ -3,7 +3,8 @@ const mongoose = require("mongoose")
 const UserType = {
   stuId: Number,
   email: String,
-  classId: Number
+  classId: Number,
+  name: String
 }
 
 
