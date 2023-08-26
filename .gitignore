@@ -2,3 +2,4 @@ node_modules
 dist
 .vscode
 secret.key
+package-lock.json
