@@ -190,7 +190,7 @@ router.get('/verify/jwt', async (req, res, next) => {
 router.get('/total', async function (req, res) {
   try {
     const { classId, stuIds } = req.query
-    const peopleData = await UserModel.find({ classId }).select('stuId classId');
+    const peopleData = await UserModel.find({ classId }).select('stuId classId name');
     const filteredPeopleData = peopleData.filter(item => !stuIds.includes(item.stuId.toString()));
     if (filteredPeopleData) {
       res.json(filteredPeopleData)

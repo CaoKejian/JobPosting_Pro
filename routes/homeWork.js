@@ -85,8 +85,8 @@ router.get('/classwork', async function (req, res) {
     classId,
     timestamp: { $gte: thirtyDaysAgo.getTime() } // 使用$gte操作符来匹配大于等于指定时间戳的文档
   });
-  if(data.length===0){
-    res.status(402).json({message: '没有相关数据！'})
+  if (data.length === 0) {
+    res.status(402).json({ message: '没有相关数据！' })
   }
   res.send(data)
 })
@@ -136,7 +136,7 @@ router.get('/one', async function (req, res) {
 router.get('/correct/work', async function (req, res) {
   const { classId, branch } = req.query
   try {
-    const data = await HomeWorkModel.findOne({
+    const data = await HomeWorkModel.find({
       classId,
       branch
     })
@@ -158,9 +158,9 @@ router.get('/class/allWork', async function (req, res) {
       classId,
       branch
     }).select('stuId classId')
-    if(data.length === 0){
-      res.status(402).json({message: '还没有人提交！'})
-    }else{
+    if (data.length === 0) {
+      res.status(402).json({ message: '还没有人提交！' })
+    } else {
       res.json(data)
     }
   } catch (error) {
@@ -209,7 +209,7 @@ router.get('/upload/work', async function (req, res) {
 
 router.post('/upload', createUserValidationRules, validate, async function (req, res) {
   try {
-    const { _id, id, classId,name, stuId, subject, branch, file, content = '', score = 0, tComments = '', favor = false, isPass = false, cutTime = 0,user='', } = req.body;
+    const { _id, id, classId, name, stuId, subject, branch, file, content = '', score = 0, tComments = '', favor = false, isPass = false, cutTime = 0, user = '', } = req.body;
     const x = await HomeWorkModel.findById({ _id: id || _id });
     if (!x) {
       return res.status(402).json({ message: '未找到相关作业！' });
@@ -285,7 +285,7 @@ router.get('/download/one', async function (req, res) {
   */
 
 router.post('/submit', async function (req, res, next) {
-  const { classId, name, stuId, subject, branch, file, content, score, tComments, favor, isPass, user,cutTime } = req.body
+  const { classId, name, stuId, subject, branch, file, content, score, tComments, favor, isPass, user, cutTime } = req.body
   const timestamp = Date.now();
   const isHave = await HomeWorkModel.find({
     stuId,

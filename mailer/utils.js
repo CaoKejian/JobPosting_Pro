@@ -4,7 +4,6 @@ const lastRequestTime = {};
 // 中间件函数，用于限制请求次数
 function rateLimit(req, res, next) {
   const ipAddress = req.ip; // 获取请求的 IP 地址
-
   // 如果该 IP 地址第一次请求，则将请求次数初始化为 1，并记录最近请求时间
   if (!requestCount[ipAddress]) {
     requestCount[ipAddress] = 1;

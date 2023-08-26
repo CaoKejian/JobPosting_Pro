@@ -1,5 +1,6 @@
 var express = require('express');
 const ClassInfoModel = require('../model/classInfo');
+const UserModel = require('../model/user');
 
 var router = express.Router();
 
@@ -34,9 +35,13 @@ router.get('/stuid/name', async function (req, res) {
     const { stuId } = req.query
     const data = await ClassInfoModel.findOne({ stuId });
     if (data) {
-      res.json({ name: data.name });
+      const info = await UserModel.findOne({ stuId }).select('email')
+      if (!info) {
+        return res.json({ name: data.name, email: '' })
+      }
+      res.json({ name: data.name, email: info.email });
     } else {
-      res.json({ name: '' })
+      res.json({ name: '', email: '' })
     }
   } catch (error) {
     res.status(500).json({ message: '服务器出错！' })
