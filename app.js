@@ -27,13 +27,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // 白名单
-const excludesPath = ['/api/work/mywork', '/api/user/addclassId', '/api/work']
+const excludesPath = ['/api/work/mywork', '/api/user/addclassId', '/api/work', '/api/class/stuid/name']
 app.use((req, res, next) => {
   console.log(req.url)
-  if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || excludesPath.some(path => path === req._parsedOriginalUrl.pathname)) {
-    next()
-    return
-  }
+  // if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || excludesPath.some(path => path === req._parsedOriginalUrl.pathname)) {
+  //   next()
+  //   return
+  // }
   const token = req.header('Authorization')?.replace('Bearer ', '');
   const secretKey = uuid;
   jwt.verify(token, secretKey, (err, decoded) => {

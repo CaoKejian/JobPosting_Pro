@@ -21,6 +21,7 @@ router.post('/file', upload.single('file'), function (req, res, next) {
   if (req.file) {
     const { originalname, buffer } = req.file;
     const key = iconv.decode(Buffer.from(req.file.originalname, 'binary'), 'utf-8');
+    console.log(originalname)
     cos.putObject({
       Bucket: 'jobpost-file-1314966552',
       Region: 'ap-shanghai',
@@ -46,7 +47,7 @@ router.post('/file', upload.single('file'), function (req, res, next) {
           code: 200,
           message: '上传成功',
           fileName: key,
-          url: url,
+          url: url.split('?')[0],
         });
       }
     });
