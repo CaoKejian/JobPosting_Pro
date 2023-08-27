@@ -63,7 +63,7 @@ const usersToInsert = [
   */
 
 router.post('/insert', async function (req, res) {
-  const { stuId, name, classId, type = false } = req.body
+  const { stuId, name, classId, isAuth = false } = req.body
   try {
     const existingRecord = await ClassInfoModel.findOne({ stuId: stuId });
     if (existingRecord) {
@@ -73,7 +73,7 @@ router.post('/insert', async function (req, res) {
       stuId,
       name,
       classId,
-      type
+      isAuth
     });
     res.status(201).json({ message: '成员信息添加成功！', data: data });
   } catch (error) {
@@ -107,6 +107,29 @@ router.post('/upload/auth', async function (req, res) {
     } catch (error) {
       res.status(500).json({ message: '创建用户失败', error: error.message });
     }
+  }
+})
+
+/** 
+  * @type {info:{}}
+  * @param {info}
+  * @method 查询下载权限
+  * @return {true|false}
+  */
+
+router.get('/download/auth', async function (req, res) {
+  const { stuId } = req.query
+  try {
+    const data = await ClassInfoModel.find({stuId})
+    if(data.length===0){
+      return res.status(200).json({data:[]})
+    }
+    if(data[0].isAuth){
+      return res.status(200).json({data:true});
+    }
+    res.status(200).json({data:false})
+  } catch (error) {
+    res.status(500).json({ message: '服务器错误'});
   }
 })
 

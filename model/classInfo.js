@@ -4,7 +4,7 @@ const ClassInfoType = {
   stuId: Number,
   name: String,
   classId: Number,
-  type: Boolean
+  isAuth: Boolean
 }
 
 

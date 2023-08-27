@@ -23,11 +23,7 @@ function sendMail(mail, code, call) {
 
 	//发送函数
 	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			call(false)
-		} else {
-			call(true) //因为是异步 所有需要回调函数通知成功结果
-		}
+		error ? call(fasle) : call(true)
 	});
 
 }
@@ -46,8 +42,8 @@ function noticeMail(mail, obj, call) {
     <span style="margin-bottom: 8px;">发布者：<span style="color:#446a76">${obj.user}</span></span>
     <span style="margin-bottom: 8px;">作业详情：<span style="color:#446a76">${obj.content}</span></span>
     <span style="margin-bottom: 8px;">截止时间：<span style="color:#446a76">${obj.cutTime}</span></span>
-    <span style="margin-bottom: 8px;">本班还有：<span style="color:#446a76">${obj.unSubmit.length}份未交</span></span>
-    <span>点击链接前往 <span style="color: #5764f1;"><a href="${obj.url}" target="_blank" style="color: #5764f1;">交作业啦APP</a></span> 进行快捷提交</span>
+    <span style="margin-bottom: 8px;">本班还有：<span style="color:#446a76">${obj.unSubmit}份未交</span></span>
+    <span>点击链接前往 <span style="color: #5764f1;"><a href=${obj.url} target="_blank" style="color: #5764f1;">交作业啦APP</a></span> 进行快捷提交</span>
     <p style="color: #E10505;">>>>如果链接出错，请单独提交<<<</p>
     <span>点击链接前往 <span style="color: #5764f1;"><a href="weixin://" target="_blank" style="color: #5764f1;">微信</a></span> 进行单独提交</span>
   </div>`,
@@ -55,11 +51,7 @@ function noticeMail(mail, obj, call) {
 
 	//发送函数
 	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			call(false)
-		} else {
-			call(true) //因为是异步 所有需要回调函数通知成功结果
-		}
+		error ? call(fasle) : call(true)
 	});
 
 }
