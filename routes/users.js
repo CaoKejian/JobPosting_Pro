@@ -61,7 +61,6 @@ router.get('/demand', async function (req, res) {
     const { classId } = req.query
     const data = await UserModel.find({classId}).select('stuId name classId');
     if (data.length!== 0) {
-      console.log(data)
       res.json(data);
     } else {
       res.json({ message: '班级下还没有同学注册！' });
