@@ -139,7 +139,8 @@ router.get('/correct/work', async function (req, res) {
   try {
     const data = await HomeWorkModel.find({
       classId,
-      branch
+      branch,
+      isPass: { $ne: true } 
     })
     res.json(data)
   } catch (error) {
