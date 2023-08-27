@@ -29,7 +29,7 @@ app.set('view engine', 'jade');
 // 白名单
 const excludesPath = ['/api/work/mywork', '/api/user/addclassId', '/api/work', '/api/class/stuid/name']
 app.use((req, res, next) => {
-  if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || excludesPath.some(path => path === req._parsedOriginalUrl.pathname)) {
+  if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || excludesPath.some(path => path === req._parsedOriginalUrl?.pathname)) {
     next()
     return
   }
