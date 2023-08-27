@@ -2,6 +2,7 @@ var express = require('express');
 const HomeWorkModel = require('../model/homeWork');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
+const UserModel = require('../model/user');
 // 定义数据验证规则
 const createUserValidationRules = [
   check('classId').notEmpty().withMessage('班级码不能为空'),
@@ -249,6 +250,12 @@ router.get('/download', async function (req, res) {
       subject
     }).select('file stuId')
     if (data) {
+      if(data.length === 0){
+        const x = await UserModel.find({classId}).select('file stuId')
+        const stuIds = x.map(item => item.stuId)
+        res.json({stuIds, data})
+        return
+      }
       const stuIds = data.map(item => item.stuId); // 提取 stuId 到数组
       res.json({ stuIds, data });
     } else {

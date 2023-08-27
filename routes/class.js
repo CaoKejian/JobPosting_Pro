@@ -24,7 +24,6 @@ router.get('/', async function (req, res, next) {
   }
 });
 
-
 /** 
   * @param {stuId }
   * @method 查询姓名

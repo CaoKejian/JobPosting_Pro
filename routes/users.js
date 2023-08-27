@@ -52,6 +52,26 @@ router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (
 });
 
 /** 
+  * @param {classId}
+  * @method 查询本班所有同学
+  */
+
+router.get('/demand', async function (req, res) {
+  try {
+    const { classId } = req.query
+    const data = await UserModel.find({classId}).select('stuId name classId');
+    if (data.length!== 0) {
+      console.log(data)
+      res.json(data);
+    } else {
+      res.json({ message: '班级下还没有同学注册！' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: '服务器出错！' })
+  }
+})
+
+/** 
   * @param {stuId, classId}
   * @method 添加
   */
@@ -192,6 +212,7 @@ router.get('/total', async function (req, res) {
     const { classId, stuIds } = req.query
     const peopleData = await UserModel.find({ classId }).select('stuId classId name');
     const filteredPeopleData = peopleData.filter(item => !stuIds.includes(item.stuId.toString()));
+    console.log(filteredPeopleData)
     if (filteredPeopleData) {
       res.json(filteredPeopleData)
     } else {
