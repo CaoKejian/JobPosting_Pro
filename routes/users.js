@@ -59,8 +59,8 @@ router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (
 router.get('/demand', async function (req, res) {
   try {
     const { classId } = req.query
-    const data = await UserModel.find({classId}).select('stuId name classId');
-    if (data.length!== 0) {
+    const data = await UserModel.find({ classId }).select('stuId name classId');
+    if (data.length !== 0) {
       res.json(data);
     } else {
       res.json({ message: '班级下还没有同学注册！' });
@@ -211,7 +211,6 @@ router.get('/total', async function (req, res) {
     const { classId, stuIds } = req.query
     const peopleData = await UserModel.find({ classId }).select('stuId classId name');
     const filteredPeopleData = peopleData.filter(item => !stuIds.includes(item.stuId.toString()));
-    console.log(filteredPeopleData)
     if (filteredPeopleData) {
       res.json(filteredPeopleData)
     } else {
@@ -223,20 +222,21 @@ router.get('/total', async function (req, res) {
 })
 
 /** 
-  * @type {Array}
-  * @param {stuids}
+  * @type {stuIds:Array}
+  * @param {stuIds,url,user,branch,content,cutTime }
   * @method 发送邮件给未交同学
   */
 
 router.post('/email/unsubmit', async function (req, res) {
   try {
-    const { stuIds } = req.body
+    const { stuIds, url, user, branch, content, cutTime, unSubmit } = req.body
     stuIds.map(async item => {
-      const data = await UserModel.findOne({ stuId: item }).select('email')
+      const data = await UserModel.findOne({ stuId: item }).select('email name')
       if (!data) {
         return
       }
-      Email.noticeMail(data.email, '该交作业啦', (state) => {
+      const obj = { stuIds, url, user, branch, content, cutTime, unSubmit,name:data.name }
+      Email.noticeMail(data.email, obj, (state) => {
         if (state) {
           return res.status(200).json(data(200, {}))
         } else {
@@ -251,8 +251,8 @@ router.post('/email/unsubmit', async function (req, res) {
 })
 
 /** 
-  * @param {stuids}
-  * @method 发送邮件给未交同学
+  * @param {stuId, email, name}
+  * @method 判断信息是否被篡改|权限信息是否正确
   */
 
 router.post('/isself/auth', async function (req, res) {
@@ -269,4 +269,21 @@ router.post('/isself/auth', async function (req, res) {
   }
 })
 
+router.get('/insert/test', async function (req, res) {
+  try {
+    const testData = [
+      { stuId: 2001062067, email: "3192410351@qq.com", name: "王硕", classId: 123123 },
+      { stuId: 2001062036, email: "515694789@qq.com", name: "蔡奇奇", classId: 123123 },
+      { stuId: 2001040023, email: "2256876027@qq.com", name: "李梓良", classId: 123123 },
+      { stuId: 2001062011, email: "971602307@qq.com", name: "聂宇博", classId: 123123 },
+      { stuId: 2001063036, email: "770527697@qq.com", name: "张博涵", classId: 123123 },
+    ]
+    const data = await UserModel.insertMany(testData)
+    if (data) {
+      res.send(data)
+    }
+  } catch (error) {
+    res.status(500).json({ message: "服务器出错！" })
+  }
+})
 module.exports = router;
