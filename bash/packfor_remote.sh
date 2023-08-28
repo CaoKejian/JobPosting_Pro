@@ -9,6 +9,7 @@ dist=$home_dir/jobposting_pro.tar.gz
 db_dist=$home_dir/jobpost.tar.gz
 bash_dist=$home_dir/bash.tar.gz
 port_rspec=$home_dir/port.tar.gz
+modules_dist=$home_dir/node_modules.tar.gz
 function title {
   echo 
   echo "###############################################################################"
@@ -31,13 +32,15 @@ else
 fi
 
 title "clear tar*"
-rm -rf $dist $bash_dist $db_dist $port_rspec
+rm -rf $dist $bash_dist $db_dist $port_rspec &modules_dist
 
 title "打包源代码"
 tar --exclude="node_modules/*" --exclude="bash/*" --exclude="portDocument/*" -czf $dist *
 
 title "打包本地依赖"
 tar -czf $bash_dist -C ./bash . 
+title "正在打包node_modules<<<请稍后..."
+tar --exclude="portDocument/*" -czf $modules_dist -C ./node_modules .
 
 title "打包接口文档"
 cd portDocument
@@ -49,7 +52,10 @@ mongodump --host localhost --port 27017 -o $home_dir -d jobpost
 tar -czf $db_dist -C ../jobpost .
 
 title "创建远程目录"
-ssh $user@$host "sudo rm -rf $deploy_dir/ && sudo mkdir -p $deploy_dir/db && sudo mkdir -p $deploy_dir/portDocument"
+ssh $user@$host "sudo rm -rf $deploy_dir/ && 
+  sudo mkdir -p $deploy_dir/db && 
+  sudo mkdir -p $deploy_dir/node_modules && 
+  sudo mkdir -p $deploy_dir/portDocument"
 
 title "上传源代码"
 ssh $user@$host "sudo chmod -R 777 $deploy_dir/"
@@ -57,6 +63,7 @@ scp -r $dist $user@$host:$deploy_dir
 
 title "上传本地依赖"
 scp -r $bash_dist $user@$host:$deploy_dir
+scp -r $modules_dist $user@$host:$deploy_dir
 
 title "上传接口文档"
 scp -r $port_rspec $user@$host:$deploy_dir/portDocument
@@ -65,13 +72,20 @@ title "上传数据库"
 scp -r $db_dist $user@$host:$deploy_dir/db
 
 title "解压源代码"
-ssh $user@$host "cd $deploy_dir && sudo tar -xzf jobposting_pro.tar.gz && sudo tar -xzf bash.tar.gz && cd portDocument && sudo tar -xzf port.tar.gz"
+ssh $user@$host "cd $deploy_dir && 
+  sudo tar -xzf jobposting_pro.tar.gz && 
+  sudo tar -xzf bash.tar.gz &&  
+  sudo tar -xzf node_modules.tar.gz -C ./node_modules && 
+  cd portDocument && sudo tar -xzf port.tar.gz"
 
 title "解压数据表"
 ssh $user@$host "cd $deploy_dir/db && sudo tar -xzf jobpost.tar.gz"
 
 title "删除gz文件"
-ssh $user@$host "cd $deploy_dir && sudo rm -rf jobposting_pro.tar.gz bash.tar.gz && sudo rm -rf ./db/jobpost.tar.gz && sudo rm -rf ./portDocument/port.tar.gz"
+ssh $user@$host "cd $deploy_dir && 
+  sudo rm -rf jobposting_pro.tar.gz bash.tar.gz node_modules.tar.gz&& 
+  sudo rm -rf ./db/jobpost.tar.gz &&
+  sudo rm -rf ./portDocument/port.tar.gz"
 
 # 在远程服务器上执行 setup.sh 脚本
 title "执行 setup_remote.sh 脚本"

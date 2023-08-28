@@ -28,8 +28,8 @@ mongorestore -d $db_name $db_folder
 title "服务端开始执行脚本"
 title "重启Nginx服务"
 sudo service nginx restart
-title "下载依赖"
-sudo npm install
+# title "下载依赖"
+# sudo npm install
 title "启动服务"
 killall node
 export NODE_ENV=production && npm run dev:pro
