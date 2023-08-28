@@ -324,7 +324,7 @@ router.post('/president/set', async function (req, res) {
       })
       res.status(200).json({ data: true })
     } else {
-      res.state(400).json({ message: '没有该同学信息！' })
+      res.status(400).json({ message: '没有该同学信息！' })
     }
   } catch (error) {
     res.status(500).json({ message: '服务器错误' });

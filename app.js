@@ -13,6 +13,7 @@ var uploadRouter = require('./routes/upload');
 var classRouter = require('./routes/class')
 var publishRouter = require('./routes/publishWork')
 var subjectRouter = require('./routes/subject')
+var feedbackRouter = require('./routes/feedBack')
 
 var app = express();
 app.use(cors());
@@ -55,6 +56,7 @@ app.use('/api/upload', uploadRouter);
 app.use('/api/class', classRouter);
 app.use('/api/pub', publishRouter);
 app.use('/api/subject', subjectRouter);
+app.use('/api/feedback', feedbackRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
