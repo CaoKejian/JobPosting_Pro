@@ -30,7 +30,11 @@ title "重启Nginx服务"
 sudo service nginx restart
 # title "下载依赖"
 # sudo npm install
+title "设置环境变量"
+export NODE_ENV=production
 title "启动服务"
 killall node
-export NODE_ENV=production && npm run dev:pro
-title '执行完毕！请访问:"http://43.139.142.203:3000/api"'
+npm run start &
+title "执行完毕！"
+echo "⭐️请访问后端地址->:"http://43.139.142.203:3000/api""
+echo "⭐️请访问接口文档->:"http://43.139.142.203""
