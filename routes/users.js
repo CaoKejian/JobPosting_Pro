@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const uuid = require('../secret.key');
 const verifyJWTAndRenew = require('../middleware/verifyJWT');
+const ClassInfoModel = require('../model/classInfo');
 
 // 定义数据验证规则
 const createUserValidationRules = [
@@ -37,7 +38,8 @@ router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (
   const info = {
     stuId: stuId,
     email: email,
-    name: name
+    name: name,
+    isAuth: false
   }
   if (x.length !== 0) {
     res.status(202).json({ message: '用户已存在', data: x });
@@ -235,7 +237,7 @@ router.post('/email/unsubmit', async function (req, res) {
       if (!data) {
         return
       }
-      const obj = { stuIds, url, user, branch, content, cutTime, unSubmit,name:data.name }
+      const obj = { stuIds, url, user, branch, content, cutTime, unSubmit, name: data.name }
       Email.noticeMail(data.email, obj, (state) => {
         if (state) {
           return res.status(200).json(data(200, {}))
@@ -260,7 +262,7 @@ router.post('/isself/auth', async function (req, res) {
     const { stuId, email, name } = req.body
     // 白名单 > 总裁权限
     const whiteArr = [2001]
-    if(whiteArr.includes(stuId)){
+    if (whiteArr.includes(stuId)) {
       res.send({ message: 'ok' })
     }
     const data = await UserModel.findOne({ stuId, email, name })
@@ -274,14 +276,70 @@ router.post('/isself/auth', async function (req, res) {
   }
 })
 
+/** 
+  * @type {info:{}}
+  * @param {info}
+  * @method 查询总裁权限
+  * @return {true|false}
+  */
+
+router.get('/president/auth', async function (req, res) {
+  const { stuId } = req.query
+  try {
+    const data = await UserModel.find({ stuId })
+    if (data.length === 0) {
+      return res.status(200).json({ data: [] })
+    }
+    if (data[0].isAuth) {
+      return res.status(200).json({ data: true });
+    }
+    res.status(200).json({ data: false })
+  } catch (error) {
+    res.status(500).json({ message: '服务器错误' });
+  }
+})
+
+/** 
+  * @param {stuId}
+  * @method 设置总裁权限
+  */
+
+router.post('/president/set', async function (req, res) {
+  const { stuId } = req.query
+  try {
+    const data = await UserModel.findOne({ stuId })
+    if (data) {
+      await UserModel.updateOne({
+        stuId: data.stuId,
+        email: data.email,
+        classId: data.classId,
+        name: data.name,
+        isAuth: true // 设置为true
+      })
+      await ClassInfoModel.updateOne({
+        stuId: data.stuId,
+        classId: data.classId,
+        name: data.name,
+        isAuth: true // 设置为true
+      })
+      res.status(200).json({ data: true })
+    } else {
+      res.state(400).json({ message: '没有该同学信息！' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: '服务器错误' });
+  }
+})
+
 router.get('/insert/test', async function (req, res) {
   try {
     const testData = [
-      { stuId: 2001062067, email: "3192410351@qq.com", name: "王硕", classId: 123123 },
-      { stuId: 2001062036, email: "515694789@qq.com", name: "蔡奇奇", classId: 123123 },
-      { stuId: 2001040023, email: "2256876027@qq.com", name: "李梓良", classId: 123123 },
-      { stuId: 2001062011, email: "971602307@qq.com", name: "聂宇博", classId: 123123 },
-      { stuId: 2001063036, email: "770527697@qq.com", name: "张博涵", classId: 123123 },
+      { stuId: 2001062028, email: "2594838054@qq.com", name: "黄梦瑶", classId: 123123, isAuth: false },
+      { stuId: 2001062067, email: "3192410351@qq.com", name: "王硕", classId: 123123, isAuth: false },
+      { stuId: 2001062036, email: "515694789@qq.com", name: "蔡奇奇", classId: 123123, isAuth: false },
+      { stuId: 2001040023, email: "2256876027@qq.com", name: "李梓良", classId: 123123, isAuth: false },
+      { stuId: 2001062011, email: "971602307@qq.com", name: "聂宇博", classId: 123123, isAuth: false },
+      { stuId: 2001063036, email: "770527697@qq.com", name: "张博涵", classId: 123123, isAuth: false },
     ]
     const data = await UserModel.insertMany(testData)
     if (data) {

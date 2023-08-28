@@ -113,11 +113,11 @@ router.post('/upload/auth', async function (req, res) {
 /** 
   * @type {info:{}}
   * @param {info}
-  * @method 查询下载权限
+  * @method 查询总裁权限
   * @return {true|false}
   */
 
-router.get('/download/auth', async function (req, res) {
+router.get('/president/auth', async function (req, res) {
   const { stuId } = req.query
   try {
     const data = await ClassInfoModel.find({stuId})

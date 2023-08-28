@@ -4,7 +4,8 @@ const UserType = {
   stuId: Number,
   email: String,
   classId: Number,
-  name: String
+  name: String,
+  isAuth: Boolean
 }
 
 
