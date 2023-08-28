@@ -6,6 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import s from './Welcome.module.scss'
 import useScrollDown from '../hooks/useScroll';
 import './transition.css'
+import { throttle } from '../share/Throttle';
 
 interface IProps {
   children?: ReactNode
@@ -22,7 +23,7 @@ const WelcomePage: FC<IProps> = () => {
       }
     }
   }, [])
-  const { canScrollDown: isMove } = useScrollDown(false,true)
+  const { canScrollDown: isMove } = useScrollDown(false, true)
   const navigate = useNavigate();
   const Welcome = () => {
     return (
@@ -42,11 +43,12 @@ const WelcomePage: FC<IProps> = () => {
       </div>
     )
   }
+  const push = throttle(() => {
+    navigate('/home')
+  }, 500)
   useEffect(() => {
     if (isMove) {
-      setTimeout(() => {
-        navigate('/home')
-      }, 200);
+      push()
     }
   }, [isMove])
   return (

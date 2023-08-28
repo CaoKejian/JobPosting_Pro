@@ -1,4 +1,4 @@
-export const throttle = (time:number,fn:Function) => {
+export const throttle = (fn:Function, time:number) => {
   let timer: ReturnType<typeof setTimeout> | undefined;
   return (...args:any) => {
     if(timer){

@@ -1,14 +1,12 @@
-export const Debounce = (fn: Function, time: number) => {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  
-  return (...args: any) => {
-    if (timer) {
-      clearTimeout(timer);
+export const debounce = (fn:(...arg:any[]) => any, duration:number = 300)  => {
+  let timer = -1;
+  return function (this:unknown, ...args:any[]) {
+    if(timer > -1){
+        clearTimeout(timer);
     }
-    
-    timer = setTimeout(() => {
-      fn(...args);
-      timer = undefined;
-    }, time);
-  };
-};
+    timer = window.setTimeout(() => {
+        fn.bind(this)(...args);
+        timer = -1;
+    }, duration);
+}
+}

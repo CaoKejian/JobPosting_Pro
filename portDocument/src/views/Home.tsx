@@ -3,18 +3,20 @@ import s from './Home.module.scss'
 import type { FC, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useScrollDown from '../hooks/useScroll'
+import { throttle } from '../share/Throttle'
 interface IProps {
   children?: ReactNode
 }
 
 const Home: FC<IProps> = () => {
-  const { canScrollUp: isMove } = useScrollDown(true,false)
+  const { canScrollUp: isMove } = useScrollDown(true, false)
   const navigate = useNavigate();
+  const push = throttle(() => {
+    navigate('/welcome', { state: { message: 'home_return' } })
+  }, 500)
   useEffect(() => {
     if (isMove) {
-      setTimeout(() => {
-          navigate('/welcome', {state: {message: 'home_return'}})
-      }, 200);
+      push()
     }
   }, [isMove])
   return (
