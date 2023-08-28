@@ -1,6 +1,6 @@
 var express = require('express');
 const FeedBackModel = require('../model/feedBack');
-const { ThanksMail } = require('../mailer');
+const Email = require('../mailer/index');
 
 var router = express.Router();
 
@@ -18,21 +18,23 @@ router.get('/', async function (req, res, next) {
 });
 
 /** 
-  * @type {form:{stuId,name,email,content}}
+  * @type {form:{stuId,name,email,feedBackValue}}
   * @param {form}
   * @method 提交反馈
   */
 
 router.post('/submit', async function (req, res, next) {
   try {
-    const { stuId, name, email, content } = req.body
-    if (content === '') {
+    const { form } = req.body
+    const { email, name, stuId, feedBackValue } = form
+    if (feedBackValue === '') {
       return res.status(400).json({ message: '反馈不能为空！' })
     }
+    console.log(email, name, stuId, feedBackValue )
     const data = await FeedBackModel.create({
-      stuId, name, email, content
+      stuId: +stuId, name, email, feedBackValue
     })
-    ThanksMail.sendMail(email, name, (state) => {
+    Email.ThanksMail(email, name, (state) => {
       if (state) {
         return res.status(200).json(data(200, {}))
       } else {

@@ -2,7 +2,9 @@ const mongoose = require("mongoose")
 
 const FeedBackType = {
   stuId: Number,
-  content: String
+  feedBackValue: String,
+  email: String,
+  name: String
 }
 
 
