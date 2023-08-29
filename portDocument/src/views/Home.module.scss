@@ -1,0 +1,39 @@
+.wrapper{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  .left{
+    width: 15%;
+    min-width: 60px;
+  }
+  .right{
+    flex: 1;
+  }
+}
+.wrapper {
+  animation: fadeIn 2s ease;
+}
+@keyframes fadeIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@media (max-width: 768px) {
+  .wrapper{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    .left {
+      width: 24%;
+      font-size: 0.8rem;
+    }
+    .right{
+      flex: 1;
+    }
+  }
+  
+}
+
