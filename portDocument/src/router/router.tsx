@@ -6,13 +6,17 @@ const WelcomePage = lazy(() => import('../views/WelcomePage'))
 
 const routes: RouteObject[] = [
   {
-    path: '/doc',
+    path: '/',
+    element: <WelcomePage />,
+  },
+  {
+    path: '/welcome',
     element: <WelcomePage />,
   },
   {
     path: '/home',
     element: <Home />,
-  },
+  }
 ]
 
 export default routes;

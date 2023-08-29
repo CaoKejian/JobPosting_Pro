@@ -1,20 +1,34 @@
 
 
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import s from './Welcome.module.scss'
 import useScrollDown from '../hooks/useScroll';
 import './transition.css'
 import { throttle } from '../share/Throttle';
+import useSwipe from '../hooks/useMove';
 
 interface IProps {
   children?: ReactNode
 }
 
 const WelcomePage: FC<IProps> = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [isReturn, setReturn] = useState(false)
+  const main = useRef(null)
+  const swipeOptions = {
+    beforeStart: (e: any) => e.preventDefault,
+    element: main
+  };
+  const { swiping, direction } = useSwipe(swipeOptions);
+  const { canScrollDown: isMove } = useScrollDown(false, true)
+  useEffect(() => {
+    if (!swiping && direction === 'up') {
+      push()
+    }
+  }, [swiping,direction])
   useEffect(() => {
     if (location.state) {
       const message = location.state.message || 0
@@ -22,12 +36,16 @@ const WelcomePage: FC<IProps> = () => {
         setReturn(true)
       }
     }
-  }, [])
-  const { canScrollDown: isMove } = useScrollDown(false, true)
-  const navigate = useNavigate();
+    if (isMove) {
+      push()
+    }
+  },[isMove])
+  const push = throttle(() => {
+    navigate('/home')
+  }, 500)
   const Welcome = () => {
     return (
-      <div className={s.active}>
+      <div className={s.active} ref={main}>
         <svg className={s.svg}><use xlinkHref='#welcome'></use></svg>
         <p>欢迎来到</p>
         <div className={s.container}><span className={s.word}>交作业啦App-接口文档</span></div>
@@ -43,18 +61,10 @@ const WelcomePage: FC<IProps> = () => {
       </div>
     )
   }
-  const push = throttle(() => {
-    navigate('/home')
-  }, 500)
-  useEffect(() => {
-    if (isMove) {
-      push()
-    }
-  }, [isMove])
   return (
     isReturn ? (
       <Welcome />) : (
-      <div className={s.wrapper}>
+      <div className={s.wrapper} ref={main}>
         <svg className={s.svg}><use xlinkHref='#welcome'></use></svg>
         <p>欢迎来到</p>
         <div className={s.container}><span className={s.word}>交作业啦App-接口文档</span></div>
