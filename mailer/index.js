@@ -58,7 +58,7 @@ function ThanksMail(mail, name, call) {
 	let mailOptions = {
 		from: '"曹珂俭" <caokejian@foxmail.com>', // 发送方
 		to: mail, //接收者邮箱，多个邮箱用逗号间隔
-		subject: `致谢信`, // 标题
+		subject: `这是一封致谢信`, // 标题
 		text: '交作业啦的致谢', // 文本内容
 		html: `<div style="background-color: rgb(150, 150, 150);height: 2rem;width: 100%;padding: 0 0.6rem;"></div>
 		<div style="text-align: center;">

@@ -6,11 +6,7 @@ const WelcomePage = lazy(() => import('../views/WelcomePage'))
 
 const routes: RouteObject[] = [
   {
-    path: '/',
-    element: <Navigate to='/welcome'/>
-  },
-  {
-    path: '/welcome',
+    path: '/doc',
     element: <WelcomePage />,
   },
   {
