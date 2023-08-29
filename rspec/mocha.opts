@@ -1,5 +1,0 @@
---reporter dot
---recursive
-
-rspec
---recursive
