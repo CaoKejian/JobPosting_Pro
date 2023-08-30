@@ -13,14 +13,14 @@ const Home: FC<IProps> = () => {
   const main = useRef(null)
   const navigate = useNavigate();
   const isMobile = window.innerWidth <= 768;
-  const { canScrollUp: isMove } = useScrollDown(true, false)
+  const { canScrollUp: isMove } = useScrollDown(true, false, isMobile)
   const swipeOptions = {
     beforeStart: (e: any) => e.preventDefault,
     element: main
   };
   const { swiping, direction } = useSwipe(swipeOptions);
   const push = throttle(() => {
-    navigate('/welcome', { state: { message: 'home_return' } })
+    navigate('/welcome')
   }, 500)
   useEffect(() => {
     if (isMobile && !swiping && direction === 'down') {
