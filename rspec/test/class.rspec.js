@@ -20,6 +20,7 @@ describe('班级信息', function () {
     const res = await request(app)
       .get('/api/class')
       .query({ classId })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('array')
@@ -35,6 +36,7 @@ describe('班级信息', function () {
     const res = await request(app)
       .get('/api/class')
       .query({ classId })
+      .set('Authorization', `Bearer testToken`)
       .expect(402)
     const data = res.body
     expect(data.message).to.equal('该班级下没有同学')

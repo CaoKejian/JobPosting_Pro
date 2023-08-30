@@ -28,6 +28,7 @@ describe('作业', function () {
     const res = await request(app)
       .get('/api/work/mywork')
       .query({ stuId })
+      .set('Authorization', `Bearer testToken`)
       .expect(200);
 
     // 断言返回数据
@@ -46,6 +47,7 @@ describe('作业', function () {
     const res = await request(app)
       .get('/api/work/otherwork')
       .query({ id })
+      .set('Authorization', `Bearer testToken`)
       .expect(200);
     const data = res.body;
     expect(data).to.be.an('object');
@@ -59,6 +61,7 @@ describe('作业', function () {
     const res = await request(app)
       .post('/api/work/submit')
       .send(ishaveobj) // 在请求中发送测试数据
+      .set('Authorization', `Bearer testToken`)
       .expect(402);
     // 断言响应
     const data = res.body;
@@ -73,6 +76,7 @@ describe('作业', function () {
     const res = await request(app)
       .post('/api/work/delete')
       .query({ id: '611dbf6f82f7eb001f8a93b1' })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data.message).to.equal('删除成功！')
@@ -110,6 +114,7 @@ describe('作业', function () {
         user: 'xxx',
         cutTime: 123123
       })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('object')
@@ -128,6 +133,7 @@ describe('作业', function () {
     const res = await request(app)
       .get('/api/work/one')
       .query({ stuId, branch })
+      .set('Authorization', `Bearer testToken`)
       .expect(200);
 
     // 断言返回数据
@@ -145,6 +151,7 @@ describe('作业', function () {
     const res = await request(app)
       .get('/api/work/class/allWork')
       .query({ classId: 1231123, branch: 'haha' })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('array')

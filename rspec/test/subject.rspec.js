@@ -15,6 +15,7 @@ describe('学科', function () {
     const res = await request(app)
       .post('/api/subject')
       .send({ classId, subject, user })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data.subject).to.equal('React')
@@ -32,6 +33,7 @@ describe('学科', function () {
     const res = await request(app)
       .post('/api/subject')
       .send({ classId, subject, user })
+      .set('Authorization', `Bearer testToken`)
       .expect(402)
     const data = res.body
     expect(data.message).to.equal('已存在该学科！')
@@ -48,6 +50,7 @@ describe('学科', function () {
     const res = await request(app)
       .get('/api/subject/myclass')
       .query({ user })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('object')
@@ -67,6 +70,7 @@ describe('学科', function () {
     const res = await request(app)
       .get('/api/subject/myclass/classId')
       .query({ classId })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('object')
@@ -86,6 +90,7 @@ describe('学科', function () {
     const res = await request(app)
       .get('/api/subject/myAll/subject')
       .query({ classId, user })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('object')
@@ -107,6 +112,7 @@ describe('学科', function () {
     const res = await request(app)
       .get('/api/subject/myclass/work')
       .query({ classId, user, subject })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('array')
@@ -128,6 +134,7 @@ describe('学科', function () {
     const res = await request(app)
       .get('/api/subject/myclass/work')
       .query({ classId, user, subject })
+      .set('Authorization', `Bearer testToken`)
       .expect(402)
     const data = res.body
     expect(data).to.be.an('object')

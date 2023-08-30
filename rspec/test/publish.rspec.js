@@ -22,6 +22,7 @@ describe('作业发布', function () {
     }
     const res = await request(app)
       .post('/api/pub')
+      .set('Authorization', `Bearer testToken`)
       .send(testData)
       .expect(200)
     const data = res.body
@@ -45,6 +46,7 @@ describe('作业发布', function () {
     await PublishWorkModel.create(testData)
     const res = await request(app)
       .post('/api/pub')
+      .set('Authorization', `Bearer testToken`)
       .send(testData)
       .expect(402)
     const data = res.body
@@ -64,6 +66,7 @@ describe('作业发布', function () {
     const res = await request(app)
       .get('/api/pub/user')
       .query({ user: 'xxx' })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('array')
@@ -83,6 +86,7 @@ describe('作业发布', function () {
     const res = await request(app)
       .get('/api/pub/subject')
       .query({ subject: '测试' })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('array')
@@ -102,6 +106,7 @@ describe('作业发布', function () {
     const res = await request(app)
       .get('/api/pub/class')
       .query({ classId: 111222 })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('array')
@@ -121,6 +126,7 @@ describe('作业发布', function () {
     const res = await request(app)
       .get('/api/pub/branch')
       .query({ branch: '组件定义', subject: 'React', classId: 222222 })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('object')
@@ -139,6 +145,7 @@ describe('作业发布', function () {
     const res = await request(app)
       .get('/api/pub/branch')
       .query({ branch: 'en', subject: 'React', classId: 222222 })
+      .set('Authorization', `Bearer testToken`)
       .expect(402)
     const data = res.body
     expect(data).to.be.an('object')
@@ -155,6 +162,7 @@ describe('作业发布', function () {
     const res = await request(app)
       .get('/api/pub/subject/branch')
       .query({ subject: 'React' })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('object')
@@ -173,6 +181,7 @@ describe('作业发布', function () {
     const res = await request(app)
       .get('/api/pub/subject/branch/info')
       .query({ classId:222222, branch: '作业2' })
+      .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
     expect(data).to.be.an('object')
