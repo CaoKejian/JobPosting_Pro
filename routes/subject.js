@@ -72,12 +72,17 @@ router.get('/myclass/classId', async function (req, res) {
 
 router.get('/myAll/subject', async function (req, res) {
   const { classId, user } = req.query
-  const data = await SubjectModel.find({ classId, user })
-  const subjects = new Set()
-  data.forEach(item => {
-    subjects.add(item.subject);
-  });
-  res.send({ subjects: [...subjects] })
+  try{
+    const data = await SubjectModel.find({ classId, user })
+    const subjects = new Set()
+    data.forEach(item => {
+      subjects.add(item.subject);
+    });
+    res.send({ subjects: [...subjects] })
+  }catch(err){
+    res.status(500).json({message: '服务器出错！'})
+  }
+ 
 })
 
 /** 
