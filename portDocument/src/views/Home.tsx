@@ -12,6 +12,7 @@ interface IProps {
 const Home: FC<IProps> = () => {
   const main = useRef(null)
   const navigate = useNavigate();
+  const isMobile = window.innerWidth <= 768;
   const { canScrollUp: isMove } = useScrollDown(true, false)
   const swipeOptions = {
     beforeStart: (e: any) => e.preventDefault,
@@ -22,15 +23,15 @@ const Home: FC<IProps> = () => {
     navigate('/welcome', { state: { message: 'home_return' } })
   }, 500)
   useEffect(() => {
-    if (!swiping && direction === 'down') {
+    if (isMobile && !swiping && direction === 'down') {
       push()
     }
-  }, [swiping, direction])
+  }, [isMobile, swiping, direction])
   useEffect(() => {
-    if (isMove) {
+    if (!isMobile && isMove) {
       push()
     }
-  }, [isMove])
+  }, [isMove, isMobile])
   return (
     <div className={s.wrapper} ref={main}>
       <div className={s.left}>侧边栏</div>

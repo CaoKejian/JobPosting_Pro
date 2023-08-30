@@ -18,17 +18,18 @@ const WelcomePage: FC<IProps> = () => {
   const location = useLocation();
   const [isReturn, setReturn] = useState(false)
   const main = useRef(null)
+  const isMobile = window.innerWidth <= 768;
   const swipeOptions = {
     beforeStart: (e: any) => e.preventDefault,
     element: main
   };
   const { swiping, direction } = useSwipe(swipeOptions);
-  const { canScrollDown: isMove } = useScrollDown(false, true)
   useEffect(() => {
-    if (!swiping && direction === 'up') {
+    if (isMobile && !swiping && direction === 'up') {
       push()
     }
-  }, [swiping,direction])
+  }, [isMobile, swiping, direction])
+  const { canScrollDown: isMove } = useScrollDown(false, true, isMobile);
   useEffect(() => {
     if (location.state) {
       const message = location.state.message || 0
@@ -36,10 +37,10 @@ const WelcomePage: FC<IProps> = () => {
         setReturn(true)
       }
     }
-    if (isMove) {
-      push()
+    if (!isMobile && isMove) {
+      push();
     }
-  },[isMove])
+  }, [isMove])
   const push = throttle(() => {
     navigate('/home')
   }, 500)
