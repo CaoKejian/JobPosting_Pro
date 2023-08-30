@@ -31,16 +31,19 @@ else
   echo "无效的选择。请输入 'yes' 或 'no'。"
 fi
 
+title "执行测试用例"
+mocha rspec/test --reporter dot
 title "clear tar*"
-rm -rf $dist $bash_dist $db_dist $port_rspec &modules_dist
+rm -rf $dist $bash_dist $db_dist $port_rspec $modules_dist
 
 title "打包源代码"
 tar --exclude="node_modules/*" --exclude="bash/*" --exclude="portDocument/*" -czf $dist *
-
-title "打包本地依赖"
 tar -czf $bash_dist -C ./bash . 
+
 title "正在打包node_modules<<<请稍后..."
-tar --exclude="portDocument/*" -czf $modules_dist -C ./node_modules .
+modules_total_size=$(du -sk ./node_modules | cut -f 1)
+tar --exclude="portDocument/*" -cf - -C ./node_modules . | pv -s ${modules_total_size}k | gzip > $modules_dist
+# tar --exclude="portDocument/*" -czf $modules_dist -C ./node_modules .
 
 title "打包接口文档"
 cd portDocument

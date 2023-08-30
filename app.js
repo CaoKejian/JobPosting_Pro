@@ -41,7 +41,7 @@ app.use((req, res, next) => {
   }
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      res.status(401).json({ message: '你没有权限！' })
+      res.status(401).json({ message: '你没有权限！' }) 
     } else {
       next();
     }
