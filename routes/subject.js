@@ -73,15 +73,11 @@ router.get('/myclass/classId', async function (req, res) {
 router.get('/myAll/subject', async function (req, res) {
   const { classId, user } = req.query
   const data = await SubjectModel.find({ classId, user })
-  if (data.length === 0) {
-    res.status(402).json({ message: '没有相关作业发布！' })
-  } else {
-    const subjects = new Set()
-    data.forEach(item => {
-      subjects.add(item.subject);
-    });
-    res.send({ subjects: [...subjects] })
-  }
+  const subjects = new Set()
+  data.forEach(item => {
+    subjects.add(item.subject);
+  });
+  res.send({ subjects: [...subjects] })
 })
 
 /** 
