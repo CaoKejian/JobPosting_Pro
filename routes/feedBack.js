@@ -5,15 +5,35 @@ const Email = require('../mailer/index');
 var router = express.Router();
 
 /** 
+  * @param {page}
   * @method 查询反馈总量
   */
 
 router.get('/', async function (req, res, next) {
+  const { page } = req.query
   try {
-    const data = await FeedBackModel.find({})
-    res.send(data)
-  } catch (err) {
-    res.status(500).send({ message: '服务器出错！', err })
+    const limitNumber = 16
+    const skip = (page - 1) * limitNumber;
+    const totalDocuments = await FeedBackModel.countDocuments({});
+    const data = await FeedBackModel.find({}).skip(skip).limit(limitNumber)
+    // 计算总页数
+    const totalPages = Math.ceil(totalDocuments / limitNumber);
+    res.json({
+      code: 200,
+      message: '查询成功',
+      data,
+      pagination: {
+        total: totalDocuments,
+        currentPage: page,
+        totalPages,
+        perPage: limitNumber,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      code: 500,
+      message: '查询失败',
+    });
   }
 });
 
