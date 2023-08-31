@@ -26,7 +26,7 @@ router.get('/', async function (req, res, next) {
 
 /** 
   * @param {stuId }
-  * @method 查询姓名
+  * @method 查询姓名和邮箱
   */
 
 router.get('/stuid/name', async function (req, res) {
@@ -75,7 +75,7 @@ router.post('/insert', async function (req, res) {
       classId,
       isAuth
     });
-    res.status(201).json({ message: '成员信息添加成功！', data: data });
+    res.status(200).json({ message: '成员信息添加成功！', data: data });
   } catch (error) {
     res.status(500).json({ message: '创建用户失败', error: error.message });
   }
