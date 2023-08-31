@@ -5,7 +5,8 @@ const UserType = {
   email: String,
   classId: Number,
   name: String,
-  isAuth: Boolean
+  isAuth: Boolean,
+  isRoot: Boolean
 }
 
 
