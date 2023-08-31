@@ -55,4 +55,22 @@ describe('user', function (req, res) {
     const data = res.body
     expect(data.data).to.equal(true)
   })
+  it('创建用户', async function () {
+    const res = await request(app)
+      .post('/api/user')
+      .send({ email: '1849201815@qq.com', name: '123', stuId: 121212 })
+      .expect(201);
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.message).to.equal('用户创建成功')
+  })
+  it('创建用户(已存在)', async function () {
+    const res = await request(app)
+      .post('/api/user')
+      .send({ email: '1849201815@qq.com', name: '123', stuId: 121212 })
+      .expect(202);
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.message).to.equal('用户已存在')
+  })
 })
