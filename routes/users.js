@@ -330,7 +330,7 @@ router.get('/root/auth', async function (req, res) {
   */
 
 router.post('/president/set', async function (req, res) {
-  const { stuId, isRoot = false } = req.query
+  const { stuId, isRoot = false } = req.body
   try {
     const data = await UserModel.findOne({ stuId })
     if (data) {
