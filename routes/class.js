@@ -110,28 +110,6 @@ router.post('/upload/auth', async function (req, res) {
   }
 })
 
-/** 
-  * @type {info:{}}
-  * @param {info}
-  * @method 查询总裁权限
-  * @return {true|false}
-  */
-
-router.get('/president/auth', async function (req, res) {
-  const { stuId } = req.query
-  try {
-    const data = await ClassInfoModel.find({stuId})
-    if(data.length===0){
-      return res.status(200).json({data:[]})
-    }
-    if(data[0].isAuth){
-      return res.status(200).json({data:true});
-    }
-    res.status(200).json({data:false})
-  } catch (error) {
-    res.status(500).json({ message: '服务器错误'});
-  }
-})
 
 router.get('/insert/info', async function (req, res) {
   const data = await ClassInfoModel.insertMany(usersToInsert)
