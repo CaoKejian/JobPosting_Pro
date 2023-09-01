@@ -122,4 +122,49 @@ describe('user', function (req, res) {
     expect(data).to.be.an('object')
     expect(data.message).to.equal('未找到任何信息')
   })
+  it('判断权限是否正确|身份是否正确', async function () {
+    const testData = [
+      { name: '1', stuId: 1, email: '1@qq.com' },
+    ]
+    await UserModel.deleteMany({})
+    await UserModel.insertMany(testData)
+    const res = await request(app)
+      .post('/api/user/isself/auth')
+      .send({ name: '1', stuId: 1, email: '1@qq.com' })
+      .set('Authorization', `Bearer testToken`)
+      .expect(200)
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.message).to.equal('ok')
+  })
+  it('判断权限是否正确|身份是否正确(错误)', async function () {
+    const testData = [
+      { name: '1', stuId: 1, email: '1@qq.com' },
+    ]
+    await UserModel.deleteMany({})
+    await UserModel.insertMany(testData)
+    const res = await request(app)
+      .post('/api/user/isself/auth')
+      .send({ name: '2', stuId: 2, email: '1@qq.com' })
+      .set('Authorization', `Bearer testToken`)
+      .expect(401)
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.message).to.equal('个人信息有误，请重新登录！')
+  })
+  it('判断权限是否正确|身份是否正确(白名单)', async function () {
+    const testData = [
+      { name: '1', stuId: 1, email: '1@qq.com' },
+    ]
+    await UserModel.deleteMany({})
+    await UserModel.insertMany(testData)
+    const res = await request(app)
+      .post('/api/user/isself/auth')
+      .send({ name: '2', stuId: 2001, email: '1@qq.com' })
+      .set('Authorization', `Bearer testToken`)
+      .expect(200)
+    const data = res.body
+    expect(data).to.be.an('object')
+    expect(data.message).to.equal('ok')
+  })
 })

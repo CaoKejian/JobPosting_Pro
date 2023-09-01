@@ -268,7 +268,7 @@ router.post('/isself/auth', async function (req, res) {
     // 白名单 > 总裁权限
     const whiteArr = [2001]
     if (whiteArr.includes(stuId)) {
-      res.send({ message: 'ok' })
+      return res.send({ message: 'ok' })
     }
     const data = await UserModel.findOne({ stuId, email, name })
     if (data) {
