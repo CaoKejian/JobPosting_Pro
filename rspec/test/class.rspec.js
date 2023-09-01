@@ -1,13 +1,4 @@
-var chai = require('chai');
-const chaiHttp = require('chai-http');
-const request = require('supertest');
-const app = require('../../app.js');
-const ClassInfoModel = require('../../model/classInfo.js');
-const UserModel = require('../../model/user.js');
-chai.use(chaiHttp);
-const expect = chai.expect;
-require('../mongodb.setup.js')
-
+const { request, app, UserModel, ClassInfoModel, expect } = require('../setup')
 
 describe('班级信息', function () {
   it('查询相关同学', async function () {

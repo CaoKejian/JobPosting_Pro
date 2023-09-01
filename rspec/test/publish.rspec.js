@@ -1,11 +1,5 @@
-var chai = require('chai');
-const chaiHttp = require('chai-http');
-const request = require('supertest');
-const app = require('../../app.js');
-const PublishWorkModel = require('../../model/publishWork.js');
-chai.use(chaiHttp);
-const expect = chai.expect;
-require('../mongodb.setup.js')
+const { request, app, PublishWorkModel, expect } = require('../setup')
+
 
 describe('作业发布', function () {
   it('查询发布成功', async function () {

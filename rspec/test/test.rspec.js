@@ -1,14 +1,4 @@
-// add.test.js
-var chai = require('chai');
-const chaiHttp = require('chai-http');
-const request = require('supertest');
-const app = require('../../app.js');
-const HomeWorkModel = require('../../model/homeWork.js');
-chai.use(chaiHttp);
-const expect = chai.expect;
-
-require('../mongodb.setup.js')
-
+const { request, app, HomeWorkModel, expect } = require('../setup')
 
 describe('作业', function () {
   it('我的作业', async function () {
