@@ -58,13 +58,13 @@ router.get('/class', async function (req, res) {
 })
 
 /** 
-  * @param {user}
-  * @method 按个人查询
+  * @param {user, classId}
+  * @method 查询个人发布在某班级下的所有学科
   */
 
 router.get('/user', async function (req, res) {
-  const { user } = req.query
-  const data = await PublishWorkModel.find({ user })
+  const { user, classId } = req.query
+  const data = await PublishWorkModel.find({ user, classId })
   if (data) {
     res.send(data)
   } else if (data.length === 0) {
@@ -132,7 +132,7 @@ router.get('/subject/branch', async function (req, res) {
 
 router.get('/subject/branch/info', async function (req, res) {
   const { classId, branch } = req.query
-  const data = await PublishWorkModel.findOne({ classId,branch })
+  const data = await PublishWorkModel.findOne({ classId, branch })
   if (data) {
     res.send(data)
   } else {
