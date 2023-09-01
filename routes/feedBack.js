@@ -50,7 +50,6 @@ router.post('/submit', async function (req, res, next) {
     if (feedBackValue === '') {
       return res.status(400).json({ message: '反馈不能为空！' })
     }
-    console.log(email, name, stuId, feedBackValue )
     const data = await FeedBackModel.create({
       stuId: +stuId, name, email, feedBackValue
     })
