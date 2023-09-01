@@ -75,7 +75,7 @@ router.get('/demand', async function (req, res) {
 
 /** 
   * @param {stuId, classId}
-  * @method 添加
+  * @method 添加至所选班级
   */
 
 router.get('/addclassId', async function (req, res) {
@@ -204,6 +204,7 @@ router.get('/verify/jwt', async (req, res, next) => {
 });
 
 /** 
+  * @type {number, []:已经提交过的学号}
   * @param {classId, stuIds}
   * @method 查询未交的名单
   * @return {data:[{stuId,classId}]}
@@ -214,6 +215,9 @@ router.get('/total', async function (req, res) {
     const { classId, stuIds } = req.query
     const peopleData = await UserModel.find({ classId }).select('stuId classId name');
     const filteredPeopleData = peopleData.filter(item => !stuIds.includes(item.stuId.toString()));
+    if(peopleData.length === 0){
+      return res.status(402).json({ message: '未找到任何信息' })
+    }
     if (filteredPeopleData) {
       res.json(filteredPeopleData)
     } else {
