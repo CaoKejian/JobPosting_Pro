@@ -55,6 +55,36 @@ router.post('/', createUserValidationRules, verifyJWTAndRenew, validate, async (
 });
 
 /** 
+  * @param {page}
+  * @method 查询所有已登录的同学和老师
+  */
+
+router.get('/all', async function (req, res) {
+  try {
+    const { page } = req.query
+    const limitNumber = 10
+    const skip = (page - 1) * limitNumber;
+    const totalDocuments = await UserModel.countDocuments({});
+    const data = await UserModel.find({}).skip(skip).limit(limitNumber)
+    // 计算总页数
+    const totalPages = Math.ceil(totalDocuments / limitNumber);
+    res.json({
+      code: 200,
+      message: '查询成功',
+      data,
+      pagination: {
+        total: totalDocuments,
+        currentPage: page,
+        totalPages,
+        perPage: limitNumber,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: '服务器出错！' })
+  }
+})
+
+/** 
   * @param {classId}
   * @method 查询本班所有同学
   */
@@ -215,7 +245,7 @@ router.get('/total', async function (req, res) {
     const { classId, stuIds } = req.query
     const peopleData = await UserModel.find({ classId }).select('stuId classId name');
     const filteredPeopleData = peopleData.filter(item => !stuIds.includes(item.stuId.toString()));
-    if(peopleData.length === 0){
+    if (peopleData.length === 0) {
       return res.status(402).json({ message: '未找到任何信息' })
     }
     if (filteredPeopleData) {
@@ -338,21 +368,8 @@ router.post('/president/set', async function (req, res) {
   try {
     const data = await UserModel.findOne({ stuId })
     if (data) {
-      await UserModel.updateOne({
-        stuId: data.stuId,
-        email: data.email,
-        classId: data.classId,
-        name: data.name,
-        isAuth: true,
-        isRoot: isRoot
-      })
-      await ClassInfoModel.updateOne({
-        stuId: data.stuId,
-        classId: data.classId,
-        name: data.name,
-        isAuth: true,
-        isRoot: isRoot
-      })
+      await UserModel.updateOne({ stuId: data.stuId }, { $set: { isAuth: true, isRoot: isRoot } })
+      await ClassInfoModel.updateOne({ stuId: data.stuId }, { $set: { isAuth: true, isRoot: isRoot } })
       res.status(200).json({ data: true })
     } else {
       res.status(400).json({ message: '没有该同学信息！' })
