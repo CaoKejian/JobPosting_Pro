@@ -104,6 +104,59 @@ router.get('/demand', async function (req, res) {
 })
 
 /** 
+  * @type {type:name|stuId|clssId|Auth|Root,value}
+  * @param {type,value}
+  * @method 根据type来查询
+  */
+
+router.get('/type/search', async function (req, res) {
+  try {
+    const { type, value, page } = req.query
+    const limitNumber = 10
+    const skip = (page - 1) * limitNumber;
+    const totalDocuments = type==='classId' ? await UserModel.countDocuments({ classId: +value }) : 0;
+    let result;
+    switch (type) {
+      case 'name':
+        result = await UserModel.find({ name: value });
+        break;
+      case 'stuId':
+        result = await UserModel.find({ stuId: +value });
+        break;
+      case 'classId':
+        result = await UserModel.find({ classId: +value }).skip(skip).limit(limitNumber)
+        break;
+      case 'Auth':
+        result = await UserModel.find({ isAuth: true });
+        break;
+      case 'Root':
+        result = await UserModel.find({ isRoot: true });
+        break;
+      default:
+        return res.status(400).json({ message: '无效的查询类型' });
+    }
+    const totalPages = Math.ceil(totalDocuments / limitNumber);
+    if (result.length > 0) {
+      res.status(200).json({
+        code: 200,
+        message: '查询成功',
+        data: result,
+        pagination: type !== 'classId' ? {} : {
+          total: totalDocuments,
+          currentPage: page,
+          totalPages,
+          perPage: limitNumber,
+        },
+      });
+    } else {
+      res.status(400).json({ message: '未找到匹配的记录' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: '服务器出错！' })
+  }
+})
+
+/** 
   * @param {stuId, classId}
   * @method 添加至所选班级
   */
