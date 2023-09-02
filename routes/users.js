@@ -359,7 +359,7 @@ router.get('/root/auth', async function (req, res) {
 
 /** 
   * @param {stuId:number, isRoot:Boolean}
-  * @param {stuId, type}
+  * @param {stuId, isRoot}
   * @method 设置总裁权限|默认设置总裁权限，如果传入isRoot=true，设置管理员权限
   */
 
@@ -370,6 +370,28 @@ router.post('/president/set', async function (req, res) {
     if (data) {
       await UserModel.updateOne({ stuId: data.stuId }, { $set: { isAuth: true, isRoot: isRoot } })
       await ClassInfoModel.updateOne({ stuId: data.stuId }, { $set: { isAuth: true, isRoot: isRoot } })
+      res.status(200).json({ data: true })
+    } else {
+      res.status(400).json({ message: '没有该同学信息！' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: '服务器错误' });
+  }
+})
+
+/** 
+  * @param {stuId:number}
+  * @param {stuId}
+  * @method 删除所有权限
+  */
+
+router.post('/president/delete', async function (req, res) {
+  const { stuId } = req.body
+  try {
+    const data = await UserModel.findOne({ stuId })
+    if (data) {
+      await UserModel.updateOne({ stuId: data.stuId }, { $set: { isAuth: false, isRoot: false } })
+      await ClassInfoModel.updateOne({ stuId: data.stuId }, { $set: { isAuth: false, isRoot: false } })
       res.status(200).json({ data: true })
     } else {
       res.status(400).json({ message: '没有该同学信息！' })
