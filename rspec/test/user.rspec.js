@@ -46,6 +46,21 @@ describe('user', function (req, res) {
     const data = res.body
     expect(data.data).to.equal(true)
   })
+  it('删除权限', async function () {
+    const textData = [
+      { classId: 123, name: '123', isAuth: true, stuId: 123123, isRoot: true },
+    ]
+    await UserModel.deleteMany({})
+    await ClassInfoModel.deleteMany({})
+    await UserModel.insertMany(textData)
+    await ClassInfoModel.insertMany(textData)
+    const res = await request(app)
+      .post('/api/user/president/delete')
+      .send({ stuId: 123123 })
+      .expect(200);
+    const data = res.body
+    expect(data.data).to.equal(true)
+  })
   it('创建用户', async function () {
     const res = await request(app)
       .post('/api/user')

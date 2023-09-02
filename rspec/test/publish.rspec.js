@@ -59,7 +59,7 @@ describe('作业发布', function () {
     await PublishWorkModel.create(testData)
     const res = await request(app)
       .get('/api/pub/user')
-      .query({ user: 'xxx' })
+      .query({ user: 'xxx', classId: 123123 })
       .set('Authorization', `Bearer testToken`)
       .expect(200)
     const data = res.body
