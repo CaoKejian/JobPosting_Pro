@@ -35,9 +35,10 @@ title "重启Nginx服务"
 sudo service nginx restart
 title "设置环境变量"
 export NODE_ENV=production
+export PORT=80
 title "启动服务"
 killall node
-npm run start &
+sudo npm run start &
 title "全部执行完毕！"
 echo "⭐️请访问后端地址->:"http://43.139.142.203:3000/api""
 echo "⭐️请访问接口文档->:"http://43.139.142.203:8080/""
