@@ -5,6 +5,20 @@ const UserModel = require('../model/user');
 var router = express.Router();
 
 /** 
+  * @param {}
+  * @method 查询录入的所有同学信息
+  */
+
+router.get('/all', async function (req, res, next) {
+  try {
+    const data = await ClassInfoModel.find()
+    res.status(200).send(data)
+  } catch (error) {
+    res.status(500).json({ message: '服务器出错！' })
+  }
+});
+
+/** 
   * @param {classId}
   * @method 查询此班级下的所有同学信息
   */
