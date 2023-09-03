@@ -133,10 +133,6 @@ router.get('/subject/branch', async function (req, res) {
 router.get('/subject/branch/info', async function (req, res) {
   const { classId, branch } = req.query
   const data = await PublishWorkModel.findOne({ classId, branch })
-  if (data) {
-    res.send(data)
-  } else {
-    res.status(402).json({ message: '没有相关信息！' })
-  }
+  res.send(data)
 })
 module.exports = router;
