@@ -12,8 +12,8 @@
   - 框架 React、vite
   - 引用技术 react-router、sass-loader、svgPlugin
 - 技术脚本：
-  - Bash（shell）脚本——一键部署至远程机器
-    1、packfor_remote 本地打包脚本
+  - Bash（shell）脚本——一键部署至远程机器  
+    1、packfor_remote 本地打包脚本  
     2、setup_remote 远端脚本
 
 ## 当前目录下有三个架构：后端服务(node.js) 和 数据分析服务(python) 和 接口文档(React)
@@ -25,9 +25,9 @@
 <pre>
 
 ├─ bash                                     /* 自动化脚本 */
-│  ├─ ga.sh                                 // 生产环境打包入口
-│  ├─ packfor_remote.sh                     // 构建脚本配置
-│  ├─ setup_remote.sh                       // 构建入口配置
+│  ├─ ga.sh                                 // 生产环境打包入口
+│  ├─ packfor_remote.sh                     // 构建脚本配置
+│  ├─ setup_remote.sh                       // 构建入口配置
 ├─ bin
 │  └─ www                                   // 启动文件
 ├─ config                                   /* 配置文件 */      
