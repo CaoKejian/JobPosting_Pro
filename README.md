@@ -5,6 +5,9 @@
 - API 服务：
   - 框架 express、mongoDB
   - 引用技术 express-validator、jwt、nodemailer、mocha、chai、supertest、mongodb-memory-server、腾讯云 COS
+- 数据分析(.py):
+  - 框架 Flask
+  - 引用技术 
 - 接口文档:
   - 框架 React、vite
   - 引用技术 react-router、sass-loader、svgPlugin
@@ -13,7 +16,7 @@
     1、packfor_remote 本地打包脚本
     2、setup_remote 远端脚本
 
-## 当前目录下有两个架构：后端服务和 React 接口文档
+## 当前目录下有三个架构：后端服务(node.js) 和 数据分析服务(python) 和 接口文档(React)
 
 > Express
 
@@ -53,6 +56,9 @@
 
 > React
 
+> 数据分析
+- 采用Python的Flask框架，因为python做API服务效率低，故整体项目服务使用node.js架构
+  - 数据分析
 ## Mocha 单元测试
 
 ```bash
