@@ -41,5 +41,27 @@ def euro12_data():
 
 @index.route('/titanic', methods=['GET'])
 def titanic_data():
-    
-    return '1'
+    df = pd.read_csv('./app/index/titanic.csv')
+    # 生存率和性别之间的关系是什么？
+    # 生存率和年龄之间的关系是什么？
+    # 生存率和船票等级之间的关系是什么？
+    # 生存率和性别的关系
+    sex_survival = (df.groupby('sex')['survived'].mean().round(4) * 100).apply(lambda x: f"{x}%").to_dict()
+    # 年龄分成几个区间
+    df['AgeGroup'] = pd.cut(df['age'], bins=[0, 18, 35, 60, 100], labels=['小孩', '青年', '成年', '年老' ])
+    age_survival = df.groupby('AgeGroup')['survived'].mean().round(2).to_dict()
+    # 生存率和船票等级的关系
+    class_survival = (df.groupby('pclass')['survived'].mean().round(3) * 100).apply(lambda x: f"{x}%").to_dict()
+     # 生存率和兄弟姐妹/配偶数量的关系
+    sibsp_survival = (df.groupby('sibsp')['survived'].mean().round(4) * 100).apply(lambda x: f"{x}%").to_dict()
+    # 生存率和父母/孩子数量的关系
+    parch_survival = (df.groupby('parch')['survived'].mean().round(4) * 100).apply(lambda x: f"{x}%").to_dict()
+    result = {
+        '性别和生存率': sex_survival,
+        '年龄和生存率': age_survival,
+        '票级和生存率': class_survival,
+        '兄弟姐妹/配偶数量和生存率': sibsp_survival,
+        '父母/孩子数量和生存率': parch_survival
+    }
+
+    return jsonify(result)
