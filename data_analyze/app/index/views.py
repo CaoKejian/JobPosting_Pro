@@ -3,6 +3,10 @@ from bson import json_util
 from . import index
 from flask import jsonify
 import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score
 
 @index.route('/', methods=['GET'])
 def index_router():
@@ -56,12 +60,31 @@ def titanic_data():
     sibsp_survival = (df.groupby('sibsp')['survived'].mean().round(4) * 100).apply(lambda x: f"{x}%").to_dict()
     # 生存率和父母/孩子数量的关系
     parch_survival = (df.groupby('parch')['survived'].mean().round(4) * 100).apply(lambda x: f"{x}%").to_dict()
+    # 数据模型
+    df.dropna(inplace=True)
+    X = df.drop('survived', axis=1)
+    y = df['survived']
+    # 数据预处理
+    scaler = StandardScaler()
+    X = pd.get_dummies(X)  # one-hot 编码
+    X = scaler.fit_transform(X)  # 标准化
+    # 划分数据集
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # 选择模型
+    model = LogisticRegression()
+    # 训练模型
+    model.fit(X_train, y_train)
+    # 预测
+    y_pred = model.predict(X_test)
+    # 评估模型
+    print("Accuracy:", accuracy_score(y_test, y_pred))
     result = {
         '性别和生存率': sex_survival,
         '年龄和生存率': age_survival,
         '票级和生存率': class_survival,
         '兄弟姐妹/配偶数量和生存率': sibsp_survival,
-        '父母/孩子数量和生存率': parch_survival
+        '父母/孩子数量和生存率': parch_survival,
+        '预测(错误)': accuracy_score(y_test, y_pred)
     }
 
     return jsonify(result)
