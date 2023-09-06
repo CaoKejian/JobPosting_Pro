@@ -32,9 +32,14 @@
 │  └─ www                                   // 启动文件
 ├─ config                                   /* 配置文件 */      
 │  ├─ db.config.js                          // 数据库连接
+├── data_analyze                            /* 数据分析 */
+│  │ ├── app
+│  │ │    ├─ ...                         
+│  │ │    ├─ student.js                     // 学生相关数据分析
+│  │ └── run.py                             // Flask启动文件
 ├── mailer                                  /* 邮件功能 */
-│   │   ├── ...
-│   │   └── utils.js                        // 限制请求次数
+│  │ ├── ...
+│  │ └── utils.js                           // 限制请求次数
 ├─ middleware                               /* 中间件文件 */
 │  ├─ verifyJWT.js                          //校验jwt  
 ├─ model                                    /* 设置模型 */
@@ -47,8 +52,8 @@
 │  ├─ user.js                               // 关于user的api服务
 ├─ rspec                                    /* 单元测试 */ 
 │  ├─ test                                  // 测试文件目录
-│  │   ├── ...
-│  │   └── user.js                          // user的测试文件
+│  │  ├── ...
+│  │  └── user.js                           // user的测试文件
 │  ├─ authMiddleware.js                     // jwt模拟中间件
 │  ├─ mongodb.setup.js                      // mongodb测试启动文件
 
