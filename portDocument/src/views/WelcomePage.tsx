@@ -46,7 +46,7 @@ const WelcomePage: FC<IProps> = () => {
       <div className={s.user}>
         <span>作者：<span className={s.colin}>Colin</span></span>
         <span>前端：<Link target="_blank" to='https://github.com/CaoKejian/JobPosting'>代码链接</Link>访问地址：<Link target="_blank" to='https://jobpost.caokejian.club/'>点击前往</Link></span>
-        <span>后端：<Link target="_blank" to='https://github.com/CaoKejian/JobPosting_Pro'>代码链接</Link>访问地址：<Link target="_blank" to='http://43.139.142.203/api'>点击前往</Link></span>
+        <span>后端：<Link target="_blank" to='https://github.com/CaoKejian/JobPosting_Pro'>代码链接</Link>访问地址：<Link target="_blank" to='http://124.70.188.74/api'>点击前往</Link></span>
         <span>接口文档：<Link target="_blank" to='https://github.com/CaoKejian/JobPosting_Pro/tree/main/portDocument'>代码链接</Link></span>
       </div>
       <div className={s.bottom} onClick={push}>

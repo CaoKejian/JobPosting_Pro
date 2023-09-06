@@ -1,7 +1,7 @@
 #!/bin/bash
 
-user=ubuntu
-host=43.139.142.203
+user=jobpost
+host=124.70.188.74
 deploy_dir=jobpro
 file_name=JobPosting_Pro
 home_dir=/Users/duibagroup/Desktop/myself
@@ -55,13 +55,14 @@ mongodump --host localhost --port 27017 -o $home_dir -d jobpost
 tar -czf $db_dist -C ../jobpost .
 
 title "创建远程目录"
-ssh $user@$host "sudo rm -rf $deploy_dir/ && 
-  sudo mkdir -p $deploy_dir/db && 
-  sudo mkdir -p $deploy_dir/node_modules && 
-  sudo mkdir -p $deploy_dir/portDocument"
+ssh $user@$host "rm -rf $deploy_dir/ && 
+   mkdir -p $deploy_dir && 
+   mkdir -p $deploy_dir/db && 
+   mkdir -p $deploy_dir/node_modules && 
+   mkdir -p $deploy_dir/portDocument"
 
 title "上传源代码"
-ssh $user@$host "sudo chmod -R 777 $deploy_dir/"
+ssh $user@$host "chmod -R 777 $deploy_dir/"
 scp -r $dist $user@$host:$deploy_dir
 
 title "上传本地依赖"
@@ -76,21 +77,21 @@ scp -r $db_dist $user@$host:$deploy_dir/db
 
 title "解压源代码"
 ssh $user@$host "cd $deploy_dir && 
-  sudo tar -xzf jobposting_pro.tar.gz && 
-  sudo tar -xzf bash.tar.gz &&  
-  sudo tar -xzf node_modules.tar.gz -C ./node_modules && 
-  cd portDocument && sudo tar -xzf port.tar.gz"
+   tar -xzf jobposting_pro.tar.gz && 
+   tar -xzf bash.tar.gz &&  
+   tar -xzf node_modules.tar.gz -C ./node_modules && 
+  cd portDocument &&  tar -xzf port.tar.gz"
 
 title "解压数据表"
-ssh $user@$host "cd $deploy_dir/db && sudo tar -xzf jobpost.tar.gz"
+ssh $user@$host "cd $deploy_dir/db &&  tar -xzf jobpost.tar.gz"
 
 title "删除gz文件"
 ssh $user@$host "cd $deploy_dir && 
-  sudo rm -rf jobposting_pro.tar.gz bash.tar.gz node_modules.tar.gz&& 
-  sudo rm -rf ./db/jobpost.tar.gz &&
-  sudo rm -rf ./portDocument/port.tar.gz"
+   rm -rf jobposting_pro.tar.gz bash.tar.gz node_modules.tar.gz&& 
+   rm -rf ./db/jobpost.tar.gz &&
+   rm -rf ./portDocument/port.tar.gz"
 
 # 在远程服务器上执行 setup.sh 脚本
 title "执行 setup_remote.sh 脚本"
-ssh $user@$host "cd $deploy_dir && sudo  chmod +x setup_remote.sh && ./setup_remote.sh"
+ssh $user@$host "cd $deploy_dir && chmod +x setup_remote.sh && ./setup_remote.sh"
 

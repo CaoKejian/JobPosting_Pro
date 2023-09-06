@@ -7,7 +7,7 @@
   - 引用技术 express-validator、jwt、nodemailer、mocha、chai、supertest、mongodb-memory-server、腾讯云 COS
 - 数据分析(.py):
   - 框架 Flask
-  - 引用技术 
+  - 引用技术 pandas、PyMongo
 - 接口文档:
   - 框架 React、vite
   - 引用技术 react-router、sass-loader、svgPlugin
@@ -83,4 +83,3 @@ mocha rspec/test --reporter dot // 执行测试用例
 | 12、解压所有文件                    | <空>                   |
 | 13、删除多余的 gz 文件              | <空>                   |
 | 14、执行远端的 setup_remote.sh 脚本 | <空>                   |
-| setup_remote.sh (远端)              | <空>                   |
