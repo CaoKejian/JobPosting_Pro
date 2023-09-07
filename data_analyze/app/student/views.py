@@ -7,6 +7,10 @@ import os
 from collections import Counter
 from bson import json_util
 import json
+from sklearn.cluster import KMeans
+from collections import Counter
+import numpy as np
+import os
 
     #type: name:string, time:string('YY-MM-DD')
     #param: name, time
@@ -77,25 +81,46 @@ def average_good():
     data = [{"subject": subject, "average": average} for subject, average in averages.items()]
     return jsonify(data), 200
 
-    #type: name:string
-    #param: name
-    #method: 个人提交习惯分析
-    #return: [{ type:'docx', bit: 0.82 }]
+    #type: classId:number
+    #param: classId
+    #method: 全班提交习惯
+    #return: [{ cluster_centers:[
+    #   [ 1,0 ], [0.75,0.25]
+    # ], file_types:['docx', 'jpeg'],
+    # student_labels:{name1:1,name2:0} }]
 @student.route('/habit')
 def selef_habit():
-    name = request.args.get('name')
-    homeworks = list(mongo.db.homeworks.find({"name": name}))
+    classId = request.args.get('classId')
+    homeworks = list(mongo.db.homeworks.find({"classId": int(classId)}))
+    if not homeworks:
+        return make_response(jsonify(message="班级没有任何提交信息"), 400) 
+    # 按照学生的名字进行分组
+    students = {}
+    for homework in homeworks:
+        name = homework['name']
+        file_type = os.path.splitext(homework['file']['fileUrl'])[1][1:]
+        if name not in students:
+            students[name] = []
+        students[name].append(file_type)
 
-    # 获取所有文件类型
-    file_types = [os.path.splitext(homework['file']['fileUrl'])[1][1:] for homework in homeworks]
+    # 确定所有可能的文件类型
+    all_file_types = sorted(set(file_type for file_types in students.values() for file_type in file_types))
 
-    # 计算每种文件类型的数量
-    type_counts = Counter(file_types)
+    # 计算每个学生的文件类型的提交频率
+    student_vectors = []
+    for file_types in students.values():
+        type_counts = Counter(file_types)
+        total = sum(type_counts.values())
+        student_vector = [type_counts.get(file_type, 0) / total for file_type in all_file_types]
+        student_vectors.append(student_vector)
 
-    # 计算每种文件类型的百分比
-    total = sum(type_counts.values())
-    type_bits = {file_type: count / total for file_type, count in type_counts.items()}
+    # 使用K-means算法进行聚类分析
+    kmeans = KMeans(n_clusters=2, random_state=0).fit(student_vectors)
 
-    # 将结果转换为所需的格式
-    data = [{"type": file_type, "bit": bit} for file_type, bit in type_bits.items()]
-    return jsonify(data), 200
+    # 输出每个学生的聚类标签
+    student_labels = {name: int(label) for name, label in zip(students.keys(), kmeans.labels_)}
+
+    # 输出聚类中心
+    cluster_centers = kmeans.cluster_centers_.tolist()
+
+    return jsonify({'student_labels': student_labels, 'cluster_centers': cluster_centers, 'file_types': all_file_types})
