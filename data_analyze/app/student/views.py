@@ -3,6 +3,8 @@ from app.mongo import mongo
 import pandas as pd
 from flask import jsonify, request,  make_response
 from datetime import datetime, timedelta
+import os
+from collections import Counter
 from bson import json_util
 import json
 
@@ -73,4 +75,27 @@ def average_good():
         averages[subject] = sum(scores) / len(scores) if scores else 0
 
     data = [{"subject": subject, "average": average} for subject, average in averages.items()]
+    return jsonify(data), 200
+
+    #type: name:string
+    #param: name
+    #method: 个人提交习惯分析
+    #return: [{ type:'docx', bit: 0.82 }]
+@student.route('/habit')
+def selef_habit():
+    name = request.args.get('name')
+    homeworks = list(mongo.db.homeworks.find({"name": name}))
+
+    # 获取所有文件类型
+    file_types = [os.path.splitext(homework['file']['fileUrl'])[1][1:] for homework in homeworks]
+
+    # 计算每种文件类型的数量
+    type_counts = Counter(file_types)
+
+    # 计算每种文件类型的百分比
+    total = sum(type_counts.values())
+    type_bits = {file_type: count / total for file_type, count in type_counts.items()}
+
+    # 将结果转换为所需的格式
+    data = [{"type": file_type, "bit": bit} for file_type, bit in type_bits.items()]
     return jsonify(data), 200

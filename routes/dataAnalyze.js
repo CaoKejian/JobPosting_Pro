@@ -38,4 +38,21 @@ router.get('/average', async function (req, res, next) {
   }
 });
 
+/** 
+  * @type {name:string}
+  * @param {name}
+  * @method 个人提交习惯
+  * @return {[{type:'docx', bit:0.87}]}
+  */
+
+router.get('/habit', async function (req, res, next) {
+  const { name } = req.query;
+  const apiUrl = `http://127.0.0.1:3001/student/habit`;
+  try {
+    const response = await http.get(apiUrl, { name })
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({ message: 'python request is failed' });
+  }
+});
 module.exports = router;
