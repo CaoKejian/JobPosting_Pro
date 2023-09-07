@@ -11,9 +11,8 @@ var router = express.Router();
 
 router.get('/week/frequency', async function (req, res, next) {
   const { time, name } = req.query;
-  const apiUrl = `http://127.0.0.1:3001/student/week`;
   try {
-    const response = await http.get(apiUrl, { time, name })
+    const response = await http.get('/student/week', { time, name })
     res.json(response);
   } catch (error) {
     res.status(500).json({ message: 'python request is failed' });
@@ -29,9 +28,8 @@ router.get('/week/frequency', async function (req, res, next) {
 
 router.get('/average', async function (req, res, next) {
   const { name } = req.query;
-  const apiUrl = `http://127.0.0.1:3001/student/average`;
   try {
-    const response = await http.get(apiUrl, { name })
+    const response = await http.get('/student/average', { name })
     res.json(response);
   } catch (error) {
     res.status(500).json({ message: 'python request is failed' });
@@ -51,9 +49,8 @@ router.get('/average', async function (req, res, next) {
 
 router.get('/habit', async function (req, res, next) {
   const { classId } = req.query;
-  const apiUrl = `http://127.0.0.1:3001/student/habit`;
   try {
-    const response = await http.get(apiUrl, { classId })
+    const response = await http.get('/student/habit', { classId })
     res.json(response);
   } catch (error) {
     res.status(500).json({ message: 'python request is failed' });
