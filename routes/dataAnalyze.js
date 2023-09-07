@@ -1,19 +1,17 @@
 var express = require('express');
-const axios = require('axios')
+const axios = require('axios');
+const http = require('../service/service');
 var router = express.Router();
 
 router.get('/week/frequency', async function (req, res, next) {
   const { time, name } = req.query;
-  const apiUrl = `http://127.0.0.1:3001/student/week?time=${time}&name=${name}`;
-
+  const apiUrl = `http://127.0.0.1:3001/student/week`;
   try {
-    const response = await axios.get(apiUrl);
-    const responseData = response.data;
-    console.log(responseData)
-    res.json(responseData);
+    const res = await http.get(apiUrl, { time, name })
+    res.json(res);
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).json({ message: 'error' });
+    console.log(error)
+    res.status(500).json({ message: 'python request is failed' });
   }
 });
 
