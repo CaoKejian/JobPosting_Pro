@@ -55,3 +55,22 @@ def week_frequency():
 
     # 将结果转换为 JSON 并返回
     return jsonify(daily_frequency.reset_index().rename(columns={'day_of_week': 'day', 'name': 'week'}).to_dict(orient='records'))
+
+    #type: name:string
+    #param: name
+    #method: 平均分和擅长方向分析
+    #return: [{ subject:'', average: 100 }]
+@student.route('/average')
+def average_good():
+    name = request.args.get('name')
+    homeworks = list(mongo.db.homeworks.find({"name": name}))
+
+    subjects = set(homework['subject'] for homework in homeworks)
+    averages = {}
+
+    for subject in subjects:
+        scores = [homework['score'] for homework in homeworks if homework['subject'] == subject and homework['score'] > 0]
+        averages[subject] = sum(scores) / len(scores) if scores else 0
+
+    data = [{"subject": subject, "average": average} for subject, average in averages.items()]
+    return jsonify(data), 200
