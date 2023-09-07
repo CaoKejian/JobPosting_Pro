@@ -11,6 +11,7 @@ from sklearn.cluster import KMeans
 from collections import Counter
 import numpy as np
 import os
+from decimal import Decimal, ROUND_HALF_UP
 
     #type: name:string, time:string('YY-MM-DD')
     #param: name, time
@@ -124,3 +125,61 @@ def selef_habit():
     cluster_centers = kmeans.cluster_centers_.tolist()
 
     return jsonify({'student_labels': student_labels, 'cluster_centers': cluster_centers, 'file_types': all_file_types})
+
+@student.route("/subjectscores")
+def score_subject():
+    name = request.args.get('name')
+    
+    if not name:
+        return make_response(jsonify(message="name is required"), 400)
+
+    # 查询特定学生的所有作业
+    homeworks = list(mongo.db.homeworks.find({'name': name}))
+
+    subject_scores = {}
+
+    for homework in homeworks:
+        subject = homework['subject']
+        score = Decimal(str(homework['score']))  # 转换为Decimal类型
+
+        if subject not in subject_scores:
+            subject_scores[subject] = {'scores': [], 'count': 0}
+
+        subject_scores[subject]['scores'].append(score)
+        subject_scores[subject]['count'] += 1
+
+    # 计算每个学科的平均分数并保留两位小数
+    subject_averages = {subject: round(np.mean(info['scores']), 2) for subject, info in subject_scores.items()}
+
+    # 创建一个空的相关性矩阵
+    num_subjects = len(subject_scores)
+    subjects = list(subject_scores.keys())
+    correlation_matrix = np.zeros((num_subjects, num_subjects))
+
+    # 填充相关性矩阵
+    for i in range(num_subjects):
+        for j in range(num_subjects):
+            if i != j:  # 避免每个学科与自身的关联分数
+                subject1 = subjects[i]
+                subject2 = subjects[j]
+                avg1 = subject_averages[subject1]
+                avg2 = subject_averages[subject2]
+                correlation_matrix[i, j] = abs(avg1 - avg2)
+
+    # 将相关性矩阵转换为字典形式
+    correlation_data = {}
+    for i in range(num_subjects):
+        subject1 = subjects[i]
+        correlation_data[subject1] = {}
+        for j in range(num_subjects):
+            if i != j:  # 避免每个学科与自身的关联分数
+                subject2 = subjects[j]
+                correlation_data[subject1][subject2] = float(correlation_matrix[i, j])  # 转换为浮点数
+
+    # 将数据转换为JSON，并设置ensure_ascii为False
+    json_data = json.dumps(correlation_data, ensure_ascii=False)
+
+    # 构建响应并设置响应头的字符编码
+    response = make_response(json_data, 200)
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return response
