@@ -5,6 +5,8 @@
   border-bottom-left-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
   opacity: 0; 
+  background: #fff;
+  font-weight: normal;
   transition: opacity 1s ease;
 }
 .block.show {

@@ -7,11 +7,12 @@ import './index.css'
 import Message from './Message'
 interface IProps {
   children?: ReactNode
+  title?: string
   desc: String
   jsonObj: {}
 }
 
-const Block: FC<IProps> = ({ desc, jsonObj }) => {
+const Block: FC<IProps> = ({ title='请求示例', desc, jsonObj }) => {
   const { isCopied, copyButtonRef, copyTextToClipboard } = useCopyToClipboard();
   const [svg, setSvg] = useState('#down')
   const [isShowBlock, setIsShowBlock] = useState(true)
@@ -39,7 +40,7 @@ const Block: FC<IProps> = ({ desc, jsonObj }) => {
   };
   return (
     <div className={s.wrapper}>
-      <h1>请求示例</h1>
+      <h1>{title}</h1>
       <p className={s.desc}>{desc}</p>
       <div className={s.container}>
         <div className={s.title}>

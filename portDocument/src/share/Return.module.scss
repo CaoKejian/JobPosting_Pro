@@ -1,0 +1,34 @@
+.wrapper{
+  width: 100%;
+  padding: 1rem 0.4rem;
+  box-sizing: border-box;
+  >h1{
+    font-size: 1.6rem;
+  }
+  .desc{
+    width: 100%;
+    background: #eff0f0;
+    padding: 1rem 0.5rem;
+    margin-top: 1.2rem;
+    font-weight: bold;
+    box-sizing: border-box;
+    >div{
+      margin: 1rem 0;
+      .status{
+        background: #e1e2e2;
+        padding:0 0.4rem;
+        box-sizing: border-box;
+        border-radius: 0.3rem;
+      }
+      >span{
+        font-weight: normal;
+      }
+    }
+    
+  }
+}
+@media (max-width: 768px) {
+  >h1{
+    font-size: 1.2rem;
+  }
+}
