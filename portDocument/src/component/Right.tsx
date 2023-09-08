@@ -3,6 +3,7 @@ import type { FC, ReactNode } from 'react'
 import Main from '../share/Main'
 import s from './Right.module.scss'
 import Table from '../share/Table'
+import Notice from '../share/Notice'
 interface IProps {
   children?: ReactNode
 }
@@ -33,6 +34,7 @@ const Right: FC<IProps> = () => {
       {/* <JsonView value={jsonObj}></JsonView> */}
       <Main obj={obj} />
       <Table table={TableObj} />
+      <Notice desc={'stuId 是必填的，根据它有很多重要操作'}/>
     </div>
   )
 }
