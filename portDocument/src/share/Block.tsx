@@ -4,6 +4,7 @@ import s from './Block.module.scss'
 import JsonView from '@uiw/react-json-view'
 import useCopyToClipboard from '../hooks/useCopy'
 import './index.css'
+import Message from './Message'
 interface IProps {
   children?: ReactNode
   desc: String
@@ -14,7 +15,8 @@ const Block: FC<IProps> = ({ desc, jsonObj }) => {
   const { isCopied, copyButtonRef, copyTextToClipboard } = useCopyToClipboard();
   const [svg, setSvg] = useState('#down')
   const [isShowBlock, setIsShowBlock] = useState(true)
-  const [isBlockVisible, setIsBlockVisible] = useState(true);
+  const [isBlockVisible, setIsBlockVisible] = useState(true)
+  const [message, setMessage] = useState<{text:string, type:string, autoClose:boolean}>()
   const onFold = () => {
     setIsBlockVisible(!isBlockVisible);
     if (svg === '#right') {
@@ -27,8 +29,12 @@ const Block: FC<IProps> = ({ desc, jsonObj }) => {
   }
   const handleCopyClick = () => {
     copyTextToClipboard(JSON.stringify(jsonObj))
-    if(isCopied){
-      alert('复制成功')
+    if (isCopied) {
+      setMessage({
+        text: '复制成功',
+        type: 'success',
+        autoClose: true,
+      });
     }
   };
   return (
@@ -50,6 +56,13 @@ const Block: FC<IProps> = ({ desc, jsonObj }) => {
           }
         </div>
       </div>
+      {message && (
+        <Message
+          message={message.text}
+          type={message.type}
+          onClose={() => setMessage(undefined)}
+        />
+      )}
     </div>
   )
 }
