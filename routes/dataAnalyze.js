@@ -57,4 +57,24 @@ router.get('/habit', async function (req, res, next) {
   }
 });
 
+/** 
+  * @type {name:string}
+  * @param {name}
+  * @method 学科之间的相关性
+  * @return {{学科1:{
+  *   学科2:0.34, 学科3:0.56
+  * }},{学科2:{
+*   学科1:0.24, 学科3:0.56,
+* }}}
+*/
+
+router.get('/subjectscores', async function (req, res, next) {
+  const { name } = req.query;
+  try {
+    const response = await http.get('/student/subjectscores', { name })
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({ message: 'python request is failed' });
+  }
+});
 module.exports = router;
