@@ -2,6 +2,10 @@
   width: 100%;
   padding: 1rem 0.4rem;
   box-sizing: border-box;
+  >h1{
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
   .container{
     border-radius: 0.3rem;
     background: #ddeefc;
@@ -19,5 +23,8 @@
   .wrapper{
     width: 90%;
     margin: 0 auto;
+    >h1{
+      font-size: 1.2rem;
+    }
   }
 }

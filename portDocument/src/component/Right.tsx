@@ -46,10 +46,7 @@ const Right: FC<IProps> = () => {
       </div>
       <Return jsonObj={jsonObj} type='success' response={response} />
       <Return jsonObj={jsonObj} type='failed' response={response} />
-      <div className={s.notice}>
-        <h1>注意事项</h1>
-        <Notice desc={'如果用户的用户信息不存在，将会使用请求的数据创建一个新的用户信息。'} />
-      </div>
+      <Notice title='注意事项' desc={'如果用户的用户信息不存在，将会使用请求的数据创建一个新的用户信息。'} />
     </div>
   )
 }
