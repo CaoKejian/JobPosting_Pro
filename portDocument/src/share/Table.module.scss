@@ -1,0 +1,39 @@
+.wrapper{
+  width: 100%;
+  padding: 1rem 0.4rem;
+  box-sizing: border-box;
+  >h1{
+    font-size: 1.6rem;
+  }
+  >table{
+    margin-top: 0.6rem;
+    border-collapse: collapse;
+    width: 100%;
+    .param{
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      background: #f0f0f0;
+    }
+    th, td{
+      border: 1px solid #e7e9e8;
+      padding: 1rem 0.4rem; 
+      text-align: left;
+      background: #fff;
+      font-weight: 300;
+    }
+    th {
+      background-color: #f5f5f5; 
+      font-weight: bold; 
+      padding: 0.5rem;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .wrapper{
+    width: 90%;
+    margin: 0 auto;
+    >h1{
+      font-size: 1.2rem;
+    }
+  }
+}

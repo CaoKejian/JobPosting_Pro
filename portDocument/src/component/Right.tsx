@@ -1,8 +1,8 @@
-import JsonView from '@uiw/react-json-view'
 import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import Main from '../share/Main'
 import s from './Right.module.scss'
+import Table from '../share/Table'
 interface IProps {
   children?: ReactNode
 }
@@ -23,10 +23,16 @@ const Right: FC<IProps> = () => {
       nAuth: true
     }
   }
+  const TableObj = [
+    { param: 'name', type: 'String', pattern: '' },
+    { param: 'stuId', type: 'String', pattern: '' },
+    { param: 'classId', type: 'String', pattern: '6位数字' }
+  ]
   return (
     <div className={s.wrapper}>
       {/* <JsonView value={jsonObj}></JsonView> */}
-      <Main obj={obj}/>
+      <Main obj={obj} />
+      <Table table={TableObj} />
     </div>
   )
 }
