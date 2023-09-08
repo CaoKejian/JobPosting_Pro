@@ -20,8 +20,7 @@ const useSwipe = (options: Options) => {
   const end = useRef<Point | null>(null);
   const [swiping, setSwiping] = useState(false);
   const onStart = (e: any) => {
-    e.preventDefault();
-    if (options.beforeStart) {
+    if (options.beforeStart && shouldPreventDefault(e)) {
       e.preventDefault();
       options.beforeStart(e);
     }
@@ -77,7 +76,10 @@ const useSwipe = (options: Options) => {
       return distance.y > 0 ? 'down' : 'up';
     }
   })();
-
+  const shouldPreventDefault = (e: React.TouchEvent) => {
+    const threshold = 10; // 自定义阈值
+    return Math.abs(distance.x!) > threshold || Math.abs(distance.y!) > threshold;
+  };
   return {
     swiping,
     direction,

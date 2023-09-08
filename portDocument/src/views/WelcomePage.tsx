@@ -23,6 +23,7 @@ const WelcomePage: FC<IProps> = () => {
   };
   const { swiping, direction } = useSwipe(swipeOptions);
   useEffect(() => {
+    console.log(swiping, direction)
     if (isMobile && !swiping && direction === 'up') {
       push()
     }
@@ -37,7 +38,7 @@ const WelcomePage: FC<IProps> = () => {
     navigate('/home')
   }, 500)
   return (
-    <div className={s.wrapper} ref={main}>
+    <div className={s.wrapper} ref={main} onClick={() => console.log('click')}>
       <svg className={s.svg}><use xlinkHref='#welcome'></use></svg>
       <p>欢迎来到</p>
       <div className={s.container}><span className={s.word}>交作业啦App-接口文档</span></div>

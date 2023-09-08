@@ -48,7 +48,7 @@ const Block: FC<IProps> = ({ title='请求示例', desc, jsonObj }) => {
           <div className={s.title_right}>
             <span className={s.json}>JSON |</span>
             <svg className={s.svg} ref={copyButtonRef} onClick={handleCopyClick}><use xlinkHref='#copy'></use></svg>
-            <span>复制代码</span>
+            <span onClick={handleCopyClick}>复制代码</span>
           </div>
         </div>
         <div className={[`block ${isBlockVisible ? 'show' : ''}`].join()}>
