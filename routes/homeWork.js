@@ -66,9 +66,13 @@ router.get('/', async function (req, res) {
   */
 
 router.get('/mywork', async function (req, res) {
-  const { stuId } = req.query
-  const data = await HomeWorkModel.find({ stuId }).limit(5)
-  res.send(data)
+  try {
+    const { stuId } = req.query
+    const data = await HomeWorkModel.find({ stuId }).limit(5)
+    res.send(data)
+  } catch (err) {
+    res.status(500).json({ message: '服务器错误！' })
+  }
 })
 
 /** 
@@ -77,19 +81,23 @@ router.get('/mywork', async function (req, res) {
   */
 
 router.get('/classwork', async function (req, res) {
-  const { classId } = req.query
-  // 获取当前日期的时间戳
-  const currentDate = new Date();
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(currentDate.getDate() - 30);
-  const data = await HomeWorkModel.find({
-    classId,
-    timestamp: { $gte: thirtyDaysAgo.getTime() } // 使用$gte操作符来匹配大于等于指定时间戳的文档
-  });
-  if (data.length === 0) {
-    res.status(402).json({ message: '没有相关数据！' })
+  try {
+    const { classId } = req.query
+    // 获取当前日期的时间戳
+    const currentDate = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+    const data = await HomeWorkModel.find({
+      classId,
+      timestamp: { $gte: thirtyDaysAgo.getTime() } // 使用$gte操作符来匹配大于等于指定时间戳的文档
+    });
+    if (data.length === 0) {
+      res.status(402).json({ message: '没有相关数据！' })
+    }
+    res.send(data)
+  } catch (err) {
+    res.status(500).json({ message: '服务器错误！' })
   }
-  res.send(data)
 })
 
 /** 
@@ -117,8 +125,8 @@ router.get('/otherwork', async function (req, res) {
   */
 
 router.get('/one', async function (req, res) {
-  const { stuId, branch } = req.query
   try {
+    const { stuId, branch } = req.query
     const data = await HomeWorkModel.findOne({
       branch,
       stuId: Number(stuId)
@@ -135,12 +143,12 @@ router.get('/one', async function (req, res) {
   */
 
 router.get('/correct/work', async function (req, res) {
-  const { classId, branch } = req.query
   try {
+    const { classId, branch } = req.query
     const data = await HomeWorkModel.find({
       classId,
       branch,
-      isPass: { $ne: true } 
+      isPass: { $ne: true }
     })
     res.json(data)
   } catch (error) {
@@ -154,8 +162,8 @@ router.get('/correct/work', async function (req, res) {
   */
 
 router.get('/class/allWork', async function (req, res) {
-  const { classId, branch } = req.query
   try {
+    const { classId, branch } = req.query
     const data = await HomeWorkModel.find({
       classId,
       branch
@@ -195,12 +203,16 @@ router.post('/delete', async function (req, res) {
   */
 
 router.get('/upload/work', async function (req, res) {
-  const { id } = req.query
-  const data = await HomeWorkModel.findOne({ _id: id })
-  if (!data) {
-    return res.status(402).json({ message: '未找到相关作业！' });
-  } else {
-    res.send(data)
+  try {
+    const { id } = req.query
+    const data = await HomeWorkModel.findOne({ _id: id })
+    if (!data) {
+      return res.status(402).json({ message: '未找到相关作业！' });
+    } else {
+      res.send(data)
+    }
+  } catch (err) {
+    res.stauts(500).json({ message: '服务器错误' })
   }
 })
 
@@ -251,10 +263,10 @@ router.get('/download', async function (req, res) {
       subject
     }).select('file stuId')
     if (data) {
-      if(data.length === 0){
-        const x = await UserModel.find({classId}).select('file stuId')
+      if (data.length === 0) {
+        const x = await UserModel.find({ classId }).select('file stuId')
         const stuIds = x.map(item => item.stuId)
-        res.json({stuIds, data})
+        res.json({ stuIds, data })
         return
       }
       const stuIds = data.map(item => item.stuId); // 提取 stuId 到数组
@@ -293,33 +305,37 @@ router.get('/download/one', async function (req, res) {
   */
 
 router.post('/submit', async function (req, res, next) {
-  const { classId, name, stuId, subject, branch, file, content, score, tComments, favor, isPass, user, cutTime } = req.body
-  const timestamp = Date.now();
-  const isHave = await HomeWorkModel.find({
-    stuId,
-    classId: classId,
-    branch: branch
-  })
-  if (isHave.length !== 0) {
-    return res.status(402).json({ message: '不要重复上传' })
-  } else {
-    const data = await HomeWorkModel.create({
-      classId,
-      name,
+  try {
+    const { classId, name, stuId, subject, branch, file, content, score, tComments, favor, isPass, user, cutTime } = req.body
+    const timestamp = Date.now();
+    const isHave = await HomeWorkModel.find({
       stuId,
-      subject,
-      branch,
-      file,
-      content,
-      score,
-      tComments,
-      favor,
-      isPass,
-      user,
-      cutTime,
-      time: timestamp
+      classId: classId,
+      branch: branch
     })
-    res.status(200).send(data)
+    if (isHave.length !== 0) {
+      return res.status(402).json({ message: '不要重复上传' })
+    } else {
+      const data = await HomeWorkModel.create({
+        classId,
+        name,
+        stuId,
+        subject,
+        branch,
+        file,
+        content,
+        score,
+        tComments,
+        favor,
+        isPass,
+        user,
+        cutTime,
+        time: timestamp
+      })
+      res.status(200).send(data)
+    }
+  } catch (err) {
+    res.status(500).json({ message: '服务器错误' })
   }
 });
 

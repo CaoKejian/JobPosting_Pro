@@ -390,8 +390,8 @@ router.post('/isself/auth', async function (req, res) {
   */
 
 router.get('/president/auth', async function (req, res) {
-  const { stuId } = req.query
   try {
+    const { stuId } = req.query
     const data = await UserModel.find({ stuId })
     if (data.length === 0) {
       return res.status(200).json({ data: [] })
@@ -413,8 +413,8 @@ router.get('/president/auth', async function (req, res) {
   */
 
 router.get('/root/auth', async function (req, res) {
-  const { stuId } = req.query
   try {
+    const { stuId } = req.query
     const data = await UserModel.find({ stuId })
     if (data.length === 0) {
       return res.status(200).json({ data: [] })
@@ -435,8 +435,8 @@ router.get('/root/auth', async function (req, res) {
   */
 
 router.post('/president/set', async function (req, res) {
-  const { stuId, isRoot = false } = req.body
   try {
+    const { stuId, isRoot = false } = req.body
     const data = await UserModel.findOne({ stuId })
     if (data) {
       await UserModel.updateOne({ stuId: data.stuId }, { $set: { isAuth: true, isRoot: isRoot } })
@@ -457,8 +457,8 @@ router.post('/president/set', async function (req, res) {
   */
 
 router.post('/president/delete', async function (req, res) {
-  const { stuId } = req.body
   try {
+    const { stuId } = req.body
     const data = await UserModel.findOne({ stuId })
     if (data) {
       await UserModel.updateOne({ stuId: data.stuId }, { $set: { isAuth: false, isRoot: false } })
