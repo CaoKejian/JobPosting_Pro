@@ -1,0 +1,43 @@
+.wrapper{
+  width: 100%;
+  padding: 1rem 0.4rem;
+  box-sizing: border-box;
+  >h1{
+    font-size: 1.6rem;
+  }
+  .desc{
+    margin-top: 1.2rem;
+  }
+  .container{
+    margin: 0.6rem 0;
+    display: flex;
+    flex-direction: column;
+    .title{
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f5f5f5;
+      cursor: pointer;
+      border: 1px solid #e7e9e8;
+      border-top-left-radius: 0.3rem;
+      border-top-right-radius: 0.3rem;
+      user-select: none;
+      box-sizing: border-box;
+      .json{
+        color: #c0c0c0;
+      }
+      .svg{
+        padding: 0.4rem;
+        width: 0.8rem;
+        height: 0.8rem;
+        margin: 0 0.4rem;
+      }
+      &_right{
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}

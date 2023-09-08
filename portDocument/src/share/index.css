@@ -1,0 +1,12 @@
+.block{
+  font-size: 0.8rem;
+  border: 1px solid #e7e9e8;
+  border-top: none;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  opacity: 0; 
+  transition: opacity 1s ease;
+}
+.block.show {
+  opacity: 1;
+}
