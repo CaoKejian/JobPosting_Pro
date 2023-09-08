@@ -34,10 +34,8 @@ const WelcomePage: FC<IProps> = () => {
     }
   }, [isMove, isMobile])
   const push = throttle(() => {
-    console.log(121)
     navigate('/home')
   }, 500)
-
   return (
     <div className={s.wrapper} ref={main}>
       <svg className={s.svg}><use xlinkHref='#welcome'></use></svg>

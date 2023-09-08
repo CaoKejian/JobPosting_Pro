@@ -21,7 +21,10 @@ const useSwipe = (options: Options) => {
   const [swiping, setSwiping] = useState(false);
   const onStart = (e: any) => {
     e.preventDefault();
-    if (options.beforeStart) options.beforeStart(e);
+    if (options.beforeStart) {
+      e.preventDefault();
+      options.beforeStart(e);
+    }
     setSwiping(true);
     end.current = start.current = { x: e.touches[0].screenX, y: e.touches[0].screenY };
     if (options.afterStart) options.afterStart(e);

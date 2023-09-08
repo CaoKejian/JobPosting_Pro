@@ -15,3 +15,9 @@
     margin-right: 1rem;
   }
 }
+@media (max-width: 768px) {
+  .wrapper{
+    width: 90%;
+    margin: 0 auto;
+  }
+}

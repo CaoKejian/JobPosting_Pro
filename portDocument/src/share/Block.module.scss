@@ -38,8 +38,15 @@
         align-items: center;
       }
     }
-    .block{
-      background: red;
+  }
+}
+@media (max-width: 768px) {
+  .wrapper, .notice{
+    width: 90%;
+    margin: 0 auto;
+    text-align: left;
+    >h1{
+      font-size: 1.2rem;
     }
   }
 }

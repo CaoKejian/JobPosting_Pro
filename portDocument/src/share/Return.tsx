@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const Return: FC<IProps> = ({ type, jsonObj, response }) => {
-  return (
+  return (<>
     <div className={s.wrapper}>
       <h1>{type === 'success' ? "成功响应" : "失败响应"}</h1>
       <div className={s.desc}>
@@ -22,8 +22,11 @@ const Return: FC<IProps> = ({ type, jsonObj, response }) => {
         <div>状态码：<span className={s.status}>{response.status}</span></div>
         <div>响应示例：<span>{response.exampleDesc}</span></div>
       </div>
+    </div>
+    <div className={s.block}>
       <Block title={''} desc={''} jsonObj={jsonObj} />
     </div>
+  </>
   )
 }
 

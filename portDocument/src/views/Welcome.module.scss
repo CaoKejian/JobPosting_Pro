@@ -34,6 +34,7 @@
     position: absolute;
     bottom: 1rem;
     animation: tobottom 1.5s infinite;
+    z-index: 9000;
     .tobottom{
       width: 3rem;
       height: 3rem;
