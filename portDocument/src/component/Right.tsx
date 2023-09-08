@@ -14,7 +14,7 @@ interface IProps {
 
 const Right: FC<IProps> = ({ portObj }) => {
   const { failedReturn, notice, paramsMode, requestMode, successReturn, useMode } = portObj
-  return (
+  return (<>
     <div className={s.wrapper}>
       <Main obj={useMode} />
       <Table table={paramsMode.params} />
@@ -26,6 +26,8 @@ const Right: FC<IProps> = ({ portObj }) => {
       <Return jsonObj={failedReturn.jsonObj} type='failed' response={failedReturn.response} />
       <Notice title='注意事项' desc={notice} />
     </div>
+    <hr />
+  </>
   )
 }
 

@@ -333,5 +333,72 @@ export const portTree: Root = [
       }
     },
     notice: '首先会查询，如果有就更新'
+  },
+  {
+    branch: 'xxx',
+    useMode: {
+      title: '添加至所选班级',
+      desc: '通过 stuId, classId 的值将classId添加至该(stuId)同学，返回数据',
+      way: {
+        url: '/api/user/addclassId',
+        method: 'GET',
+        nLogin: true,
+        nAuth: true
+      }
+    },
+    paramsMode: {
+      notice: 'page、type、value 是必填的，根据它查数据库',
+      params: [
+        { param: 'stuId', type: 'Number', pattern: '' },
+        { param: 'classId', type: 'String', pattern: '6位数字' },
+      ],
+    },
+    requestMode: {
+      notice: '如果有匹配，就更新数据库，返回数据',
+      reqjson: {
+        stuId: 1118822,
+        classId: 123123,
+      }
+    },
+    successReturn: {
+      response: {
+        conditions: '匹配到并且更新成功',
+        status: 200,
+        exampleDesc: '根据stuId，来查询信息，例如：'
+      },
+      jsonObj: {
+        code: 200,
+        success: true,
+        updatedData: []
+      }
+    },
+    failedReturn: {
+      response: {
+        conditions: '班级下没有同学',
+        status: 200,
+        exampleDesc: '返回message:'
+      },
+      jsonObj: {
+        code: 200,
+        success: true,
+        message: '学号没找到！'
+      }
+    },
+    notice: '首先会查询，如果有就更新'
   }
 ]
+
+
+const topLevelMenu = Array.from(new Set(portTree.map(item => item.branch)));
+export const menuData = topLevelMenu.map(topLevelItem => {
+  const subMenuItems = portTree
+    .filter(item => item.branch === topLevelItem)
+    .map(item => ({
+      title: item.useMode.title,
+    }));
+
+  return {
+    title: topLevelItem, // 一级菜单标题
+    subMenu: subMenuItems, // 二级菜单项
+  };
+});

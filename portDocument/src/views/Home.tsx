@@ -3,6 +3,7 @@ import s from './Home.module.scss'
 import type { FC, ReactNode } from 'react'
 import Right from '../component/Right'
 import { Root2, portTree } from '../common/Common'
+import Left from '../component/Left'
 interface IProps {
   children?: ReactNode
 }
@@ -11,7 +12,9 @@ const Home: FC<IProps> = () => {
 
   return (
     <div className={s.wrapper}>
-      <div className={s.left}>侧边栏</div>
+      <div className={s.left}>
+        <Left />
+      </div>
       <div className={s.right}>
         {
           portTree.map((item: Root2, index: number) => {
