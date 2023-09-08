@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import useScrollDown from '../hooks/useScroll'
 import { throttle } from '../share/Throttle'
 import useSwipe from '../hooks/useMove'
+import JsonView from '@uiw/react-json-view'
+import Right from '../component/Right'
 interface IProps {
   children?: ReactNode
 }
@@ -13,7 +15,7 @@ const Home: FC<IProps> = () => {
   const main = useRef(null)
   const navigate = useNavigate();
   const isMobile = window.innerWidth <= 768;
-  const { canScrollUp: isMove } = useScrollDown(true, false, isMobile)
+  const { canScrollUp: isMove } = useScrollDown(false, false, isMobile)
   const swipeOptions = {
     beforeStart: (e: any) => e.preventDefault,
     element: main
@@ -35,7 +37,9 @@ const Home: FC<IProps> = () => {
   return (
     <div className={s.wrapper} ref={main}>
       <div className={s.left}>侧边栏</div>
-      <div className={s.right}>haha</div>
+      <div className={s.right}>
+        <Right />
+      </div>
     </div>
   )
 }

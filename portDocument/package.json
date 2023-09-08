@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@uiw/react-json-view": "^1.8.5",
     "axios": "^1.4.0",
     "lodash": "^4.17.21",
     "node-sass": "^7.0.3",

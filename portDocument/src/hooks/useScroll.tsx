@@ -21,7 +21,6 @@ function useScrollDown(isAllowUp?: boolean, isAllowDown?: boolean, isMobile?: bo
   }, 200);
   useEffect(() => {
     if (!isMobile) {
-      console.log(123)
       window.addEventListener('wheel', debouncedOnMove);
       return () => {
         window.removeEventListener('wheel', debouncedOnMove);
