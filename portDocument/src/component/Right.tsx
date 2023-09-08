@@ -13,7 +13,6 @@ interface IProps {
 }
 
 const Right: FC<IProps> = ({ portObj }) => {
-  console.log(portObj)
   const { failedReturn, notice, paramsMode, requestMode, successReturn, useMode } = portObj
   return (
     <div className={s.wrapper}>

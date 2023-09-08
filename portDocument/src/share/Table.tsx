@@ -28,7 +28,7 @@ const Table: FC<IProps> = ({ table }) => {
             <tr key={index}>
               <td><span className={s.param}>{item.param}</span></td>
               <td>{item.type}</td>
-              <td>{item.pattern}</td>
+              <td>{item.pattern ? item.pattern : '无'}</td>
             </tr>
           ))}
         </tbody>

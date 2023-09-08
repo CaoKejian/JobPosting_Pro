@@ -105,7 +105,7 @@ router.get('/demand', async function (req, res) {
 
 /** 
   * @type {type:name|stuId|clssId|Auth|Root,value}
-  * @param {type,value}
+  * @param {type,value, page}
   * @method 根据type来查询
   */
 
