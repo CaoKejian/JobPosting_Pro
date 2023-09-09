@@ -7,13 +7,13 @@ interface IProps {
   item: {
     title: string
     subMenu: { title: string }[]
-  }
+  },
+  currentIndex: Number,
+  updateIndex: (index: number) => void
 }
-
-const MenuItem: FC<IProps> = ({ item }) => {
+const MenuItem: FC<IProps> = ({ item, currentIndex, updateIndex }) => {
   const [isShow, setIsShow] = useState(true);
   const [status, setStatus] = useState('#menuOpen')
-  const [active, setActive] = useState(0)
   const contentRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
@@ -33,9 +33,6 @@ const MenuItem: FC<IProps> = ({ item }) => {
     }
     setIsShow(!isShow);
   };
-  const handleLi = (title: string, index: number) => {
-    console.log(item, index)
-  }
   return (
     <ul>
       <li className={s.item}>
@@ -46,7 +43,7 @@ const MenuItem: FC<IProps> = ({ item }) => {
       </li>
       <ul className={[`twoTitle ${isShow ? 'show' : ''}`].join()} ref={contentRef}>
         {item.subMenu.map((subItem: any, index: number) => (
-          <li key={index} className={`liItem ${active === index && item.title==='user'? "Liactive" : ''}`} onClick={() => handleLi(item.title, index)}>
+          <li key={index} className={`liItem ${currentIndex === subItem.currentIndex ? "Liactive" : ''}`} onClick={() => updateIndex(subItem.currentIndex)}>
             <div className={s.text}>{subItem.title}</div>
           </li>
         ))}

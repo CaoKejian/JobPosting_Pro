@@ -3,3 +3,4 @@ dist
 .vscode
 secret.key
 package-lock.json
+*.csv

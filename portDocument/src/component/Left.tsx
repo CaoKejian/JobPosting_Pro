@@ -8,11 +8,32 @@ interface IProps {
 }
 
 const Left: FC<IProps> = () => {
+  let currentIndex = 0;
+  const newData = menuData.map((item) => {
+    const updatedSubMenu = item.subMenu.map((subItem) => ({
+      ...subItem,
+      currentIndex: currentIndex++,
+    }));
+    return {
+      ...item,
+      subMenu: updatedSubMenu,
+    };
+  });
+  const [Activeindex, setActiveindex] = useState(0)
+  const updateIndex = (index: number) => {
+    setActiveindex(index)
+  }
   return (
     <div className={s.wrapper}>
       {
-        menuData.map((item, index) => {
-          return <MenuItem key={index} item={item} />
+        newData.map((item, index) => {
+          return (
+            <MenuItem key={index}
+              item={item}
+              currentIndex={Activeindex}
+              updateIndex={updateIndex}
+            />
+          )
         })
       }
     </div>
