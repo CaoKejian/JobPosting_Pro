@@ -8,7 +8,6 @@ interface IProps {
 }
 
 const Left: FC<IProps> = () => {
-  console.log(menuData)
   return (
     <div className={s.wrapper}>
       {

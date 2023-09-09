@@ -26,9 +26,9 @@ li{
   border-radius: 8px;
 }
 .liItem{
-  padding: 1rem 1.8rem;
+  padding: 0.8rem 1.8rem;
   &:hover{
-    background: #ebebeb;
+    background: #eff0f0;
     transition: all .3s ease-in-out;
   }
 }
@@ -38,3 +38,13 @@ li{
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+@media (max-width: 768px) {
+  .liItem{
+    padding: 0.5rem 0.2rem;
+    &:hover{
+      background: #eff0f0;
+      transition: all .3s ease-in-out;
+    }
+  }
+}
+

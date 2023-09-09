@@ -46,3 +46,27 @@
 .ro{
   animation: ro 0.5s linear;
 }
+
+.liItem{
+  padding: 0.8rem 1.8rem;
+}
+.liItem:hover{
+  background: #d6d7d7;
+  transition: all .3s ease-in-out;
+}
+.Liactive{
+  background: #e0edfa;
+  color: #4c6974;
+}
+.Liactive:hover{
+  background: #e0edfa;
+}
+@media (max-width: 768px) {
+  .liItem{
+    padding: 0.5rem 0.2rem;
+  }
+  .liItem:hover{
+    background: #eff0f0;
+    transition: all .3s ease-in-out;
+  }
+}

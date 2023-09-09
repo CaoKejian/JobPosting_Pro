@@ -4,12 +4,16 @@ import s from './Left.module.scss'
 import './index.css'
 interface IProps {
   children?: ReactNode
-  item: any
+  item: {
+    title: string
+    subMenu: { title: string }[]
+  }
 }
 
 const MenuItem: FC<IProps> = ({ item }) => {
   const [isShow, setIsShow] = useState(true);
   const [status, setStatus] = useState('#menuOpen')
+  const [active, setActive] = useState(0)
   const contentRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
@@ -29,6 +33,9 @@ const MenuItem: FC<IProps> = ({ item }) => {
     }
     setIsShow(!isShow);
   };
+  const handleLi = (title: string, index: number) => {
+    console.log(item, index)
+  }
   return (
     <ul>
       <li className={s.item}>
@@ -39,7 +46,7 @@ const MenuItem: FC<IProps> = ({ item }) => {
       </li>
       <ul className={[`twoTitle ${isShow ? 'show' : ''}`].join()} ref={contentRef}>
         {item.subMenu.map((subItem: any, index: number) => (
-          <li key={index} className={s.liItem}>
+          <li key={index} className={`liItem ${active === index && item.title==='user'? "Liactive" : ''}`} onClick={() => handleLi(item.title, index)}>
             <div className={s.text}>{subItem.title}</div>
           </li>
         ))}
