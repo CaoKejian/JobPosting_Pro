@@ -5,9 +5,10 @@ import s from './Left.module.scss'
 import MenuItem from './MenuItem'
 interface IProps {
   children?: ReactNode
+  updateTitle: (title:string) => void
 }
 
-const Left: FC<IProps> = () => {
+const Left: FC<IProps> = ({ updateTitle }) => {
   let currentIndex = 0;
   const newData = menuData.map((item) => {
     const updatedSubMenu = item.subMenu.map((subItem) => ({
@@ -20,7 +21,10 @@ const Left: FC<IProps> = () => {
     };
   });
   const [Activeindex, setActiveindex] = useState(0)
-  const updateIndex = (index: number) => {
+  const updateIndex = (title: string, index: number) => {
+    const obj = newData.find(item => item.title === title)?.subMenu.find(item => item.currentIndex === index)
+    if(!obj) return
+    updateTitle(obj.title)
     setActiveindex(index)
   }
   return (

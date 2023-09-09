@@ -9,7 +9,7 @@ interface IProps {
     subMenu: { title: string }[]
   },
   currentIndex: Number,
-  updateIndex: (index: number) => void
+  updateIndex: (title:string, index: number) => void
 }
 const MenuItem: FC<IProps> = ({ item, currentIndex, updateIndex }) => {
   const [isShow, setIsShow] = useState(true);
@@ -43,7 +43,7 @@ const MenuItem: FC<IProps> = ({ item, currentIndex, updateIndex }) => {
       </li>
       <ul className={[`twoTitle ${isShow ? 'show' : ''}`].join()} ref={contentRef}>
         {item.subMenu.map((subItem: any, index: number) => (
-          <li key={index} className={`liItem ${currentIndex === subItem.currentIndex ? "Liactive" : ''}`} onClick={() => updateIndex(subItem.currentIndex)}>
+          <li key={index} className={`liItem ${currentIndex === subItem.currentIndex ? "Liactive" : ''}`} onClick={() => updateIndex(item.title,subItem.currentIndex)}>
             <div className={s.text}>{subItem.title}</div>
           </li>
         ))}
