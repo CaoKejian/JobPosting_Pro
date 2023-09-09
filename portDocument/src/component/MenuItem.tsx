@@ -39,8 +39,8 @@ const MenuItem: FC<IProps> = ({ item }) => {
       </li>
       <ul className={[`twoTitle ${isShow ? 'show' : ''}`].join()} ref={contentRef}>
         {item.subMenu.map((subItem: any, index: number) => (
-          <li key={index} className={isShow ? 'show' : ''}>
-            {subItem.title}
+          <li key={index} className={s.liItem}>
+            <div className={s.text}>{subItem.title}</div>
           </li>
         ))}
       </ul>
