@@ -37,7 +37,7 @@ title "设置环境变量"
 export NODE_ENV=production
 export PORT=80
 title "启动服务"
-killall node
+sudo killall node
 sudo npm run dev &
 title "全部执行完毕！"
 echo "⭐️请访问后端地址->:"http://124.70.188.74/api""

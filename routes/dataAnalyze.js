@@ -15,6 +15,7 @@ router.get('/week/frequency', async function (req, res, next) {
     const response = await http.get('/student/week', { time, name })
     res.json(response);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: 'python request is failed' });
   }
 });
