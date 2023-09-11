@@ -28,7 +28,6 @@ const Home: FC<IProps> = () => {
       );
       if (matchingElements.snapshotLength > 0) {
         const matchingElement: any = matchingElements.snapshotItem(0);
-        console.log(matchingElement)
         const rect = matchingElement!.getBoundingClientRect();
         const distanceToTop = rect.top + window.scrollY;
         scrollToHeight(distanceToTop)

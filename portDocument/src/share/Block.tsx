@@ -12,12 +12,13 @@ interface IProps {
   jsonObj: {}
 }
 
-const Block: FC<IProps> = ({ title='请求示例', desc, jsonObj }) => {
-  const { isCopied, copyButtonRef, copyTextToClipboard } = useCopyToClipboard();
+const Block: FC<IProps> = ({ title = '请求示例', desc, jsonObj }) => {
+  const { copyButtonRef, copyTextToClipboard } = useCopyToClipboard();
   const [svg, setSvg] = useState('#down')
+  const [copySvg, setcopySvg] = useState('#copy')
   const [isShowBlock, setIsShowBlock] = useState(true)
   const [isBlockVisible, setIsBlockVisible] = useState(true)
-  const [message, setMessage] = useState<{text:string, type:string, autoClose:boolean}>()
+  const [message, setMessage] = useState<{ text: string, type: string, autoClose: boolean }>()
   const onFold = () => {
     setIsBlockVisible(!isBlockVisible);
     if (svg === '#right') {
@@ -30,13 +31,12 @@ const Block: FC<IProps> = ({ title='请求示例', desc, jsonObj }) => {
   }
   const handleCopyClick = () => {
     copyTextToClipboard(JSON.stringify(jsonObj))
-    if (isCopied) {
-      setMessage({
-        text: '复制成功',
-        type: 'success',
-        autoClose: true,
-      });
-    }
+    setcopySvg('#isCopied')
+    setMessage({
+      text: '复制成功',
+      type: 'success',
+      autoClose: true,
+    });
   };
   return (
     <div className={s.wrapper}>
@@ -47,7 +47,7 @@ const Block: FC<IProps> = ({ title='请求示例', desc, jsonObj }) => {
           <svg className={s.svg} onClick={onFold}><use xlinkHref={svg}></use></svg>
           <div className={s.title_right}>
             <span className={s.json}>JSON |</span>
-            <svg className={s.svg} ref={copyButtonRef} onClick={handleCopyClick}><use xlinkHref='#copy'></use></svg>
+            <svg className={s.svg} ref={copyButtonRef} onClick={handleCopyClick}><use xlinkHref={copySvg}></use></svg>
             <span onClick={handleCopyClick}>复制代码</span>
           </div>
         </div>
