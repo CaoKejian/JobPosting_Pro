@@ -16,7 +16,7 @@ function title {
 echo "是否更新数据库？(y/n): "
 read answer
 if [ "$answer" == "y" ]; then
-  echo "正在更新数据库..."
+  echo -e "\e[1;34m正在更新数据库...\e[0m"
   mongo $db_name --eval "
       db.getCollectionNames().forEach(function(collectionName) {
           if (!collectionName.startsWith('system.')) {
@@ -26,6 +26,10 @@ if [ "$answer" == "y" ]; then
   "
   cd db && rm -rf *.json
   mongorestore -d $db_name $db_folder
+  echo -e "\e[1;34m所有文档名称：\e[0m"
+  mongo $db_name --eval "db.getCollectionNames().forEach(printjson)"
+  table_count=$(mongo $db_name --quiet --eval "db.getCollectionNames().filter(function(name) { return !name.startsWith('system.'); }).length")
+  echo -e "\e[1;34m共迁移成功 $table_count 张表！\e[0m"
   title "数据库更新完成"
 else
   echo ''
@@ -40,5 +44,5 @@ title "启动服务"
 sudo killall node
 sudo npm run dev &
 title "全部执行完毕！"
-echo "⭐️请访问后端地址->:"http://124.70.188.74/api""
-echo "⭐️请访问接口文档->:"http://124.70.188.74:8080/""
+echo -e "\e[1;34m⭐️请访问后端地址->:"http://124.70.188.74/api"\e[0m"
+echo -e "\e[1;34m⭐️请访问接口文档->:"http://124.70.188.74:8080/"\e[0m"
