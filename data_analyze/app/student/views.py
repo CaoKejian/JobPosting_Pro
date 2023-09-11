@@ -90,7 +90,7 @@ def average_good():
     # ], file_types:['docx', 'jpeg'],
     # student_labels:{name1:1,name2:0} }]
 @student.route('/habit')
-def selef_habit():
+def self_habit():
     classId = request.args.get('classId')
     homeworks = list(mongo.db.homeworks.find({"classId": int(classId)}))
     if not homeworks:
@@ -126,6 +126,29 @@ def selef_habit():
 
     return jsonify({'student_labels': student_labels, 'cluster_centers': cluster_centers, 'file_types': all_file_types})
 
+@student.route('/typebit')
+def  type_bit():
+    classId = request.args.get('classId')
+    homeworks = list(mongo.db.homeworks.find({"classId": int(classId)}))
+    if not homeworks:
+        return make_response(jsonify(message="班级没有任何提交信息"), 400) 
+    # 提取所有的提交类型
+    all_file_types = []
+
+    for homework in homeworks:
+        file_url = homework['file']['fileUrl']
+        file_type = os.path.splitext(file_url)[1][1:]
+        all_file_types.append(file_type)
+
+    # 统计每种提交类型的数量
+    type_counts = dict(Counter(all_file_types))
+
+    # 计算每种提交类型的占比
+    total_submissions = len(all_file_types)
+    type_percentages = [{"name": file_type, "value": count / total_submissions} for file_type, count in type_counts.items()]
+
+    # 返回占比数据
+    return jsonify(type_percentages)
 @student.route("/subjectscores")
 def score_subject():
     name = request.args.get('name')
