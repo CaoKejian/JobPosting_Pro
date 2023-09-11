@@ -1,11 +1,11 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { menuData } from '../common/Common'
 import s from './Left.module.scss'
 import MenuItem from './MenuItem'
 interface IProps {
   children?: ReactNode
-  updateTitle: (title:string) => void
+  updateTitle: (title: string) => void
 }
 
 const Left: FC<IProps> = ({ updateTitle }) => {
@@ -21,11 +21,15 @@ const Left: FC<IProps> = ({ updateTitle }) => {
     };
   });
   const [Activeindex, setActiveindex] = useState(0)
+  useEffect(() => {
+    setActiveindex(parseInt(localStorage.getItem('clickIndex') as string))
+  }, [])
   const updateIndex = (title: string, index: number) => {
     const obj = newData.find(item => item.title === title)?.subMenu.find(item => item.currentIndex === index)
-    if(!obj) return
+    if (!obj) return
     updateTitle(obj.title)
     setActiveindex(index)
+    localStorage.setItem('clickIndex', index + '')
   }
   return (
     <div className={s.wrapper}>
