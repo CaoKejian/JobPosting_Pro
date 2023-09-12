@@ -79,4 +79,21 @@ router.get('/subjectscores', async function (req, res, next) {
     res.status(500).json({ message: 'python request is failed' });
   }
 });
+
+/** 
+  * @type {classId:number}
+  * @param {classID}
+  * @method 提交类型占比
+  * @return {[name:'pdf',bit:0.25]}
+*/
+
+router.get('/typebit', async function (req, res, next) {
+try {
+  const { classId } = req.query;
+  const response = await http.get('/student/typebit', { classId })
+  res.json(response);
+} catch (error) {
+  res.status(500).json({ message: 'python request is failed' });
+}
+});
 module.exports = router;

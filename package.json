@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "dev:pro": "nodemon NODE_ENV=production ./bin/www",
+    "dev:pro": "NODE_ENV=production nodemon ./bin/www",
     "rspec": "mocha --timeout 5000  --reporter dot --quiet --exit rspec/test"
   },
   "dependencies": {
