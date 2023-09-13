@@ -2,6 +2,9 @@ from flask import request, make_response, jsonify
 from . import teacher
 from app.mongo import mongo
 import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
     #type: classId:number
     #param: classId, time
@@ -76,4 +79,81 @@ def history_hand_subject():
       ]
     }
   ]
+  return jsonify(result)
+
+    #type: stuId:number
+    #param: stuId
+    #method: 每个同学随着时间逾期次数趋势（时间序列分析）
+    #return: [{is_late:1,time:'2023-09-01'}]
+@teacher.route("/history/tendency")
+def history_tendency():
+  stuId = request.args.get('stuId')
+  if not stuId:
+    return make_response(jsonify(message="stuId are required"), 400)
+  data = list(mongo.db.homeworks.find({"stuId":int(stuId)}))
+  for item in data:  # Convert ObjectId to str
+    item['_id'] = str(item['_id'])
+  df = pd.DataFrame(data)
+  df.sort_values(by='time', inplace=True)
+  
+  df['time'] = pd.to_datetime(df['time'], unit='ms').dt.strftime('%Y-%m-%d')
+  df['cutTime'] = pd.to_datetime(df['cutTime'], unit='ms').dt.strftime('%Y-%m-%d')
+  df['is_late'] = df['time'] > df['cutTime']
+
+  late_counts = df.groupby('time')['is_late'].sum().reset_index()
+  late_counts['is_late'] = late_counts['is_late'].astype(int)  
+  result = late_counts.to_dict('records')
+
+  return jsonify(result)
+
+  #type: stuId:number
+  #param: stuId
+  #method: 每个学科的平均分与难度估测
+  #return: [{subject:'1',average_score:46}]
+@teacher.route("/difficulty")
+def difficulty_subject():
+  classId = request.args.get('classId')
+  if not classId:
+    return make_response(jsonify(message="classId are required"), 400)
+  data = list(mongo.db.homeworks.find({"classId":int(classId)}))
+  df = pd.DataFrame(data)
+  
+  # 按subject分组，计算每个科目的平均分
+  subject_scores = df.groupby('subject')['score'].mean().round(2)
+  result = [
+    {
+      "subject": subject,
+      "average_score": score
+    } for subject, score in subject_scores.items()
+  ]
+  return jsonify(result)
+
+  #type: classId:number
+  #param: classId
+  #method: 按时提交作业和迟交作业的学生的平均分数是否有显著差异
+  #return: {intime:83, overtime: 43}
+@teacher.route("/regression")
+def regression_analysis():
+  classId = request.args.get('classId')
+  if not classId:
+    return make_response(jsonify(message="classId are required"), 400)
+  data = list(mongo.db.homeworks.find({"classId":int(classId)}))
+  df = pd.DataFrame(data)
+  df['late'] = df['cutTime'] < df['time']
+  # 提取特征
+  X = df[['score', 'late']]
+  # 标准化特征
+  scaler = StandardScaler()
+  X_scaled = scaler.fit_transform(X)
+  # 使用K-means聚类算法将数据分为两组
+  kmeans = KMeans(n_clusters=2, random_state=0)
+  kmeans.fit(X_scaled)
+  
+  # 将聚类标签添加到原始数据中
+  df['cluster'] = kmeans.labels_
+  # 计算每个聚类的平均分
+  cluster_averages = df.groupby('cluster')['score'].mean().round(2)
+  result = {
+    "intime": cluster_averages[0],
+    "overtime": cluster_averages[1]}
   return jsonify(result)
