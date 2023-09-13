@@ -10,7 +10,6 @@ import json
 from sklearn.cluster import KMeans
 from collections import Counter
 import numpy as np
-import os
 from decimal import Decimal, ROUND_HALF_UP
 
     #type: name:string, time:string('YY-MM-DD')
