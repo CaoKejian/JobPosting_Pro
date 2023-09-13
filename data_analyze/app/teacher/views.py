@@ -157,3 +157,40 @@ def regression_analysis():
     "intime": cluster_averages[0],
     "overtime": cluster_averages[1]}
   return jsonify(result)
+
+  #type: classId:number
+  #param: classId
+  #method: 完成作业分数与提交时间之间的关系
+  #return: {maxtime:9, result: [{data:[{allSubmit:0,score:0,time:'0:00'}]}]}
+@teacher.route("/submission")
+def submission_analysis():
+  classId = request.args.get('classId')
+  if not classId:
+      return make_response(jsonify(message="classId are required"), 400)
+  data = list(mongo.db.homeworks.find({"classId": int(classId)}))
+  df = pd.DataFrame(data)
+
+  df['time'] = pd.to_datetime(df['time'], unit='ms').dt.hour
+
+  grouped = df.groupby(['name', 'time']).agg({'score': ['count', 'mean']}).reset_index()
+  grouped.columns = ['name', 'time', 'allSubmit', 'score']
+
+  all_times = pd.DataFrame({'time': range(24)})
+  all_names = pd.DataFrame({'name': df['name'].unique()})
+  all_combinations = pd.merge(all_names.assign(key=0), all_times.assign(key=0), on='key').drop('key', axis=1)
+
+  merged = pd.merge(all_combinations, grouped, on=['name', 'time'], how='left')
+
+  merged[['allSubmit', 'score']] = merged[['allSubmit', 'score']].fillna(0)
+
+  df['xtime'] = pd.to_datetime(df['time'], unit='ms').dt.hour
+  submission_counts = df.groupby('time').size()
+  max_submission_time = submission_counts.idxmax()
+  result = []
+  for name, group in merged.groupby('name'):
+      records = group[['time', 'score', 'allSubmit']].to_dict('records')
+      for record in records:
+          record['time'] = f"{record['time']}:00"
+      result.append({'name': name, 'data': records})
+
+  return jsonify({"maxtimme":int(max_submission_time),"result":result})
