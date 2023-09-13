@@ -48,7 +48,7 @@ def history_hand():
   return jsonify(result)
 
     #type: classId:number
-    #param: classId, time
+    #param: classId
     #method: 班级、学科提交历史监控(聚类分析)
     #return: [{"subject": [{"name": 'xxx',"bit": 6}]},{"class": [{"id": 123123,"bit": 1}]}]
 @teacher.route("/history/subject")
