@@ -4,6 +4,10 @@ from app.mongo import mongo
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import accuracy_score, recall_score, f1_score
 import matplotlib.pyplot as plt
 
     #type: classId:number
@@ -194,3 +198,82 @@ def submission_analysis():
       result.append({'name': name, 'data': records})
 
   return jsonify({"maxtimme":int(max_submission_time),"result":result})
+
+  #type: stuId:number
+  #param: stuId
+  #method: 完成预测提交作业比率和预测得分
+  #return: {intime:83, overtime: 43}
+@teacher.route("/complete")
+def complete_analysis():
+  stuId = request.args.get('stuId')
+  if not stuId:
+      return make_response(jsonify(message="stuId are required"), 400)
+  data = list(mongo.db.homeworks.find({"stuId": int(stuId)}))
+  df = pd.DataFrame(data)
+  probability = predict_submission_probability(int(stuId), data)
+  score = predict_score(int(stuId), data)
+  return {'bit': probability, 'score': score}
+
+  # 学生行为分析和预测引擎
+  #method: 计算准确率、召回率、F1分数
+  #return: {"accuracy": 0.7,"f1_score": 0.8,"recall": 0.8}
+@teacher.route("/train")
+def train_model():
+  data = list(mongo.db.homeworks.find())
+  df = pd.DataFrame(data)
+
+  # 将时间字段转换为datetime对象
+  df['time'] = pd.to_datetime(df['time'], unit='ms')
+  df['cutTime'] = pd.to_datetime(df['cutTime'], unit='ms')
+
+  # 创建一个新的字段表示是否逾期
+  df['is_late'] = (df['time'] > df['cutTime']).astype(int)
+
+  # 创建特征：过去提交作业的次数和逾期的次数
+  features = df.groupby('stuId').agg({'is_late': ['count', 'sum']}).reset_index()
+  features.columns = ['stuId', 'total_submissions', 'total_late_submissions']
+
+  # 创建标签：下一次作业是否会逾期
+  df['next_is_late'] = df.sort_values('time').groupby('stuId')['is_late'].shift(-1)
+  
+  # 合并特征和标签
+  df = pd.merge(features, df[['stuId', 'next_is_late']], on='stuId', how='left')
+
+  # 删除含有NaN值的行
+  df = df.dropna()
+
+  # 划分特征和标签
+  X = df[['total_submissions', 'total_late_submissions']]
+  y = df['next_is_late']
+
+  # 划分训练集和测试集
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+  # 训练模型
+  model = RandomForestClassifier(random_state=42)
+  model.fit(X_train, y_train)
+
+  # 预测测试集
+  y_pred = model.predict(X_test)
+
+  # 计算评估指标
+  accuracy = accuracy_score(y_test, y_pred)
+  recall = recall_score(y_test, y_pred)
+  f1 = f1_score(y_test, y_pred)
+
+  return {'accuracy': accuracy, 'recall': recall, 'f1_score': f1}
+
+
+# 预测函数
+def predict_submission_probability(student_id, data):
+    student_submissions = [d for d in data if d['stuId'] == student_id]
+    if not student_submissions:
+        return 0 
+    on_time_submissions = sum(1 for d in student_submissions if d['time'] <= d['cutTime'])
+    return on_time_submissions / len(student_submissions)
+
+def predict_score(student_id, data):
+    student_scores = [d['score'] for d in data if d['stuId'] == student_id]
+    if not student_scores:
+        return 0.0  
+    return sum(student_scores) / len(student_scores)
