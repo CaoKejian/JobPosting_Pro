@@ -18,7 +18,7 @@ function useScrollDown(isAllowUp?: boolean, isAllowDown?: boolean, isMobile?: bo
         }, 500);
       }
     }
-  }, 200);
+  }, 100);
   useEffect(() => {
     if (!isMobile) {
       window.addEventListener('wheel', debouncedOnMove);

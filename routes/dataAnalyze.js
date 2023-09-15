@@ -100,7 +100,7 @@ router.get('/typebit', async function (req, res, next) {
 /** 
   * @type {classId:number}
   * @param {classId}
-  * @method 班级、学科提交历史监控(聚类分析)
+  * @method 个人提交历史监控（分组聚合）
   * @return {[{"subject": [{"name": 'xxx',"bit": 6}]},{"class": [{"id": 123123,"bit": 1}]}]}
 */
 
@@ -117,7 +117,7 @@ router.get('/history', async function (req, res, next) {
 /** 
   * @type {classId:number}
   * @param {classId}
-  * @method 提交类型占比
+  * @method 班级、学科提交历史监控(聚类分析)
   * @return {[{"subject": [{"name": 'xxx',"bit": 6}]},{"class": [{"id": 123123,"bit": 1}]}]}
 */
 
