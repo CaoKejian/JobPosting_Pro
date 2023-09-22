@@ -149,18 +149,19 @@ router.get('/history/tendency', async function (req, res, next) {
 });
 
 /** 
-  * @type {stuId:number}
-  * @param {stuId}
+  * @type {classId:number}
+  * @param {classId}
   * @method 每个学科的平均分与难度估测
   * @return {[{subject:'1',average_score:46}]}
 */
 
 router.get('/difficulty', async function (req, res, next) {
   try {
-    const { stuId } = req.query;
-    const response = await http.get('/teacher/difficulty', { stuId })
+    const { classId } = req.query;
+    const response = await http.get('/teacher/difficulty', { classId })
     res.json(response);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: 'python request is failed' });
   }
 });

@@ -23,23 +23,25 @@ def history_hand():
   df = pd.DataFrame(data)
   
   df['is_late'] = df['time'] > df['cutTime']
-  # 统计每位学生的没有迟交的提交次数
-  not_late_counts = df[df['is_late'] == False].groupby('stuId').size()
-  # 统计每位学生的迟交次数
-  late_counts = df[df['is_late'] == True].groupby('stuId').size()
-  # 创建一个包含所有学生ID的完整索引
-  all_stu_ids = df['stuId'].unique()
-  # 使用完整索引重新索引计数，填充缺失的计数为0
-  not_late_counts = not_late_counts.reindex(all_stu_ids, fill_value=0)
-  late_counts = late_counts.reindex(all_stu_ids, fill_value=0)
+  # 统计每位学生的没有迟交的提交次数，这里使用 name 字段作为分组依据
+  not_late_counts = df[df['is_late'] == False].groupby('name').size()
+  # 统计每位学生的迟交次数，同样使用 name 字段作为分组依据
+  late_counts = df[df['is_late'] == True].groupby('name').size()
+
+  # 使用 name 字段重新索引计数，填充缺失的计数为0
+  all_names = df['name'].unique()
+  not_late_counts = not_late_counts.reindex(all_names, fill_value=0)
+  late_counts = late_counts.reindex(all_names, fill_value=0)
+
   # 全班迟交次数占总提交次数的比例
   total_late_ratio = df['is_late'].mean()
+  
   result = [
     {
-      "lateCounts": [{"id": stu_id, "value": count} for stu_id, count in late_counts.items()]
+      "lateCounts": [{"name": student_name, "value": count} for student_name, count in late_counts.items()]
     },
     {
-      "notlateCounts": [{"id": stu_id, "value": count} for stu_id, count in not_late_counts.items()]
+      "notlateCounts": [{"name": student_name, "value": count} for student_name, count in not_late_counts.items()]
     },
     {
       "totallateBit": total_late_ratio
