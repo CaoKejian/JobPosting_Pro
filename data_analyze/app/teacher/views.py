@@ -199,7 +199,7 @@ def submission_analysis():
           record['time'] = f"{record['time']}:00"
       result.append({'name': name, 'data': records})
 
-  return jsonify({"maxtimme":int(max_submission_time),"result":result})
+  return jsonify({"maxtime":int(max_submission_time),"result":result})
 
   #type: stuId:number
   #param: stuId
