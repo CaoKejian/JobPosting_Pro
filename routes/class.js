@@ -1,6 +1,7 @@
 var express = require('express');
 const ClassInfoModel = require('../model/classInfo');
 const UserModel = require('../model/user');
+const http = require('../service/service');
 
 var router = express.Router();
 
@@ -94,6 +95,24 @@ router.post('/insert', async function (req, res) {
     res.status(500).json({ message: '创建用户失败', error: error.message });
   }
 })
+
+/** 
+  * @type {url:xlsx类型文件地址 }
+  * @param {url:string }
+  * @method 批量新增人员
+  * @return {{data:'success',repeat:[{stuId:111,name:'xxx'}]}}
+  */
+
+router.post('/insertall', async function (req, res) {
+  const { url } = req.body
+  try {
+    const response = await http.post('/insert', { url })
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({ message: 'python request is failed' });
+  }
+})
+
 
 router.get('/insert/info', async function (req, res) {
   const data = await ClassInfoModel.insertMany(usersToInsert)
