@@ -29,7 +29,7 @@ describe('班级信息', function () {
       .get('/api/class')
       .query({ classId })
       .set('Authorization', `Bearer testToken`)
-      .expect(402)
+      .expect(200)
     const data = res.body
     expect(data.message).to.equal('该班级下没有同学')
   })

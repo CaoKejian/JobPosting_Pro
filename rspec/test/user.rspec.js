@@ -161,15 +161,18 @@ describe('user', function (req, res) {
   it('判断权限是否正确|身份是否正确(白名单)', async function () {
     const testData = [
       { name: '1', stuId: 1, email: '1@qq.com' },
+      { name: '2', stuId: 2001, email: '2@qq.com', isRoot:true },
     ]
     await UserModel.deleteMany({})
+    await ClassInfoModel.insertMany(testData)
     await UserModel.insertMany(testData)
     const res = await request(app)
       .post('/api/user/isself/auth')
-      .send({ name: '2', stuId: 2001, email: '1@qq.com' })
       .set('Authorization', `Bearer testToken`)
+      .send({ name: '3', stuId: 2001, email: '1@qq.com' })
       .expect(200)
     const data = res.body
+    console.log(data)
     expect(data).to.be.an('object')
     expect(data.message).to.equal('ok')
   })

@@ -92,7 +92,7 @@ router.get('/classwork', async function (req, res) {
       timestamp: { $gte: thirtyDaysAgo.getTime() } // 使用$gte操作符来匹配大于等于指定时间戳的文档
     });
     if (data.length === 0) {
-      res.status(402).json({ message: '没有相关数据！' })
+      res.status(200).json({ message: '没有相关数据！' })
     }
     res.send(data)
   } catch (err) {
