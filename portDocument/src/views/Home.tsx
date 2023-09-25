@@ -76,10 +76,10 @@ const Home: FC<IProps> = () => {
           })
         }
       </div>
-      <div className={s.catalogue}>
+      {/* <div className={s.catalogue}>
         <span className={s.title}>大纲 <svg className={s.visible}><use xlinkHref='#visible'></use></svg></span>
         <div className={s.cat_box}>123123</div>
-      </div>
+      </div> */}
       {message && (
         <Message
           message={message.text}

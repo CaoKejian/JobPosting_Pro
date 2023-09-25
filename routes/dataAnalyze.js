@@ -204,8 +204,8 @@ router.get('/submission', async function (req, res, next) {
 /** 
   * @type {stuId:number}
   * @param {stuId}
-  * @method 完成预测提交作业比率和预测得分
-  * @return {maxtime:9, result: [{data:[{allSubmit:0,score:0,time:'0:00'}]}]}
+  * @method 预测提交作业比率和预测得分
+  * @return {bit:number, score:number}
 */
 
 router.get('/complete', async function (req, res, next) {
@@ -219,8 +219,7 @@ router.get('/complete', async function (req, res, next) {
 });
 
 /** 
-  * @type {stuId:number}
-  * @param {stuId}
+  * @param {}
   * @method 学生行为分析和预测引擎（计算准确率、召回率、F1分数）
   * @return {"accuracy": 0.7,"f1_score": 0.8,"recall": 0.8}
 */
