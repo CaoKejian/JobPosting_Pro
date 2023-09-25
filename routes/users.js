@@ -367,8 +367,12 @@ router.post('/isself/auth', async function (req, res) {
   try {
     const { stuId, email, name } = req.body
     // 白名单 > 总裁权限
-    const whiteArr = [2001]
-    if (whiteArr.includes(stuId)) {
+    const result = []
+    const x = await ClassInfoModel.find({ isRoot: true })
+    x.map(item => {
+      result.push(item.stuId)
+    })
+    if (result.includes(stuId)) {
       return res.send({ message: 'ok' })
     }
     const data = await UserModel.findOne({ stuId, email, name })
