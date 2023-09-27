@@ -1,14 +1,15 @@
 import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import s from './OutLine.module.scss'
-import { menuData } from '../common/Common'
+import { findIndex, menuData } from '../common/Common'
 import OutLineItem from '../component/OutLineItem'
 interface IProps {
   children?: ReactNode
   updateTitle: (title: string) => void
+  activeItemId: string
 }
 
-const OutLine: FC<IProps> = ({ updateTitle }) => {
+const OutLine: FC<IProps> = ({ updateTitle, activeItemId }) => {
   const [isShow, setIsShow] = useState(false)
   let currentIndex = 0;
 
@@ -18,7 +19,6 @@ const OutLine: FC<IProps> = ({ updateTitle }) => {
       setIsShow(true)
     }
   }, [])
-  console.log(isShow)
   const newData = menuData.map((item) => {
     const updatedSubMenu = item.subMenu.map((subItem) => ({
       ...subItem,
@@ -45,6 +45,11 @@ const OutLine: FC<IProps> = ({ updateTitle }) => {
       setIsVisible('#visible')
     }
   }
+  useEffect(() => {
+    if (!activeItemId) return
+    setActiveindex(findIndex(activeItemId)!)
+  }, [activeItemId])
+
   return (
     isShow ? (
       (isVisible === '#visible' ?

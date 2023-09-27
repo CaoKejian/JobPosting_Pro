@@ -76,10 +76,10 @@
 .outactive::before{
   content: '';
   display: block;
-  position: relative;
-  left: -1.6rem;
+  position: absolute;
+  left: 1rem;
   width: 2px;
-  height: 0.8rem;
+  height: 1rem;
   background: #00b970;
 }
 .outactive{

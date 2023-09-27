@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import s from './OutLineItem.module.scss'
+
 interface IProps {
   children?: ReactNode
   item: {
@@ -33,6 +34,7 @@ const OutLineItem: FC<IProps> = ({item, currentIndex, updateIndex}) => {
     }
     setIsShow(!isShow);
   };
+
   return (
     <ul className={s.ul}>
       <li className={s.item}>

@@ -14,13 +14,14 @@ interface Obj {
 interface IProps {
   children?: ReactNode,
   obj: Obj
+  id: string
 }
 
 const Main: FC<IProps> = (props) => {
-  const { obj } = props
+  const { obj, id } = props
   return (
-    <div className={s.wrapper}>
-      <h1>{obj.title}</h1>
+    <div className={s.wrapper} id={id}>
+      <h1 className='Ttitle'>{obj.title}</h1>
       <p>{obj.desc}</p>
       <div className={s.container}>
         <ul>

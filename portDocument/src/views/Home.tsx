@@ -19,7 +19,9 @@ const Home: FC<IProps> = () => {
 
     if (rightMain.current) {
       const searchText = title;
-
+      if (searchText !== '') {
+        localStorage.setItem('Ttitle', searchText)
+      }
       const xpathExpression = `//h1[text()='${searchText}']`;
       const matchingElements = document.evaluate(
         xpathExpression,
@@ -65,6 +67,49 @@ const Home: FC<IProps> = () => {
     setCurrentMap(title)
     setTitle(title)
   }
+  const [activeItemId, setActiveItemId] = useState('');
+
+  useEffect(() => {
+    const Ttitle = localStorage.getItem('Ttitle') as string
+    let count = 0
+    if (Ttitle && count === 0) {
+      setActiveItemId(localStorage.getItem('Ttitle') as string);
+      count += 1
+      return
+    }
+
+    const headers = document.querySelectorAll('.Ttitle'); // 选择所有的 H1 标签
+    const scrollIntervals: { id: string, start: number, end: number }[] = []; // 存储每个 H1 标签的滚动区间
+
+    for (const header of headers) {
+      const headerId = header.getAttribute('id');
+      const headerOffsetTop = header.getBoundingClientRect().top;
+      const headerHeight = header.clientHeight;
+
+      // 计算出每个 H1 标签的滚动区间
+      const headerScrollStart = headerOffsetTop;
+      const headerScrollEnd = headerOffsetTop + headerHeight;
+
+      scrollIntervals.push({ id: header.innerHTML, start: headerScrollStart, end: headerScrollEnd + 1800 });
+    }
+
+    const handleScroll = () => {
+      // 获取当前滚动位置
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      for (const interval of scrollIntervals) {
+        if (scrollY >= interval.start && scrollY <= interval.end) {
+          // 当前 H1 标签在可视区域内
+          setActiveItemId(interval.id);
+          // break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <div className={s.wrapper}>
       <div className={s.left}>
@@ -77,7 +122,7 @@ const Home: FC<IProps> = () => {
           })
         }
       </div>
-      <OutLine updateTitle={updateTitle} />
+      <OutLine updateTitle={updateTitle} activeItemId={activeItemId} />
       {message && (
         <Message
           message={message.text}

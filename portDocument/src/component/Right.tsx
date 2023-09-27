@@ -13,10 +13,10 @@ interface IProps {
 }
 
 const Right: FC<IProps> = ({ portObj }) => {
-  const { failedReturn, notice, paramsMode, requestMode, successReturn, useMode } = portObj
+  const { id, failedReturn, notice, paramsMode, requestMode, successReturn, useMode } = portObj
   return (<>
     <div className={s.wrapper}>
-      <Main obj={useMode} />
+      <Main obj={useMode} id={id}/>
       <Table table={paramsMode.params} />
       <Notice desc={paramsMode.notice} />
       <div className={s.response}>

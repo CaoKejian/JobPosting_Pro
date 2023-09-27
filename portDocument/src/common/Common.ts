@@ -1,6 +1,7 @@
 export type Root = Root2[]
 
 export interface Root2 {
+  id: string
   branch: string
   useMode: UseMode
   paramsMode: ParamsMode
@@ -63,6 +64,7 @@ export interface Response2 {
 
 export const portTree: Root = [
   {
+    id: '1',
     branch: 'user',
     useMode: {
       title: '创建用户',
@@ -117,6 +119,7 @@ export const portTree: Root = [
     notice: '如果用户的用户信息不存在，将会使用请求的数据创建一个新的用户信息。'
   },
   {
+    id: '2',
     branch: 'user',
     useMode: {
       title: '查询所有已登录的同学和老师',
@@ -173,6 +176,7 @@ export const portTree: Root = [
     notice: '每次请求返回十条数据'
   },
   {
+    id: '3',
     branch: 'user',
     useMode: {
       title: '查询本班所有同学',
@@ -223,6 +227,7 @@ export const portTree: Root = [
     notice: '不限制分页'
   },
   {
+    id: '4',
     branch: 'user',
     useMode: {
       title: '根据type来查询同学信息',
@@ -283,6 +288,7 @@ export const portTree: Root = [
     notice: '一次查询十条；如果type为其他则是直接查询'
   },
   {
+    id: '5',
     branch: 'user',
     useMode: {
       title: '添加至所选班级',
@@ -335,6 +341,7 @@ export const portTree: Root = [
     notice: '首先会查询，如果有就更新'
   },
   {
+    id: '6',
     branch: 'xxx',
     useMode: {
       title: '添加至所选班级',
@@ -402,3 +409,11 @@ export const menuData = topLevelMenu.map(topLevelItem => {
     subMenu: subMenuItems, // 二级菜单项
   };
 });
+
+export const findIndex = (title: string) => {
+  const x = portTree.find(item => {
+    return item.useMode.title === title
+  })
+  if (!x) return
+  return +x.id - 1 
+}
