@@ -77,7 +77,7 @@ const Home: FC<IProps> = () => {
           })
         }
       </div>
-      <OutLine />
+      <OutLine updateTitle={updateTitle} />
       {message && (
         <Message
           message={message.text}

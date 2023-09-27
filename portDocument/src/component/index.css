@@ -1,13 +1,10 @@
 .twoTitle {
   opacity: 0;
   font-size: 1rem;
-  /* padding-left: 1.5rem; */
   width: 100%;
-  margin: 0.5rem 0;
   box-sizing: border-box;
   transition: max-height 0.5s ease, opacity 0.5s ease;
   max-height: 0;
-  overflow: hidden;
 }
 
 .twoTitle.show {
@@ -75,6 +72,15 @@
 }
 .outItem:hover{
   color: #000;
+}
+.outactive::before{
+  content: '';
+  display: block;
+  position: relative;
+  left: -1.6rem;
+  width: 2px;
+  height: 0.8rem;
+  background: #00b970;
 }
 .outactive{
   color: #000;

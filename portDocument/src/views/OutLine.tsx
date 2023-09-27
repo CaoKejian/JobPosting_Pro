@@ -5,9 +5,10 @@ import { menuData } from '../common/Common'
 import OutLineItem from '../component/OutLineItem'
 interface IProps {
   children?: ReactNode
+  updateTitle: (title: string) => void
 }
 
-const OutLine: FC<IProps> = () => {
+const OutLine: FC<IProps> = ({ updateTitle }) => {
   const [isShow, setIsShow] = useState(false)
   let currentIndex = 0;
 
@@ -32,6 +33,7 @@ const OutLine: FC<IProps> = () => {
   const updateIndex = (title: string, index: number) => {
     const obj = newData.find(item => item.title === title)?.subMenu.find(item => item.currentIndex === index)
     if (!obj) return
+    updateTitle(obj.title)
     setActiveindex(index)
     localStorage.setItem('clickIndex', index + '')
   }

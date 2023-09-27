@@ -34,7 +34,7 @@ const OutLineItem: FC<IProps> = ({item, currentIndex, updateIndex}) => {
     setIsShow(!isShow);
   };
   return (
-    <ul>
+    <ul className={s.ul}>
       <li className={s.item}>
         <svg className={`outSvg`} onClick={toggleSubMenu}>
           <use xlinkHref={status}></use>
