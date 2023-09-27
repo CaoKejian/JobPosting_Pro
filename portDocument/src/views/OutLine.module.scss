@@ -1,0 +1,45 @@
+
+.catalogue{
+  position: fixed;
+  right: 2rem;
+  top: 5%;
+  user-select: none;
+  max-width: 14rem;
+  width: 14rem;
+  font-size: 0.8rem;
+  .cat_box{
+    margin-top: 1rem;
+    width: 100%;
+    padding-left: 1rem;
+    border-left: 2px solid #d8dad9;
+  }
+  .title{
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    .visible{
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-left: 1rem;
+      cursor: pointer;
+    }
+  }
+}
+.nocatalogue{
+  position: fixed;
+  right: 0.1rem;
+  top: 5%;
+  font-size: 0.8rem;
+  user-select: none;
+  .title{
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    .visible{
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-left: 1rem;
+      cursor: pointer;
+    }
+  }
+}

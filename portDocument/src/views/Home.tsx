@@ -5,6 +5,7 @@ import Right from '../component/Right'
 import { Root2, portTree } from '../common/Common'
 import Left from '../component/Left'
 import Message from '../share/Message'
+import OutLine from './OutLine'
 interface IProps {
   children?: ReactNode
 }
@@ -76,10 +77,7 @@ const Home: FC<IProps> = () => {
           })
         }
       </div>
-      {/* <div className={s.catalogue}>
-        <span className={s.title}>大纲 <svg className={s.visible}><use xlinkHref='#visible'></use></svg></span>
-        <div className={s.cat_box}>123123</div>
-      </div> */}
+      <OutLine />
       {message && (
         <Message
           message={message.text}
