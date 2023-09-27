@@ -1,14 +1,15 @@
 import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
-import { menuData } from '../common/Common'
+import { findIndex, menuData } from '../common/Common'
 import s from './Left.module.scss'
 import MenuItem from './MenuItem'
 interface IProps {
   children?: ReactNode
   updateTitle: (title: string) => void
+  activeItemId: string
 }
 
-const Left: FC<IProps> = ({ updateTitle }) => {
+const Left: FC<IProps> = ({ updateTitle,activeItemId }) => {
   let currentIndex = 0;
   const newData = menuData.map((item) => {
     const updatedSubMenu = item.subMenu.map((subItem) => ({
@@ -31,6 +32,10 @@ const Left: FC<IProps> = ({ updateTitle }) => {
     setActiveindex(index)
     localStorage.setItem('clickIndex', index + '')
   }
+  useEffect(() => {
+    if (!activeItemId) return
+    setActiveindex(findIndex(activeItemId)!)
+  }, [activeItemId])
   return (
     <div className={s.wrapper}>
       {

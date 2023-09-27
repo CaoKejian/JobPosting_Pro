@@ -415,5 +415,5 @@ export const findIndex = (title: string) => {
     return item.useMode.title === title
   })
   if (!x) return
-  return +x.id - 1 
+  return +x.id 
 }

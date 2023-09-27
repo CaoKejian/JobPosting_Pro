@@ -18,27 +18,27 @@ const Home: FC<IProps> = () => {
   useEffect(() => {
 
     if (rightMain.current) {
-      const searchText = title;
+      const searchText = title 
       if (searchText !== '') {
         localStorage.setItem('Ttitle', searchText)
       }
-      const xpathExpression = `//h1[text()='${searchText}']`;
+      const xpathExpression = `//h1[text()='${searchText}']` 
       const matchingElements = document.evaluate(
         xpathExpression,
         rightMain.current,
         null,
         XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
         null
-      );
+      ) 
       if (matchingElements.snapshotLength > 0) {
-        const matchingElement: any = matchingElements.snapshotItem(0);
-        const rect = matchingElement!.getBoundingClientRect();
-        const distanceToTop = rect.top + window.scrollY;
+        const matchingElement: any = matchingElements.snapshotItem(0) 
+        const rect = matchingElement!.getBoundingClientRect() 
+        const distanceToTop = rect.top + window.scrollY 
         scrollToHeight(distanceToTop)
         localStorage.setItem('toTop', distanceToTop)
       }
     }
-  }, [title]);
+  }, [title]) 
   useEffect(() => {
     const distance = parseInt(localStorage.getItem('toTop') as string)
     if (distance) {
@@ -48,12 +48,12 @@ const Home: FC<IProps> = () => {
           text: '已经恢复之前的位置啦',
           type: 'success',
           autoClose: true,
-        });
-      }, 1000);
+        }) 
+      }, 1000) 
     }
   }, [])
   const scrollToHeight = (targetY: number) => {
-    window.scrollTo({ top: targetY - 16, behavior: 'smooth' });
+    window.scrollTo({ top: targetY - 16, behavior: 'smooth' }) 
   }
   const updateTitle = (title: string) => {
     if (title === currentMap) {
@@ -61,59 +61,52 @@ const Home: FC<IProps> = () => {
         text: '已经在当前位置啦',
         type: 'message',
         autoClose: true,
-      });
+      }) 
       return
     }
     setCurrentMap(title)
     setTitle(title)
   }
-  const [activeItemId, setActiveItemId] = useState('');
+  const [activeItemId, setActiveItemId] = useState('') 
 
   useEffect(() => {
     const Ttitle = localStorage.getItem('Ttitle') as string
     let count = 0
     if (Ttitle && count === 0) {
-      setActiveItemId(localStorage.getItem('Ttitle') as string);
+      setActiveItemId(localStorage.getItem('Ttitle') as string)
       count += 1
-      return
     }
-
-    const headers = document.querySelectorAll('.Ttitle'); // 选择所有的 H1 标签
-    const scrollIntervals: { id: string, start: number, end: number }[] = []; // 存储每个 H1 标签的滚动区间
+    const headers = document.querySelectorAll('.Ttitle')
+    const scrollIntervals: { id: string, start: number, end: number }[] = []
 
     for (const header of headers) {
-      const headerId = header.getAttribute('id');
-      const headerOffsetTop = header.getBoundingClientRect().top;
-      const headerHeight = header.clientHeight;
+      const headerOffsetTop = header.getBoundingClientRect().top 
+      const headerHeight = header.clientHeight 
 
-      // 计算出每个 H1 标签的滚动区间
-      const headerScrollStart = headerOffsetTop;
-      const headerScrollEnd = headerOffsetTop + headerHeight;
+      const headerScrollStart = headerOffsetTop 
+      const headerScrollEnd = headerOffsetTop + headerHeight 
 
-      scrollIntervals.push({ id: header.innerHTML, start: headerScrollStart, end: headerScrollEnd + 1800 });
+      scrollIntervals.push({ id: header.innerHTML, start: headerScrollStart, end: headerScrollEnd + 1800 }) 
     }
 
     const handleScroll = () => {
-      // 获取当前滚动位置
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const scrollY = window.scrollY || document.documentElement.scrollTop 
       for (const interval of scrollIntervals) {
         if (scrollY >= interval.start && scrollY <= interval.end) {
-          // 当前 H1 标签在可视区域内
-          setActiveItemId(interval.id);
-          // break;
+          setActiveItemId(interval.id) 
         }
       }
-    };
+    } 
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll) 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      window.removeEventListener('scroll', handleScroll) 
+    } 
+  }, []) 
   return (
     <div className={s.wrapper}>
       <div className={s.left}>
-        <Left updateTitle={updateTitle} />
+        <Left updateTitle={updateTitle} activeItemId={activeItemId}/>
       </div>
       <div className={s.right} ref={rightMain}>
         {
