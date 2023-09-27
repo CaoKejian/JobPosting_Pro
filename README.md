@@ -18,6 +18,26 @@
 
 ## 当前目录下有三个架构：后端服务(node.js) 和 数据分析服务(python) 和 接口文档(React)
 
+> 启动项目
+### 1、安装依赖
+```js
+npm install
+```
+### 2、启动（Python可能需要你手动安装许多包，例如panda等）
+```js
+npm run dev:all // 一键启动三个工程
+```
+### 3、或者单独启动单个工程
+```js
+npm run dev:pro // 启动node.js(Express)服务
+npm run dev:python // 启动python(Flask)服务
+npm run dev:port // 启动接口文档(React)工程
+```
+```js
+npm run rspec // 运行测试用例
+```
+![Alt text](image.png)
+
 > Express
 
 - 采用 node 的 Express 框架,项目结构：

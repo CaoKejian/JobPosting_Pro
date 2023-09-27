@@ -38,9 +38,8 @@ echo "服务端开始执行脚本>>>..."
 # title "重启Nginx服务"
 # sudo service nginx restart
 title "结束PM2进程--->"
-pm2 delete all
-pm2 list
-sleep 5 
+sudo pm2 delete all
+sudo pm2 list
 
 title "设置环境变量"
 export NODE_ENV=production
@@ -48,7 +47,6 @@ export PORT=80
 title "启动服务"
 sudo killall node
 sudo pm2 start "npm" --name 'jobpro' -- run dev:pro --watch
-# sudo npm run dev:pro &
 title "全部执行完毕！"
 echo -e "\e[1;34m⭐️请访问后端地址->:"http://124.70.188.74/api"\e[0m"
 echo -e "\e[1;34m⭐️请访问接口文档->:"http://124.70.188.74:8080/"\e[0m"
