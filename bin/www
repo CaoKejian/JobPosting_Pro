@@ -29,8 +29,13 @@ var server = http.createServer(app);
 const id = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
 server.listen(port, id, () => {
   console.log(process.env.NODE_ENV)
-  process.env.NODE_ENV === 'production' ? console.log('已部署') :
-  console.log("⭐️请访问->: 'http://localhost:3000/api'\n⭐️请访问接口文档->: 'http://localhost:3001'")
+  if(process.env.NODE_ENV === 'production'){
+    console.log('已部署')
+  }else{
+    console.log('\x1b[36m%s\x1b[0m', 'Express已启动') 
+    console.log('\x1b[36m%s\x1b[0m', '⭐️请　　访　　问->: http://localhost:3000/api')
+    console.log('\x1b[36m%s\x1b[0m', '⭐️请访问接口文档->: http://localhost:3001')
+  }
 });
 server.on('error', onError);
 server.on('listening', onListening);

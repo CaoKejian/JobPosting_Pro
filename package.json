@@ -5,7 +5,10 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "dev:pro": "NODE_ENV=production nodemon ./bin/www",
+    "dev:all": "npm run dev:port & npm run dev:python & npm run dev:pro",
+    "dev:port": "cd portDocument && npm run dev",
+    "dev:pro": "nodemon --quiet ./bin/www",
+    "dev:python": "cd data_analyze && python3 run.py",
     "rspec": "mocha --timeout 5000  --reporter dot --quiet --exit rspec/test"
   },
   "dependencies": {

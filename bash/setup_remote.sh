@@ -40,6 +40,7 @@ echo "服务端开始执行脚本>>>..."
 title "结束PM2进程--->"
 pm2 delete all
 pm2 list
+sleep 5 
 
 title "设置环境变量"
 export NODE_ENV=production

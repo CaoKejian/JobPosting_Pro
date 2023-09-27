@@ -172,7 +172,6 @@ describe('user', function (req, res) {
       .send({ name: '3', stuId: 2001, email: '1@qq.com' })
       .expect(200)
     const data = res.body
-    console.log(data)
     expect(data).to.be.an('object')
     expect(data.message).to.equal('ok')
   })

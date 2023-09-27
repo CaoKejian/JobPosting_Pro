@@ -15,6 +15,6 @@ def create_app():
     app.register_blueprint(student_blueprint, url_prefix="/student")
     app.register_blueprint(teacher_blueprint, url_prefix="/teacher")
     app.register_blueprint(insertPeople_blueprint, url_prefix="/insert")
-    # log = logging.getLogger('werkzeug')
-    # log.setLevel(logging.ERROR)
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
     return app
