@@ -410,8 +410,7 @@ router.get('/president/auth', async function (req, res) {
 })
 
 /** 
-  * @type {info:{}}
-  * @param {info}
+  * @param {stuId}
   * @method 查询管理员权限
   * @return {true|false}
   */

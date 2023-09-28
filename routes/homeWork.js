@@ -139,7 +139,7 @@ router.get('/one', async function (req, res) {
 
 /** 
   * @param {classId, branch}
-  * @method 查询单项作业
+  * @method 查询已批改的作业
   */
 
 router.get('/correct/work', async function (req, res) {
