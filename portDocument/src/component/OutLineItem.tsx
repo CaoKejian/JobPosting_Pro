@@ -9,10 +9,10 @@ interface IProps {
     subMenu: { title: string }[]
   },
   currentIndex: Number,
-  updateIndex: (title:string, index: number) => void
+  updateIndex: (title: string, index: number) => void
 }
 
-const OutLineItem: FC<IProps> = ({item, currentIndex, updateIndex}) => {
+const OutLineItem: FC<IProps> = ({ item, currentIndex, updateIndex }) => {
   const [isShow, setIsShow] = useState(true);
   const [status, setStatus] = useState('#outLineToBottom')
   const contentRef = useRef<HTMLUListElement | null>(null);
@@ -43,13 +43,16 @@ const OutLineItem: FC<IProps> = ({item, currentIndex, updateIndex}) => {
         </svg>
         <div className={s.title}>{item.title}</div>
       </li>
-      <ul className={[`twoTitle ${isShow ? 'show' : ''}`].join()} ref={contentRef}>
-        {item.subMenu.map((subItem: any, index: number) => (
-          <li key={index} className={`outItem ${currentIndex === subItem.currentIndex ? "outactive" : ''}`} onClick={() => updateIndex(item.title,subItem.currentIndex)}>
-            <div className={s.outText}>{subItem.title}</div>
-          </li>
-        ))}
-      </ul>
+      {
+        isShow ?
+          <ul className={[`twoTitle ${isShow ? 'show' : ''}`].join()} ref={contentRef}>
+            {item.subMenu.map((subItem: any, index: number) => (
+              <li key={index} className={`outItem ${currentIndex === subItem.currentIndex ? "outactive" : ''}`} onClick={() => updateIndex(item.title, subItem.currentIndex)}>
+                <div className={s.outText}>{subItem.title}</div>
+              </li>
+            ))}
+          </ul> : null
+      }
     </ul>
   )
 }
