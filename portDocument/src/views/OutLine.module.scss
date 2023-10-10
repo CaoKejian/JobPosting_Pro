@@ -1,12 +1,14 @@
 
 .catalogue{
   position: fixed;
-  right: 2rem;
+  right: 0;
   top: 5%;
+  padding-right: 2rem;
   user-select: none;
   max-width: 14rem;
   width: 14rem;
   font-size: 0.8rem;
+  background: #fff;
   .cat_box{
     margin-top: 1rem;
     width: 100%;
