@@ -1,6 +1,8 @@
 const mongoose = require("mongoose")
+
+const tableName = process.env.NODE_DATA === 'mock' ? 'mock' : 'jobpost'
 mongoose.set('strictQuery', true);
-mongoose.connect("mongodb://127.0.0.1:27017/jobpost")
+mongoose.connect(`mongodb://127.0.0.1:27017/${tableName}`)
 
 mongoose.connection.on("open", () => {
   console.log('\x1b[33m%s\x1b[0m', '数据库 已成功连接！') 

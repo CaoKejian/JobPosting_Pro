@@ -15,7 +15,6 @@ var publishRouter = require('./routes/publishWork')
 var subjectRouter = require('./routes/subject')
 var feedbackRouter = require('./routes/feedBack')
 var analyze = require('./routes/dataAnalyze')
-var mock = require('./routes/Mock')
 
 var app = express();
 app.use(cors());
@@ -30,7 +29,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // 白名单
-const excludesPath = ['/api/mock', '/api/work/mywork', '/api/user/addclassId', '/api/work', '/api/class/stuid/name',]
+const excludesPath = ['/api/work/mywork', '/api/user/addclassId', '/api/work', '/api/class/stuid/name',]
 app.use((req, res, next) => {
   if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || req.url.includes('/api/analyze') || excludesPath.some(path => path === req._parsedOriginalUrl?.pathname)) {
     next()
@@ -63,7 +62,6 @@ app.use('/api/pub', publishRouter);
 app.use('/api/subject', subjectRouter);
 app.use('/api/feedback', feedbackRouter);
 app.use('/api/analyze', analyze);
-app.use('/api/mock', mock);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

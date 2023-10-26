@@ -9,6 +9,7 @@
     "dev:port": "cd portDocument && npm run dev",
     "dev:pro": "NODE_ENV=production nodemon ./bin/www",
     "dev:python": "cd data_analyze && python3 run.py",
+    "dev:mock": "NODE_DATA=mock nodemon ./bin/www",
     "rspec": "mocha --timeout 5000  --reporter nyan --quiet --exit rspec/test"
   },
   "dependencies": {
