@@ -29,7 +29,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // 白名单
-const excludesPath = ['/api/work/mywork', '/api/user/addclassId', '/api/work', '/api/class/stuid/name',]
+const excludesPath = ['/api', '/api/work/mywork', '/api/user/addclassId', '/api/work', '/api/class/stuid/name',]
 app.use((req, res, next) => {
   if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || req.url.includes('/api/analyze') || excludesPath.some(path => path === req._parsedOriginalUrl?.pathname)) {
     next()
