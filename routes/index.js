@@ -2,6 +2,8 @@ var express = require('express');
 const isMock = require('../middleware/isMock');
 const ClassInfoModel = require('../model/classInfo');
 const UserModel = require('../model/user');
+const SubjectModel = require('../model/subject');
+const FeedBackModel = require('../model/feedBack');
 
 var router = express.Router();
 
@@ -40,6 +42,46 @@ router.get('/user', isMock, async function (req, res, next) {
   // { stuId: 2001, email: "caokejian@foxmail.com", name: "曹Sir", isAuth: true, isRoot: true },
   // { "stuId": 2001062028, email: "2594838054@qqcom", name: "黄梦瑶", classId: 123123, isAuth: true, isRoot: false }]
   // const x = UserModel.insertMany(data)
+  // res.status(200).send(x)
+});
+
+/* Mock subject  */
+router.get('/subject', isMock, async function (req, res, next) {
+  // const data = [
+  //   { subject: "高数（1）", classId: 123123, user: "曹Sir" },
+  //   { subject: "React", classId: 123123, user: "曹Sir" },
+  //   { subject: "数据挖掘", classId: 123123, user: "曹Sir" },
+  //   { subject: "Vue3", classId: 123123, user: "曹Sir" },
+  //   { subject: "TypeScript", classId: 123123, user: "曹Sir" },
+  //   { subject: "Vue2", classId: 123123, user: "曹Sir" },
+  //   { subject: "机器人是什么", classId: 122122, user: "曹Sir"}
+  // ]
+  // const x = SubjectModel.insertMany(data)
+  // res.status(200).send(x)
+});
+
+/* Mock feedback  */
+router.get('/feedback', isMock, async function (req, res, next) {
+  // const data = [
+  //   { "stuId": 2001063037, feedBackValue: "沙发a~", email: "1849201815@qq.com", name: "曹珂俭", },
+  //   { "stuId": 2001063037, feedBackValue: "沙发2~", email: "1849201815@qq.com", name: "黄梦瑶", },
+  //   { "stuId": 2001063037, feedBackValue: "学生系统统计图表不美观", email: "1849201815@qq.com", name: "李梓良", },
+  //   { "stuId": 2001063037, feedBackValue: "教师里输入框样式不统一", email: "1849201815@qq.com", name: "蔡齐齐", },
+  //   { "stuId": 2001063037, feedBackValue: "做的不错 继续更新", email: "1849201815@qq.com", name: "张博涵", },
+  //   { "stuId": 2001063037, feedBackValue: "加油加油！", email: "1849201815@qq.com", name: "聂宇博", },
+  //   { "stuId": 2001063037, feedBackValue: "这个折线图真piu亮啊！！！", email: "1849201815@qq.com", name: "王硕", },
+  //   { "stuId": 2001, feedBackValue: "colin同学数据作业完成的不错！", email: "caokejian@foxmail.com", name: "曹Sir", },
+  //   { "stuId": 2001, feedBackValue: "牛", email: "caokejian@foxmail.com", name: "李梓良", },
+  //   { "stuId": 2001, feedBackValue: "你真帅！", email: "caokejian@foxmail.com", name: "张博涵", },
+  //   { "stuId": 2001, feedBackValue: "这次更新不错", email: "caokejian@foxmail.com", name: "曹Sir", },
+  //   { "stuId": 2001, feedBackValue: "4", email: "caokejian@foxmail.com", name: "张博涵", },
+  //   { "stuId": 2001, feedBackValue: "666~", email: "caokejian@foxmail.com", name: "曹Sir", },
+  //   { "stuId": 2001, feedBackValue: "6", email: "caokejian@foxmail.com", name: "蔡齐齐", },
+  //   { "stuId": 2001, feedBackValue: "我是大学生，能免费使用吗", email: "caokejian@foxmail.com", name: "王硕", },
+  //   { "stuId": 2001, feedBackValue: "我是小傻瓜~", email: "caokejian@foxmail.com", name: "聂宇博", },
+  //   { "stuId": 2001, feedBackValue: "楼上真帅！", email: "caokejian@foxmail.com", name: "曹Sir", },
+  // ]
+  // const x = FeedBackModel.insertMany(data)
   // res.status(200).send(x)
 });
 
