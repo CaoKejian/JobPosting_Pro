@@ -2,13 +2,16 @@
 
 ## 技术栈
 
-- API 服务：
+- API 服务(后端)：
   - 框架 express、mongoDB
   - 引用技术 express-validator、jwt、nodemailer、mocha、chai、supertest、mongodb-memory-server、腾讯云 COS
 - 数据分析(.py):
   - 框架 Flask
   - 引用技术 pandas、PyMongo、KMeans、矩阵分析、聚类分析、模型训练等
-- 接口文档:
+- 交作业啦(前端):
+  - 框架 Vue3
+  - 引用技术 Vite3、Tsx、axios、VueRouter、Pinia、Echarts、VantUI
+- 接口文档(前端):
   - 框架 React、vite
   - 引用技术 react-router、sass-loader、svgPlugin
 - 技术脚本：
