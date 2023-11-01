@@ -4,6 +4,10 @@ const ClassInfoModel = require('../model/classInfo');
 const UserModel = require('../model/user');
 const SubjectModel = require('../model/subject');
 const FeedBackModel = require('../model/feedBack');
+const mockTime = require('../mailer/mockTime');
+const PublishWorkModel = require('../model/publishWork');
+const { default: axios } = require('axios');
+const DateFn = require('../mailer/date');
 
 var router = express.Router();
 
@@ -11,8 +15,17 @@ router.get('/', isMock, async function (req, res, next) {
   const data = {
     type: 'success',
     dsc: '您已进入Mock环境，此数据非有效数据！',
-    data: []
+    data: [`Mock系统已重置，更新时间为${DateFn()}`]
   }
+  // Mock做初始化处理...
+  const protocol = req.protocol;
+  const host = req.get('host');
+  const url = req.originalUrl;
+
+  const publishWork = `${protocol}://${host}${url}publishwork` // Mock publishWork
+
+  await axios.get(publishWork)
+
   res.status(200).send(data)
 });
 
@@ -85,4 +98,26 @@ router.get('/feedback', isMock, async function (req, res, next) {
   // res.status(200).send(x)
 });
 
+/* Mock publishwork */
+
+router.get('/publishwork', isMock, async function (req, res, next) {
+  await PublishWorkModel.deleteMany()
+  const user = '曹Sir'
+  const classId = 123123
+  const subArr = ['高数（1）', 'React', 'Vue3', 'Vue2', '数据挖掘', 'TypeScript', '机器人是什么']
+  const branchArr = ['完成课后第一单元练习题', '函数式组件学习', 'vue3的v-model与vue2的不同', '插槽是什么？', '完成百度数据采集并且清洗', '了解Ts', '了解chatGpt',]
+  const contentArr = ['将答案保存到文档里上传。', '了解函数式组件和类组件的区别，优点与不同处。学会编写简单的函数式组件。', '今天必须完成', '了解vue的几种插槽并写出demo', 'python代码上传到班级群', '认识Ts。描述Ts与Js的区别，了解Ts的几大知识点。', '300字文档自己介绍gpt的作用。描述qi',]
+  for (let i = 0; i < 6; i++) {
+    PublishWorkModel.create({
+      user,
+      classId,
+      subject: subArr[i],
+      branch: branchArr[i],
+      contentt: contentArr[i],
+      time: mockTime().time,
+      cutTime: mockTime().cutTime
+    })
+  }
+  res.send('ok')
+})
 module.exports = router;
