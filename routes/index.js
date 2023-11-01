@@ -32,15 +32,16 @@ router.get('/', isMock, async function (req, res, next) {
 
   const classInfo = `${protocol}://${host}${url}classInfo` // Mock classInfo
   const user = `${protocol}://${host}${url}user` // Mock user
+  const subject = `${protocol}://${host}${url}subject` // Mock subject
 
   await axios.get(classInfo)
   await axios.get(user)
+  await axios.get(subject)
 
   res.status(200).send(data)
 });
 
 /* Mock classInfos */
-
 router.get('/classInfo', isMock, async function (req, res, next) {
   await ClassInfoModel.deleteMany()
   // const data = await ClassInfoModel.find()
@@ -58,7 +59,6 @@ router.get('/classInfo', isMock, async function (req, res, next) {
   ClassInfoModel.insertMany(obj)
   res.send('ok')
 });
-
 
 /* Mock users  */
 router.get('/user', isMock, async function (req, res, next) {
@@ -81,19 +81,20 @@ router.get('/user', isMock, async function (req, res, next) {
 });
 
 /* Mock subject  */
-const subjectData = [
-  { subject: "高数（1）", classId: 123123, user: "曹Sir" },
-  { subject: "React", classId: 123123, user: "曹Sir" },
-  { subject: "数据挖掘", classId: 123123, user: "曹Sir" },
-  { subject: "Vue3", classId: 123123, user: "曹Sir" },
-  { subject: "TypeScript", classId: 123123, user: "曹Sir" },
-  { subject: "Vue2", classId: 123123, user: "曹Sir" },
-  { subject: "机器人是什么", classId: 122122, user: "曹Sir" }
-]
 router.get('/subject', isMock, async function (req, res, next) {
-
-  // const x = SubjectModel.insertMany(subjectData)
-  // res.status(200).send(x)
+  await SubjectModel.deleteMany()
+  // const data = await UserModel.find()
+  // if (data.length !== 0) return res.send('无需重载数据！')
+  let obj = []
+  for (let i = 0; i < mockData.publicSubject.length; i++) {
+    obj[i] = {
+      subject: mockData.publicSubject[i],
+      classId: mockData.publicClasId[i],
+      user: mockData.publicUser[Math.floor(Math.random() * mockData.publicUser.length)],
+    }
+  }
+  SubjectModel.insertMany(obj)
+  res.send(obj)
 });
 
 /* Mock feedback  */
