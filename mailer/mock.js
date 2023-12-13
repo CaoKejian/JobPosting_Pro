@@ -30,7 +30,7 @@ function MockUser() {
 }
 function writeFs(data) {
   const dataString = 'module.exports = ' + JSON.stringify(data, null, 2);
-  fs.writeFile('/Users/duibagroup/Desktop/myself/JobPosting_Pro/Mock/mock.data.js', dataString, (err) => {
+  fs.writeFile('/Users/didi/myself/JobPosting_Pro/Mock/mock.data.js', dataString, (err) => {
     if (err) throw err;
   });
 }

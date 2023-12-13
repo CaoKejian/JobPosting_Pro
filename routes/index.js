@@ -22,7 +22,6 @@ router.get('/', isMock, async function (req, res, next) {
     dsc: '您已进入Mock环境，此数据非有效数据！',
     data: [`Mock系统已重置，更新时间为${DateFn()}`]
   }
-
   MockUser() // 初始化Mock用户
 
   // Mock做初始化处理...
@@ -34,9 +33,9 @@ router.get('/', isMock, async function (req, res, next) {
   const user = `${protocol}://${host}${url}user` // Mock user
   const subject = `${protocol}://${host}${url}subject` // Mock subject
 
-  await axios.get(classInfo)
-  await axios.get(user)
-  await axios.get(subject)
+  // await axios.get(classInfo)
+  // await axios.get(user)
+  // await axios.get(subject)
 
   res.status(200).send(data)
 });
