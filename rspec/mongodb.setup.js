@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const mongoServer = new MongoMemoryServer();
 
 before(async function () {
+  await mongoServer.start();
   const mongoUri = await mongoServer.getUri();
   await mongoose.connect(mongoUri, {
     useNewUrlParser: true,
