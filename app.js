@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var homeWorksRouter = require('./routes/homeWork');
 var uploadRouter = require('./routes/upload');
 var classRouter = require('./routes/class')
-var publishRouter = require('./routes/publishWork')
+var publishRouter = require('./routes/publishwork')
 var subjectRouter = require('./routes/subject')
 var feedbackRouter = require('./routes/feedBack')
 var analyze = require('./routes/dataAnalyze')
@@ -29,25 +29,25 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // 白名单
-// const excludesPath = ['/api', '/api/work/mywork', '/api/user/addclassId', '/api/work', '/api/class/stuid/name',]
-// app.use((req, res, next) => {
-//   if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || req.url.includes('/api/analyze') || excludesPath.some(path => path === req._parsedOriginalUrl?.pathname)) {
-//     next()
-//     return
-//   }
-//   const token = req.header('Authorization')?.replace('Bearer ', '');
-//   const secretKey = uuid;
-//   if(token === 'testToken'){
-//     return next() // 测试用例后门
-//   }
-//   jwt.verify(token, secretKey, (err, decoded) => {
-//     if (err) {
-//       res.status(401).json({ message: '你没有权限！' }) 
-//     } else {
-//       next();
-//     }
-//   });
-// })
+const excludesPath = ['/api', '/api/work/mywork', '/api/user/addclassId', '/api/work', '/api/class/stuid/name',]
+app.use((req, res, next) => {
+  if (req.url.includes('/api/user') || req.originalUrl === '/api/user/veifycode' || req.url.includes('/api/analyze') || excludesPath.some(path => path === req._parsedOriginalUrl?.pathname)) {
+    next()
+    return
+  }
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  const secretKey = uuid;
+  if(token === 'testToken'){
+    return next() // 测试用例后门
+  }
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      res.status(401).json({ message: '你没有权限！' }) 
+    } else {
+      next();
+    }
+  });
+})
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
