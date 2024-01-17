@@ -343,7 +343,7 @@ router.post('/email/unsubmit', async function (req, res) {
       if (!data) {
         return
       }
-      const obj = { stuIds, url, user, branch, content, cutTime, unSubmit, name: data.name }
+      const obj = { email: item, url, user, branch, content, cutTime, unSubmit, name: data.name }
       Email.noticeMail(data.email, obj, (state) => {
         if (state) {
           return res.status(200).json(data(200, {}))

@@ -54,7 +54,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', indexRouter);
+app.use('/api/mock', indexRouter);
 app.use('/api/user', usersRouter);
 app.use('/api/work', homeWorksRouter);
 app.use('/api/upload', uploadRouter);

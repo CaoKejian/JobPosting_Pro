@@ -45,8 +45,9 @@ title "设置环境变量"
 export NODE_ENV=production
 export PORT=80
 title "启动服务"
-killall node
-pm2 start "npm" --name 'jobpro' -- run dev:pro --watch
+kill all node
+# pm2 start "npm" --name 'jobpro' -- run dev:pro --watch
+npm run dev:pro
 title "全部执行完毕！"
 echo -e "\e[1;34m⭐️请访问后端地址->:"http://124.70.188.74/api"\e[0m"
 echo -e "\e[1;34m⭐️请访问接口文档->:"http://124.70.188.74:8080/"\e[0m"

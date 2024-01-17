@@ -6,7 +6,7 @@ let transporter = nodemailer.createTransport({
 	secure: true,
 	auth: {
 		user: 'caokejian@foxmail.com',
-		pass: 'qjdzmfnxjfgkbcda'
+		pass: 'lhqubcaqoqzlbaga'
 	}
 });
 function sendMail(mail, code, call) {
@@ -23,7 +23,7 @@ function sendMail(mail, code, call) {
 
 	//发送函数
 	transporter.sendMail(mailOptions, (error, info) => {
-		error ? call(fasle) : call(true)
+		error ? call(false) : call(true)
 	});
 
 }
@@ -51,7 +51,7 @@ function noticeMail(mail, obj, call) {
 
 	//发送函数
 	transporter.sendMail(mailOptions, (error, info) => {
-		error ? call(fasle) : call(true)
+		error ? call(false) : call(true)
 	});
 }
 function ThanksMail(mail, name, call) {
@@ -82,7 +82,7 @@ function ThanksMail(mail, name, call) {
 
 	//发送函数
 	transporter.sendMail(mailOptions, (error, info) => {
-		error ? call(fasle) : call(true)
+		error ? call(false) : call(true)
 	});
 
 }
