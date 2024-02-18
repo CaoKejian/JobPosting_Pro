@@ -29,13 +29,12 @@ router.get('/', isMock, async function (req, res, next) {
   const host = req.get('host');
   const url = req.originalUrl;
 
-  const classInfo = `${protocol}://${host}${url}classInfo` // Mock classInfo
-  const user = `${protocol}://${host}${url}user` // Mock user
-  const subject = `${protocol}://${host}${url}subject` // Mock subject
-
-  // await axios.get(classInfo)
-  // await axios.get(user)
-  // await axios.get(subject)
+  const classInfo = `${protocol}://${host}${url}/classInfo` // Mock classInfo
+  const user = `${protocol}://${host}${url}/user` // Mock user
+  const subject = `${protocol}://${host}${url}/subject` // Mock subject
+  await axios.get(classInfo)
+  await axios.get(user)
+  await axios.get(subject)
 
   res.status(200).send(data)
 });
