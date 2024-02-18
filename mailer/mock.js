@@ -11,7 +11,8 @@ function MockUser() {
     publicIsRoot: [],
     publicEmail: [],
     publicSubject: [],
-    publicUser: []
+    publicUser: [],
+    commendValue: []
   }
   for (let i = 0; i < cacheData.dataLts; i++) {
     const mathNum = Math.random()
@@ -21,6 +22,7 @@ function MockUser() {
     mockData.publicIsAuth.push(mathNum > 0.9 ? true : false)
     mockData.publicIsRoot.push(mathNum > 0.95 ? true : false)
     mockData.publicEmail.push(faker.internet.email())
+    mockData.commendValue.push(faker.lorem.sentence({ min: 3, max: 5 }))
   }
   mockData.publicSubject = MockSubject()
   for (let i = 0; i < 4; i++) {

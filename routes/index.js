@@ -22,7 +22,7 @@ router.get('/', isMock, async function (req, res, next) {
     dsc: '您已进入Mock环境，此数据非有效数据！',
     data: [`Mock系统已重置，更新时间为${DateFn()}`]
   }
-  MockUser() // 初始化Mock用户
+  MockUser() // ***** 初始化Mock用户 *****
 
   // Mock做初始化处理...
   const protocol = req.protocol;
@@ -32,9 +32,10 @@ router.get('/', isMock, async function (req, res, next) {
   const classInfo = `${protocol}://${host}${url}/classInfo` // Mock classInfo
   const user = `${protocol}://${host}${url}/user` // Mock user
   const subject = `${protocol}://${host}${url}/subject` // Mock subject
+  const feedback = `${protocol}://${host}${url}/feedback` // Mock feedback
   await axios.get(classInfo)
   await axios.get(user)
-  await axios.get(subject)
+  await axios.get(feedback)
 
   res.status(200).send(data)
 });
@@ -97,27 +98,19 @@ router.get('/subject', isMock, async function (req, res, next) {
 
 /* Mock feedback  */
 router.get('/feedback', isMock, async function (req, res, next) {
-  // const data = [
-  //   { "stuId": 2001063037, feedBackValue: "沙发a~", email: "1849201815@qq.com", name: "曹珂俭", },
-  //   { "stuId": 2001063037, feedBackValue: "沙发2~", email: "1849201815@qq.com", name: "黄梦瑶", },
-  //   { "stuId": 2001063037, feedBackValue: "学生系统统计图表不美观", email: "1849201815@qq.com", name: "李梓良", },
-  //   { "stuId": 2001063037, feedBackValue: "教师里输入框样式不统一", email: "1849201815@qq.com", name: "蔡齐齐", },
-  //   { "stuId": 2001063037, feedBackValue: "做的不错 继续更新", email: "1849201815@qq.com", name: "张博涵", },
-  //   { "stuId": 2001063037, feedBackValue: "加油加油！", email: "1849201815@qq.com", name: "聂宇博", },
-  //   { "stuId": 2001063037, feedBackValue: "这个折线图真piu亮啊！！！", email: "1849201815@qq.com", name: "王硕", },
-  //   { "stuId": 2001, feedBackValue: "colin同学数据作业完成的不错！", email: "caokejian@foxmail.com", name: "曹Sir", },
-  //   { "stuId": 2001, feedBackValue: "牛", email: "caokejian@foxmail.com", name: "李梓良", },
-  //   { "stuId": 2001, feedBackValue: "你真帅！", email: "caokejian@foxmail.com", name: "张博涵", },
-  //   { "stuId": 2001, feedBackValue: "这次更新不错", email: "caokejian@foxmail.com", name: "曹Sir", },
-  //   { "stuId": 2001, feedBackValue: "4", email: "caokejian@foxmail.com", name: "张博涵", },
-  //   { "stuId": 2001, feedBackValue: "666~", email: "caokejian@foxmail.com", name: "曹Sir", },
-  //   { "stuId": 2001, feedBackValue: "6", email: "caokejian@foxmail.com", name: "蔡齐齐", },
-  //   { "stuId": 2001, feedBackValue: "我是大学生，能免费使用吗", email: "caokejian@foxmail.com", name: "王硕", },
-  //   { "stuId": 2001, feedBackValue: "我是小傻瓜~", email: "caokejian@foxmail.com", name: "聂宇博", },
-  //   { "stuId": 2001, feedBackValue: "楼上真帅！", email: "caokejian@foxmail.com", name: "曹Sir", },
-  // ]
-  // const x = FeedBackModel.insertMany(data)
-  // res.status(200).send(x)
+  await FeedBackModel.deleteMany()
+  let obj = []
+  for (let i = 0; i < mockData.commendValue.length; i++) {
+    obj[i] = {
+      stuId: mockData.publicStuid[i],
+      name: mockData.publicName[i],
+      email: mockData.publicEmail[i],
+      feedBackValue: mockData.commendValue[i],
+    }
+  }
+  console.log(obj)
+  FeedBackModel.insertMany(obj)
+  res.send(obj)
 });
 
 /* Mock publishwork */
