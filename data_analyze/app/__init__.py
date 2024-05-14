@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask
 from .index import index as index_blueprint
 from .student import student as student_blueprint

@@ -10,6 +10,13 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score, recall_score, f1_score
 import matplotlib.pyplot as plt
 
+# 相似度计算
+from gensim.models import Word2Vec
+from snownlp import SnowNLP
+from gensim import corpora, models
+import os
+from docx import Document
+import numpy as np
     #type: classId:number
     #param: classId, time
     #method: 个人提交历史监控（分组聚合）
@@ -279,3 +286,50 @@ def predict_score(student_id, data):
     if not student_scores:
         return 0.0  
     return sum(student_scores) / len(student_scores)
+
+
+@teacher.route("/similarity")
+def score_similarity():
+    # 文件路径示例，请根据实际情况修改
+    print("当前工作目录:", os.getcwd())
+    file_paths = ["app/teacher/word/test1.docx", "app/teacher/word/test2.docx", "app/teacher/word/test3.docx"]
+    
+    texts = []  # 用于存储处理后的文本内容
+    
+    for path in file_paths:
+        try:
+            # 使用python-docx提取文本内容
+            doc = Document(path)
+            raw_text = ' '.join([paragraph.text for paragraph in doc.paragraphs])  # 合并所有段落文本
+            # 使用snownlp进行分词
+            s = SnowNLP(raw_text)
+            segmented_text = [word for word in s.words]  # 分词后的文本列表
+            texts.append(segmented_text)
+        except Exception as e:
+            print(f"Error reading {path}: {e}")
+            return jsonify({"error": f"Error reading file {path}"}), 500
+
+    # 构建词典
+    dictionary = corpora.Dictionary(texts)
+    
+    # 文档转换为词袋模型
+    corpus = [dictionary.doc2bow(text) for text in texts]
+    
+    # 训练TF-IDF模型以增强对文档重要性的区分（可选步骤）
+    tfidf = models.TfidfModel(corpus)
+    corpus_tfidf = tfidf[corpus]
+    
+    # 训练词向量模型（这里使用gensim的Word2Vec）
+    model = models.Word2Vec(texts, vector_size=100, window=5, min_count=1, workers=4)
+    
+    # 计算文档间相似度
+    similarities = []
+    for i in range(len(texts)):
+        for j in range(i+1, len(texts)):
+            # 注意：直接计算词对相似度并求平均作为文档相似度的简化方法可能不精确
+            # 这里提供一个基于文档向量平均的相似度计算方法作为替代
+            vec_i = np.mean([model.wv[word] for word in texts[i] if word in model.wv], axis=0)
+            vec_j = np.mean([model.wv[word] for word in texts[j] if word in model.wv], axis=0)
+            doc_sim = np.dot(vec_i, vec_j) / (np.linalg.norm(vec_i) * np.linalg.norm(vec_j))
+            similarities.append({"doc_pair": (i+1, j+1), "similarity": round(float(doc_sim), 4)})
+    return jsonify(similarities)
