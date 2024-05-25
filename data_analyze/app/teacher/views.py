@@ -300,10 +300,15 @@ def score_similarity():
 
     # 查询
     works = list(mongo.db.homeworks.find({"subject": Subject, "branch": Branch, "time": {"$gte": start_datetime, "$lte": end_datetime}}))
+    print(works)
     texts = []
-
+    students = []
     for work in works:
       file_url = work['file'].get('fileUrl')
+      students.append({
+         "name": work['name'],
+         "stuId": work['stuId']
+      })
       if not file_url:
           continue
       try:
@@ -365,7 +370,17 @@ def score_similarity():
             vec_i = np.mean([model.wv[word] for word in texts[i] if word in model.wv], axis=0)
             vec_j = np.mean([model.wv[word] for word in texts[j] if word in model.wv], axis=0)
             doc_sim = np.dot(vec_i, vec_j) / (np.linalg.norm(vec_i) * np.linalg.norm(vec_j))
-            similarities.append({"doc_pair": (i+1, j+1), "similarity": round(float(doc_sim), 4)})
+            # 确保i和j索引有效且对应的学生ID存在
+            if i < len(students) and j < len(students):
+              stu_id_i = students[i].get('name')
+              stu_id_j = students[j].get('name')
+              
+              # 检查stu_id是否获取成功
+              if stu_id_i is not None and stu_id_j is not None:
+                  similarities.append({"doc_pair": (stu_id_i, stu_id_j), "similarity": round(float(doc_sim), 4)})
+              else:
+                  print(f"Missing student ID at index {i} or {j}")
+            # similarities.append({"doc_pair": (i+1, j+1), "similarity": round(float(doc_sim), 4)})
     return jsonify(similarities)
 
 @teacher.route("/feel")
