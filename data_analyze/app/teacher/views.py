@@ -16,6 +16,8 @@ from snownlp import SnowNLP
 from gensim import corpora, models
 import os
 from docx import Document
+import requests
+from io import BytesIO
 import numpy as np
     #type: classId:number
     #param: classId, time
@@ -290,24 +292,56 @@ def predict_score(student_id, data):
 
 @teacher.route("/similarity")
 def score_similarity():
-    # 文件路径示例，请根据实际情况修改
-    print("当前工作目录:", os.getcwd())
-    file_paths = ["app/teacher/word/test1.docx", "app/teacher/word/test2.docx", "app/teacher/word/test3.docx"]
+    Subject = request.args.get('subject')
+    Branch = request.args.get('branch')
+    Date = int(request.args.get('date'))
+    start_datetime = Date - 3600000
+    end_datetime = Date + 3600000
+
+    # 查询
+    works = list(mongo.db.homeworks.find({"subject": Subject, "branch": Branch, "time": {"$gte": start_datetime, "$lte": end_datetime}}))
+    texts = []
+
+    for work in works:
+      file_url = work['file'].get('fileUrl')
+      if not file_url:
+          continue
+      try:
+          response = requests.get(file_url)
+          response.raise_for_status()
+          
+          # 使用BytesIO处理下载的二进制数据，以便用python-docx打开
+          doc_stream = BytesIO(response.content)
+          
+          # 使用python-docx提取文本内容
+          doc = Document(doc_stream)
+          raw_text = ' '.join([paragraph.text for paragraph in doc.paragraphs])  # 合并所有段落文本
+          # 使用snownlp进行分词
+          s = SnowNLP(raw_text)
+          segmented_text = [word for word in s.words]  # 分词后的文本列表
+          texts.append(segmented_text)
+      except Exception as e:
+          print(f"Error downloading or processing document from {file_url}: {e}")
     
-    texts = []  # 用于存储处理后的文本内容
+
+    # # 文件路径示例，请根据实际情况修改
+    # print("当前工作目录:", os.getcwd())
+    # file_paths = ["app/teacher/word/test1.docx", "app/teacher/word/test2.docx", "app/teacher/word/test3.docx"]
     
-    for path in file_paths:
-        try:
-            # 使用python-docx提取文本内容
-            doc = Document(path)
-            raw_text = ' '.join([paragraph.text for paragraph in doc.paragraphs])  # 合并所有段落文本
-            # 使用snownlp进行分词
-            s = SnowNLP(raw_text)
-            segmented_text = [word for word in s.words]  # 分词后的文本列表
-            texts.append(segmented_text)
-        except Exception as e:
-            print(f"Error reading {path}: {e}")
-            return jsonify({"error": f"Error reading file {path}"}), 500
+    # texts = []  # 用于存储处理后的文本内容
+    
+    # for path in file_paths:
+    #     try:
+    #         # 使用python-docx提取文本内容
+    #         doc = Document(path)
+    #         raw_text = ' '.join([paragraph.text for paragraph in doc.paragraphs])  # 合并所有段落文本
+    #         # 使用snownlp进行分词
+    #         s = SnowNLP(raw_text)
+    #         segmented_text = [word for word in s.words]  # 分词后的文本列表
+    #         texts.append(segmented_text)
+    #     except Exception as e:
+    #         print(f"Error reading {path}: {e}")
+    #         return jsonify({"error": f"Error reading file {path}"}), 500
 
     # 构建词典
     dictionary = corpora.Dictionary(texts)
@@ -333,3 +367,30 @@ def score_similarity():
             doc_sim = np.dot(vec_i, vec_j) / (np.linalg.norm(vec_i) * np.linalg.norm(vec_j))
             similarities.append({"doc_pair": (i+1, j+1), "similarity": round(float(doc_sim), 4)})
     return jsonify(similarities)
+
+@teacher.route("/feel")
+def score_feel():
+    # 获取数据库连接和集合
+    homeworks_collection = mongo.db.homeworks 
+    
+    # 遍历每一条作业记录
+    for homework in homeworks_collection.find():  # 修改这里直接在查询结果上遍历
+
+            
+        t_components = homework.get('tComments', '')  
+        if not t_components or len(t_components) == 0:
+            continue
+        # 使用snownlp进行情感分析
+        s = SnowNLP(t_components)
+        sentiment_score = s.sentiments
+        
+        # 四舍五入保留两位小数
+        feel_score = round(sentiment_score, 2)
+        
+        # 更新当前文档，添加feel_score字段
+        homeworks_collection.update_one(  # 使用集合对象进行更新
+            {'_id': homework['_id']},  # 假设'_id'是每条记录的唯一标识符
+            {'$set': {'feel_score': feel_score}}
+        )
+  
+    return '情感分析完成，数据库更新成功'

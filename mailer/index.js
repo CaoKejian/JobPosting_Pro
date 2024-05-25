@@ -6,7 +6,7 @@ let transporter = nodemailer.createTransport({
 	secure: true,
 	auth: {
 		user: 'caokejian@foxmail.com',
-		pass: 'lhqubcaqoqzlbaga'
+		pass: 'inhkxftrdsmhfcej'
 	}
 });
 function sendMail(mail, code, call) {

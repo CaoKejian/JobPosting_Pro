@@ -233,4 +233,24 @@ router.get('/train', async function (req, res, next) {
   }
 });
 
+/** 
+  * @param {}
+  * @method 计算某一时间段作业相似度
+  * @return {}
+*/
+
+router.get('/similarity', async function (req, res, next) {
+  try {
+    const { subject, branch, date } = req.query;
+    const response = await http.get('/teacher/similarity', {
+      subject,
+      branch,
+      date
+    })
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({ message: 'python request is failed' });
+  }
+});
+
 module.exports = router;

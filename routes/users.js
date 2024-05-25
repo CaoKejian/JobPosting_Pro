@@ -210,6 +210,7 @@ router.post('/email', rateLimit, async (req, res, next) => {
     randomCode = code_fill_str[code.length] + code;
     // randomCode = Number(code)
     codeTimestamp = Date.now(); // 记录验证码生成的时间戳
+    console.log(email)
     Email.sendMail(email, randomCode, (state) => {
       if (state) {
         return res.status(200).json(data(200, {}))
